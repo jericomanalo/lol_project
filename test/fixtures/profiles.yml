@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  summonerName: MyString
+  summonerId: 1
+  region: MyString
+  icon: MyString
+  summonerLevel: 1
+
+two:
+  summonerName: MyString
+  summonerId: 1
+  region: MyString
+  icon: MyString
+  summonerLevel: 1

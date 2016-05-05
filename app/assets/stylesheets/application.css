@@ -1,0 +1,79 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+#profile_page {
+	background-image: url("bg.png");
+	width: 100%;
+	height:auto;
+}
+.container{
+ }
+ /* Carousel base class */
+.carousel {
+  height: 450px;
+  margin-bottom: 15px;
+}
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+  z-index: 10;
+}
+#summoner_banner{
+  border-color: black;
+  color: white;
+  margin-top: 20px;
+  background-color: rgba(23, 23, 23, 0.69);
+}
+#summoner_header{
+  margin: 0px;
+  margin-top: 20px;
+}
+#profileModal{
+  padding-top: 0px;
+}
+#modalBody{
+  border-color: rgba(0, 0, 0, 0.43);
+  color: white;
+  margin-top: -10px;
+  background-color: rgba(23, 23, 23, 0.69);
+}
+#profileTabs{
+  border-bottom: none;
+}
+#profileTabs li a{
+  background-color: rgba(0, 0, 0, 0.43);
+}
+#profileTabs li.active a{
+  border:none;
+  background-color: rgba(185, 169, 137, 0.25);
+}
+#profileTabs a{
+  text-decoration: none;
+  color: white;
+}
+.well{
+  background-color: rgba(23, 23, 23, 0.3);
+}
+/* Declare heights because of positioning of img element */
+.carousel .item {
+  height: 450px;
+  background: linear-gradient( rgba(129, 96, 40, 0.95), rgb(143, 114, 66),  rgba(185, 169, 137, 0.9), rgba(185, 169, 137, 0.75), rgba(159, 135, 94, 0.58));
+}
+.carousel-inner > .item > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 450px;
+}

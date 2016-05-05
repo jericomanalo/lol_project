@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  profile_id: 
+  championId: 1
+  championPointsSinceLastLevel: 1
+  championPointsUntilNextLevel: 1
+  highestGrade: MyString
+  championLevel: 1
+  lastPlayTime: 1
+
+two:
+  profile_id: 
+  championId: 1
+  championPointsSinceLastLevel: 1
+  championPointsUntilNextLevel: 1
+  highestGrade: MyString
+  championLevel: 1
+  lastPlayTime: 1

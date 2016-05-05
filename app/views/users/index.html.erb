@@ -1,0 +1,52 @@
+<% if !session[:user_id] %>
+<div class='container container-fluid' style='margin-top: 80px'>
+	<div class='row'>
+		<div class='col-md-8 col-pull-4'>
+			<h1 class='form-heading'>Welcome!</h1>
+			<p>Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah</p>
+		</div>
+		<div class='col-md-4 col-push-8'>
+			<h1 class='form-register-heading'>Sign Up!</h1>
+			<form action='/users/create' class='form-register' method='post'>
+				<input type='hidden' value='<%= form_authenticity_token %>' name='authenticity_token'>
+				<input type='text' placeholder='Full Name' class='form-control' name='user[name]'>
+				<br />
+				<input type='text' placeholder='Email' class='form-control' name='user[email]'>
+				<br />
+				<input type='text' placeholder='Summoner Name' class='form-control' name='profile[summonerName]'>
+				<br />
+				<select class='form-control' name='profile[region]'>
+					<option value='' selected disabled>Region</option>
+					<option value="BR">BR</option>
+					<option value="EUNE">EUNE</option>
+					<option value="EUW">EUW</option>
+					<option value="JP">JP</option>
+					<option value="KR">KR</option>
+					<option value="LAN">LAN</option>
+					<option value="LAS">LAS</option>
+					<option value="NA">NA</option>
+					<option value="OCE">OCE</option>
+					<option value="RU">RU</option>
+					<option value="TR">TR</option>
+				</select>
+				<br />
+				<input type='password' placeholder='Password' class='form-control' name='user[password]'>
+				<br />
+				<input type='password' placeholder='Confirm Password' class='form-control' name='user[password_confirmation]'>
+				<br />
+				<button type='submit' class='btn btn-primary btn-md btn-block'>Register</button>
+			</form>
+				<p class='text-center'>or</p>
+			
+				<a href='/users/guest'><button type='submit' class='btn btn-success btn-md btn-block'>Enter Site</button></a>
+			
+		</div>
+		</div>
+	</div>
+<% else %>
+<div style='margin-top: 80px'>
+<h1>HELLLOOOOOO!</h1>
+</div>
+
+<% end %>
+

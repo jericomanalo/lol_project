@@ -1,0 +1,65 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 
+  matchId: 1
+  summonerId: 1
+  kills: 1
+  deaths: 1
+  assists: 1
+  goldEarned: 1
+  summonerSpell1: 1
+  summonerSpell2: 1
+  item1: 1
+  item2: 1
+  item3: 1
+  item4: 1
+  item5: 1
+  item6: 1
+  mastery: 1
+  cs: 1
+  jungleCs: 1
+  totalDamage: 1
+  totalHeal: 1
+  totalCcDealt: 1
+  magicDamage: 1
+  physicalDamage: 1
+  damageTaken: 1
+  wardsPlaced: 1
+  doubleKills: 1
+  tripleKills: 1
+  quadraKills: 1
+  pentaKills: 1
+  win: false
+
+two:
+  user_id: 
+  matchId: 1
+  summonerId: 1
+  kills: 1
+  deaths: 1
+  assists: 1
+  goldEarned: 1
+  summonerSpell1: 1
+  summonerSpell2: 1
+  item1: 1
+  item2: 1
+  item3: 1
+  item4: 1
+  item5: 1
+  item6: 1
+  mastery: 1
+  cs: 1
+  jungleCs: 1
+  totalDamage: 1
+  totalHeal: 1
+  totalCcDealt: 1
+  magicDamage: 1
+  physicalDamage: 1
+  damageTaken: 1
+  wardsPlaced: 1
+  doubleKills: 1
+  tripleKills: 1
+  quadraKills: 1
+  pentaKills: 1
+  win: false

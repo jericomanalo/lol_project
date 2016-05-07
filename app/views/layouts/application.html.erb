@@ -35,33 +35,34 @@
           </ul>
         </li>
       </ul>
-		<% if session[:user_id] || @guest_token %>
-      <form class="navbar-form navbar-left" role="search">
+      <form action='/profiles/search' class='navbar-form navbar-right' method='post' class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+        <input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
+        <!-- <input type='hidden' name='profile[id]' value=''> -->
+        <input class='form-control form-control-block' name='profile[summonerName]' type='text' placeholder='Summoner Name'>
+        <select class='form-control form-control-block' name='profile[region]'>
+          <option value='' selected disabled>Region</option>
+          <option value="br">BR</option>
+          <option value="eune">EUNE</option>
+          <option value="euw">EUW</option>
+          <option value="jp">JP</option>
+          <option value="kr">KR</option>
+          <option value="lan">LAN</option>
+          <option value="las">LAS</option>
+          <option value="na">NA</option>
+          <option value="oce">OCE</option>
+          <option value="ru">RU</option>
+          <option value="tr">TR</option>
+        </select>
+        <button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search'> </span></button>
+      </div>
+      </form>
+      <!-- <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control form-control-block" placeholder="Summoner Name">
         </div>
         <button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search'> </span></button>
-      </form>
-      <% end %>
-      <ul class="nav navbar-nav navbar-right">
-      	<% if !session[:user_id] %>
-	        <li> 
-	        	<form class="navbar-form navbar-right" action='/users/login' method='post'>
-				<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>' >
-					<input class='form-control' type='text' placeholder='email' name='email'>
-					<input class='form-control' type='password' placeholder='password' name='password'>
-					<input type='submit' value='Login' class='btn btn-default'>
-				</form>
-			<% else %>
-				<a href="/logout" class='navbar-form navbar-right' style='text-decoration: none'><button class='btn btn-default'>Logout</button></a>
-			</li>
-		<% end %>
-		
-	
-		
-		
-     
-      </ul>
+      </form> -->
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

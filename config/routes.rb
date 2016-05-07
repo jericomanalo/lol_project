@@ -1,23 +1,28 @@
 Rails.application.routes.draw do
-  get 'profiles' => 'profiles#index'
+  #home/landing page
+  root 'profiles#index'
 
-  get 'profiles/show'
+  # --------------- Profile Routes -----------------
+  #search summoner profile
+  post 'profiles/search' => 'profiles#search'
+  #create summoner profile - if not in DB
+  post '/profiles' => 'profiles#create'
+  #show summoner profile
+  get 'profiles/:id' => 'profiles#show'
+  #update summoner profile
+  patch 'profiles/:id/update' => 'profiles#update'
 
-  root 'users#index'
+  # ---------------- ChampionMastery Routes -------------------
+  #create champion_masteries - if not in DB
+  get 'champion_masteries/create' => 'champion_masteries#create'
 
-  # users routing
+  get 'champion_masteries/update'
   
-  get 'users/guest' => 'users#guest'
+  # ---------------- Matches Routes -------------------
+  #create matches - if not in DB
+  get 'matches/create' => 'matches#create'
 
-  post 'users/create' => 'users#create'
-
-  post 'users/login' => 'users#login'
-
-  get 'users/:id' => 'users#show'
-
-  get 'logout' => 'users#logout'
-
-  post 'lol/:id' => 'lol#get_summoner_profile'
+  get 'matches/update'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

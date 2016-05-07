@@ -1,2 +1,34 @@
-<h1>Profiles#index</h1>
-<p>Find me in app/views/profiles/index.html.erb</p>
+<div class='container container-fluid' style='margin-top: 80px'>
+	<div class='row'>
+		<div class='col-md-8 col-pull-4'>
+			<h1 class='form-heading'>Welcome!</h1>
+			<p>Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah Blah blah</p>
+		</div>
+		<div class='col-md-4 col-push-8'>
+			<h1 class='form-register-heading'>Search for a Summoner</h1>
+			<form action='/profiles/search' class='form-register' method='post'>
+				<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
+				<!-- <input type='hidden' name='profile[id]' value=''> -->
+				<input type='text' placeholder='Summoner Name' class='form-control' name='profile[summonerName]'>
+				<br />
+				<select class='form-control' name='profile[region]'>
+					<option value='' selected disabled>Region</option>
+					<option value="br">BR</option>
+					<option value="eune">EUNE</option>
+					<option value="euw">EUW</option>
+					<option value="jp">JP</option>
+					<option value="kr">KR</option>
+					<option value="lan">LAN</option>
+					<option value="las">LAS</option>
+					<option value="na">NA</option>
+					<option value="oce">OCE</option>
+					<option value="ru">RU</option>
+					<option value="tr">TR</option>
+				</select>
+				<br />
+				<button type='submit' class='btn btn-primary btn-md btn-block'>Search</button>
+			</form>
+			
+		</div>
+		</div>
+	</div>

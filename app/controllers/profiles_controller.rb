@@ -41,6 +41,10 @@ class ProfilesController < ApplicationController
 		@matches = Match.where(profile_id: params[:id])
 
 	end
+	def show_graph
+		@champion = Champion.find_by(:championId => params[:championId])
+		@matches = Match.where(:summonerId => params[:summonerId]).where(:championId => params[:championId])
+	end
 
 	private
 	def profile_params

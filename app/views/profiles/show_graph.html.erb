@@ -1,0 +1,5 @@
+<div class="container container-fluid">
+	<h1><img src="<%= @champion.icon %>"><%= @champion.name %></h1>
+	<%= line_chart Match.group(:created_at).count %>
+	
+	</div>

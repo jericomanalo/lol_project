@@ -2,10 +2,14 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+  require 'chartkick'
+  require 'group_date'
+  require 'hightop'
+  require 'active_median'
   require 'json'
   require 'net/http' #to make a GET request
   require 'open-uri' #to fetch the data from the URL to then be parsed by JSON
-  $lol_key = "b67e0d6c-4352-4e92-90fb-6fce29ee0186"
+  $lol_key = "<API KEY GOES HERE>"
   $lol_uri = "https://global.api.pvp.net"
   $summoner_uri = "https://na.api.pvp.net"
   def get_lol_champions
@@ -23,7 +27,7 @@ class ApplicationController < ActionController::Base
     champions = JSON.load(data)
     champions = champions["data"]
     champions.each do |this|
-      champ = Champion.new(championId: this[1]['id'], name: this[1]['name'], title: this[1]['title'], icon: "http://ddragon.leagueoflegends.com/cdn/6.8.1/img/champion/"+this[1]['name']+".png")
+      champ = Champion.new(championId: this[1]['id'], name: this[1]['name'], title: this[1]['title'], icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this[1]['key']+".png")
       puts "champion::"
       puts champ
       champ.save!
@@ -56,7 +60,7 @@ class ApplicationController < ActionController::Base
   # gets all id for all the matches and basic info for the matches for the particular user
   def get_summoner_match_history
 
-  	match_history_query = "/api/lol/" + params[:region] + "/v2.2/matchlist/by-summoner/" + params[:summonerId] + "?seasons=SEASON2016&api_key="
+  	match_history_query = "/api/lol/" + params[:region] + "/v2.2/matchlist/by-summoner/" + params[:summonerId] + "?championIds=" + params[:championId] + "&seasons=SEASON2016&api_key="
 
   	uri = URI.parse($summoner_uri+match_history_query+$lol_key)
   	http = Net::HTTP.new(uri.host, uri.port)
@@ -71,33 +75,42 @@ class ApplicationController < ActionController::Base
     @match_history = JSON.parse(data)
     @match_history = @match_history['matches']
 
-    
+
 
   end
        # sending the API a match id to return back match STATS
   def get_match_info
-
+        count = Match.where(:summonerId => params[:summonerId]).where(:championId => params[:championId]).count
+        counter = @match_history.length
+        puts "COUNT!!!!!!!"
+        puts count
+        puts "COUNTERRRR!!!!"
+        puts counter
+      if @match_history.length == 0 || count != counter
         @matches = []
-        @match_history.each do |this|
-          match_id = this['matchId']
+         (count..(counter - 1)).each do |this|
+          puts "@MATCH_HISTORY MATCH:::::::::"
+          puts this
+            match_id = @match_history[this]['matchId']
 
-         	# REGION DICTIONARY
-         	match_query = "/api/lol/na/v2.2/match/"+(match_id).to_s+"?includeTimeline=false&api_key="
-         	uri = URI.parse($summoner_uri+match_query+$lol_key)
-         	http = Net::HTTP.new(uri.host, uri.port)
-         	http.use_ssl = true
-         	http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-         	request = Net::HTTP::Get.new(uri.request_uri)
-         	response = http.request(request)
-          #store the body of the requested URI (Uniform Resource Identifier)
-          data = response.body
-          #to parse JSON string; you may also use JSON.parse()
-          #JSON.load() turns the data into a hash
-          match = JSON.parse(data)
-          participant = match['participantIdentities'].find { |p| p['player']['summonerId'] == params[:summonerId].to_i }
-          participantId = participant['participantId']
-          participant_info = match['participants'].find { |p| p['participantId'] == participantId } 
-          @matches.push(participant_info)
+           	# REGION DICTIONARY
+           	match_query = "/api/lol/na/v2.2/match/"+(match_id).to_s+"?includeTimeline=false&api_key="
+           	uri = URI.parse($summoner_uri+match_query+$lol_key)
+           	http = Net::HTTP.new(uri.host, uri.port)
+           	http.use_ssl = true
+           	http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+           	request = Net::HTTP::Get.new(uri.request_uri)
+           	response = http.request(request)
+            #store the body of the requested URI (Uniform Resource Identifier)
+            data = response.body
+            #to parse JSON string; you may also use JSON.parse()
+            #JSON.load() turns the data into a hash
+            match = JSON.parse(data)
+            participant = match['participantIdentities'].find { |p| p['player']['summonerId'] == params[:summonerId].to_i }
+            participantId = participant['participantId']
+            participant_info = match['participants'].find { |p| p['participantId'] == participantId } 
+            @matches.push(participant_info)
+          end
         end
     end
 

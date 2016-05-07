@@ -31,6 +31,14 @@ gem 'hirb'
 # json
 gem 'json'
 
+# chartkick for graphs
+gem 'chartkick', '~> 1.5.2'
+#groupdate for chartkick
+gem 'groupdate'
+
+gem 'hightop'
+
+gem 'active_median'
 # Use Unicorn as the app server
 # gem 'unicorn'
 

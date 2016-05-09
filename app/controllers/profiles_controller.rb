@@ -6,20 +6,20 @@ class ProfilesController < ApplicationController
 		search_for_profile
 		if @profile != nil
 			redirect_to action: "show", id: @profile.id
-		else 
+		else
 			create
 			redirect_to controller: "champion_masteries", action: "create", id: @profile.id, summonerName: @profile.summonerName, region: @profile.region, summonerId: @profile.summonerId
 		end
 	end
 
 	def create
-    
+
       # if no profile exists in our db yet:
       search_for_summoner
         profile = Profile.new(
-          summonerName: @summoner[0], 
-          summonerId: @lol[@summoner[0]]['id'], 
-          region: params[:profile][:region], 
+          summonerName: @summoner[0],
+          summonerId: @lol[@summoner[0]]['id'],
+          region: params[:profile][:region],
           icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/" + (@lol[@summoner[0]]['profileIconId']).to_s + ".png",
           summonerLevel: @lol[@summoner[0]]['summonerLevel']
           )
@@ -32,7 +32,7 @@ class ProfilesController < ApplicationController
           redirect_to '/'
         end
     end
-  
+
 
 	def show
 		@champions = Champion.all

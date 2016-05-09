@@ -1,5 +1,14 @@
-<div class="container container-fluid">
-	<h1><img src="<%= @champion.icon %>"><%= @champion.name %></h1>
-	<%= line_chart Match.group(:created_at).count %>
-	
+<body style="background-image: url(<%= @champion.splash %>)">
+	<div class="container container-fluid">
+		<div class="container" id="graph_container">
+
+		<h1><img src="<%= @champion.icon %>"><%= @champion.name %><small><%= @champion.title %></small></h1>
+	 		<div>
+
+		<%= line_chart Match.group(:timestamp).maximum(:kills) %>
+
+			</div>
+		</div>
 	</div>
+
+</body>

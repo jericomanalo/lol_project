@@ -64,7 +64,7 @@
 }
 #champion_list{
   height: 800px;
-  overflow-y: scroll; 
+  overflow-y: scroll;
 }
 .well{
   background-color: rgba(23, 23, 23, 0.3);
@@ -80,4 +80,33 @@
   left: 0;
   min-width: 100%;
   height: 450px;
+}
+/* Champion Mastery Icons/Progress bars */
+#champ_icon{
+	display:inline-block;
+	z-index: 0;
+}
+#icon_mastery_rank{
+	height:35px;
+	width:40px;
+	z-index: 1;
+	z-index: -1;
+	margin-top: -40px;
+	margin-left: -50px;
+
+}
+
+#icon_mastery_progress{
+	width: 120px;
+	height: 8px;
+	z-index: 1;
+	margin-bottom: 112px;
+	margin-left: -118px;
+	display: inline-block;
+}
+
+/* Show Graph View */
+
+#graph_container{
+	background-color: rgba(23, 23, 23, 0.69);
 }

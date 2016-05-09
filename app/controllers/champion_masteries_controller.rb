@@ -24,7 +24,7 @@ class ChampionMasteriesController < ApplicationController
       new_champ_mastery.save
     end
 
-    redirect_to controller: "matches", action: "create", id: params[:id], summonerName: params[:summonerName], region: params[:region], summonerId: params[:summonerId] 
+    redirect_to controller: "profiles", action: "show", id: params[:id], summonerName: params[:summonerName], region: params[:region], summonerId: params[:summonerId] 
   end
 
   def show
@@ -36,6 +36,6 @@ class ChampionMasteriesController < ApplicationController
 	# 	search_for_champion_masteries
 	# 	if @champion_mastery != nil
 	# 		puts @champion_mastery
-	# 		redirect_to action: "" 
+	# 		redirect_to action: ""
 	# end
 end

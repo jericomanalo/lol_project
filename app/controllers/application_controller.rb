@@ -3,13 +3,13 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   require 'chartkick'
-  require 'group_date'
+  require 'groupdate'
   require 'hightop'
   require 'active_median'
   require 'json'
   require 'net/http' #to make a GET request
   require 'open-uri' #to fetch the data from the URL to then be parsed by JSON
-  $lol_key = "<API KEY GOES HERE>"
+  $lol_key = "b8a84394-c482-433d-a426-5db7d03615fc"
   $lol_uri = "https://global.api.pvp.net"
   $summoner_uri = "https://na.api.pvp.net"
   def get_lol_champions
@@ -108,7 +108,7 @@ class ApplicationController < ActionController::Base
             match = JSON.parse(data)
             participant = match['participantIdentities'].find { |p| p['player']['summonerId'] == params[:summonerId].to_i }
             participantId = participant['participantId']
-            participant_info = match['participants'].find { |p| p['participantId'] == participantId } 
+            participant_info = match['participants'].find { |p| p['participantId'] == participantId }
             @matches.push(participant_info)
           end
         end
@@ -117,7 +117,7 @@ class ApplicationController < ActionController::Base
   # getting champion info
   def get_summoner_champ_mastery
   	# takes in two params region/summonerId
-  	# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+  	# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   	# Region Convert as Dictionary { "NA" : "NA1"}
   	# Dont forget Region selector -> LA1/LA2 etc
   	puts "IN GET_SUMMONER_CHAMP_MASTERY, @PROFILE.SUMMONERID.TO_S"

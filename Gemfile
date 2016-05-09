@@ -37,6 +37,10 @@ gem 'chartkick', '~> 1.5.2'
 gem 'groupdate'
 
 gem 'hightop'
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo', platforms: [:x64_mingw, :mingw, :mswin]
+gem 'tzinfo-data', platforms: [:x64_mingw, :mingw, :mswin]
+
 
 gem 'active_median'
 # Use Unicorn as the app server
@@ -57,4 +61,3 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-

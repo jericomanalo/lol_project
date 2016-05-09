@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   require 'json'
   require 'net/http' #to make a GET request
   require 'open-uri' #to fetch the data from the URL to then be parsed by JSON
-  $lol_key = "b8a84394-c482-433d-a426-5db7d03615fc"
+  $lol_key = "<INSERT LOL API KEY HURR>"
   $lol_uri = "https://global.api.pvp.net"
   $summoner_uri = "https://na.api.pvp.net"
   def get_lol_champions
@@ -27,10 +27,11 @@ class ApplicationController < ActionController::Base
     champions = JSON.load(data)
     champions = champions["data"]
     champions.each do |this|
-      champ = Champion.new(championId: this[1]['id'], name: this[1]['name'], title: this[1]['title'], icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this[1]['key']+".png")
-      puts "champion::"
-      puts champ
+
+      champ = Champion.new(championId: this[1]['id'], name: this[1]['name'], title: this[1]['title'], icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this[1]['key']+".png", splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+this[1]['key']+"_0.jpg")
+      puts "champion image::"
       champ.save!
+      puts champ.splash
     end
   end
   # getting summoners basic info
@@ -74,7 +75,8 @@ class ApplicationController < ActionController::Base
     #JSON.load() turns the data into a hash
     @match_history = JSON.parse(data)
     @match_history = @match_history['matches']
-
+    puts "@@@@@@@@@@@@@@@@@@@@@@@@@ MATCH HISTORY @@@@@@@@@@@@@@@@@@@@@"
+    puts @match_history.length
 
 
   end
@@ -82,17 +84,13 @@ class ApplicationController < ActionController::Base
   def get_match_info
         count = Match.where(:summonerId => params[:summonerId]).where(:championId => params[:championId]).count
         counter = @match_history.length
-        puts "COUNT!!!!!!!"
-        puts count
         puts "COUNTERRRR!!!!"
+        asdf = 0
         puts counter
       if @match_history.length == 0 || count != counter
         @matches = []
-         (count..(counter - 1)).each do |this|
-          puts "@MATCH_HISTORY MATCH:::::::::"
-          puts this
+         (count..(counter -1)).each do |this|
             match_id = @match_history[this]['matchId']
-
            	# REGION DICTIONARY
            	match_query = "/api/lol/na/v2.2/match/"+(match_id).to_s+"?includeTimeline=false&api_key="
            	uri = URI.parse($summoner_uri+match_query+$lol_key)
@@ -106,9 +104,15 @@ class ApplicationController < ActionController::Base
             #to parse JSON string; you may also use JSON.parse()
             #JSON.load() turns the data into a hash
             match = JSON.parse(data)
+            puts "~~~~~~~~~~~~~~~~~~~match~~~~~~~~~~~~~~~~~~~~"
+            puts match
+            asdf
             participant = match['participantIdentities'].find { |p| p['player']['summonerId'] == params[:summonerId].to_i }
             participantId = participant['participantId']
-            participant_info = match['participants'].find { |p| p['participantId'] == participantId }
+            puts participant
+            puts match['participants'][participantId - 1]
+            participant_info = match['participants'][participantId - 1]
+            asdf += 1
             @matches.push(participant_info)
           end
         end
@@ -140,14 +144,11 @@ class ApplicationController < ActionController::Base
 
   # checks if the summoner database is GOOCHI
   def get_summoner_profile
-  	@champions = Champion.all
-  	if(@champions.count < 130)
-  		get_lol_champions
-  	end
+
   end
 
   def search_for_profile
-    @profile = Profile.find_by(:summonerName => params[:profile][:summonerName], :region => params[:profile][:region])
+    @profile = Profile.find_by(:summonerName => params[:summonerName], :region => params[:region])
     puts "~!~!~!~!~!~!~ THIS IS THE PROFILE REQUESTED FROM SEARCH_FOR_PROFILE ~!~!~!~!~"
     puts @profile
   end

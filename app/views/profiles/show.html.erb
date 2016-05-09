@@ -6,31 +6,39 @@
     <div id="champion_list" class="container">
 		  	<form class="form-inline" action="/matches/create" method="post">
           <div class="form-group">
-            <% @champions.each do |this| %>
-              <% if @champion_masteries.find { |t| t['championId'] == this.championId } %>
-              <% that = @champion_masteries.find { |t| t['championId'] == this.championId } %>
+            <% @progress.each do |this| %>
               <input type="hidden" name="summonerId" value="<%= @profile.summonerId %>">
               <input type="hidden" name="region" value="<%= @profile.region %>">
               <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
               <input type="hidden" name="id" value="<%= @profile.id %>">
               <input type="image" src="<%= this.icon %>" name="championId" value="<%= this.championId %>">
-              <% @current_xp = that['championPointsSinceLastLevel'] %>
-              <% @total_lvl_xp = ( that['championPointsUntilNextLevel'] + that['championPointsSinceLastLevel']) %>
+              <% @current_xp = this['championPointsSinceLastLevel'] %>
+              <% @total_lvl_xp = this['current_points'] %>
               <% @percent_to_level = number_to_percentage((@current_xp.to_f / @total_lvl_xp) * 100) %>
-              <img src="/images/Champion_mastery_tier_<%= that['championLevel'] %>.png" id="icon_mastery_rank" height="90px" width="80px" alt=""/>
+              <img src="/images/Champion_mastery_tier_<%= this['championLevel'] %>.png" id="icon_mastery_rank" height="90px" width="80px" alt=""/>
               <div class="progress" id="icon_mastery_progress">
                 <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @current_xp %>" aria-valuemin="0" aria-valuemax=" <%= @total_lvl_xp %>" style="width: <%=@percent_to_level %> ">
                 </div>
               </div>
-            <% end %>
-            <% end %>
-          </div>
-			</form>
-			<% @champions.each do |this| %>
-		  		<% if @champion_masteries.find { |t| t['championId'] != this.championId } %>
-					<img style="opacity: 0.5" src="<%= this.icon %>">
-	  			<% end %>
-	  		<% end %>
+              <% end %>
+            </div>
+          </form>
+              <hr>
+              <% @no_progress.each do |this| %>
+                <input type="hidden" name="summonerId" value="<%= @profile.summonerId %>">
+                <input type="hidden" name="region" value="<%= @profile.region %>">
+                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                <input type="hidden" name="id" value="<%= @profile.id %>">
+                <input type="image" src="<%= this.icon %>" name="championId" value="<%= this.championId %>">
+                <% @current_xp = this['championPointsSinceLastLevel'] %>
+                <% @total_lvl_xp = this['current_points'] %>
+                <% @percent_to_level = number_to_percentage((@current_xp.to_f / @total_lvl_xp) * 100) %>
+                <img src="/images/Champion_mastery_tier_<%= this['championLevel'] %>.png" id="icon_mastery_rank" style="opacity: 0.65" height="90px" width="80px" alt=""/>
+                <div class="progress" id="icon_mastery_progress">
+                  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= @current_xp %>" aria-valuemin="0" aria-valuemax=" <%= @total_lvl_xp %>" style="width: <%=@percent_to_level %> ">
+                  </div>
+                </div>
+                <% end %>
 	</div>
 </div>
 

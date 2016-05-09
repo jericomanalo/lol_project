@@ -30,7 +30,11 @@
 						<button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search'> </span></button>
 					</div>
 				</form>
-		<%= line_chart Match.group(:masteryPoints).maximum(:kills), label: "Kills", xtitle: "Champion Mastery Points", ytitle: "Kills" %>
+				<!-- @goals.map { |goal|
+				{name: goal.name, data: goal.feats.group_by_week(:created_at).count}
+				} -->
+
+				<%= line_chart Match.group(:profile_id).group(:masteryPoints).maximum(:kills), discrete: true, label: "Kills", xtitle: "Champion Mastery Points", ytitle: "Kills" %>
 			</div>
 		</div>
 	</div>

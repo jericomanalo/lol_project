@@ -15,6 +15,7 @@ class ChampionMasteriesController < ApplicationController
       new_champ_mastery = ChampionMastery.new(
           profile_id: params[:id],
           championId: this['championId'],
+          current_points: this['championPoints'],
           championPointsSinceLastLevel: this['championPointsSinceLastLevel'],
           championPointsUntilNextLevel: this['championPointsUntilNextLevel'],
           highestGrade: this['highestGrade'],
@@ -24,7 +25,7 @@ class ChampionMasteriesController < ApplicationController
       new_champ_mastery.save
     end
 
-    redirect_to controller: "profiles", action: "show", id: params[:id], summonerName: params[:summonerName], region: params[:region], summonerId: params[:summonerId] 
+    redirect_to controller: "profiles", action: "show", id: params[:id], summonerName: params[:summonerName], region: params[:region]
   end
 
   def show

@@ -1,10 +1,19 @@
 class MatchesController < ApplicationController
 
  	def create
- 		get_summoner_match_history
-	  	get_match_info
-	  	counter = 0
+ 		  get_summoner_match_history
+      @mastery = ChampionMastery.where(:championId => params[:championId])
+      puts "MASTERY"
+      puts @mastery[0]
+      mastery_points = (@mastery[0]['current_points'])
+      points = 0
+      puts "MASTERY PTS!!!!!!!!!!!!!"
+      puts mastery_points
+      get_match_info
 	  	if @matches != nil
+        current_match_count = Match.where(:championId => params[:championId]).where(:summonerId => params[:summonerId]).count
+        average_ppm = (mastery_points / (current_match_count + @matches.count))
+        counter = 0
 		  	@matches.each do |this|
 			    new_match = Match.create(
 				    matchId: @match_history[counter]['matchId'],
@@ -39,17 +48,20 @@ class MatchesController < ApplicationController
 				    profile_id: params[:id],
 				    timestamp: @match_history[counter]['timestamp'],
 				    win: this['stats']['winner'],
-				    championId: params[:championId]
-			    )
+				    championId: params[:championId],
+            masteryPoints: points
+			     )
+        points += average_ppm
 				counter += 1
 				puts "8=========================D ~~~~~~ ( . Y . )"
 				puts this['stats']['winner']
 				puts "~!~!~!~!~!!~!~!~!~!~!SAVING ONE MATCH!~!~!~!~!~!!~!~!~!~!~"
-	  		end
+	    end
 		#WE MIGHT NEED TO INJECT THE PARAMS BACK INTO HERE IE: REGION, SUMMONERNAME, SUMMONERID
-  		redirect_to controller: "profiles", action: "show_graph", id: params[:id], championId: params[:championId]
-  	else 
-  		redirect_to controller: "profiles", action: "show_graph", id: params[:id], championId: params[:championId]
+  		redirect_to controller: "profiles", action: "show_graph", summonerName: params[:summonerName], championId: params[:championId], summonerId: params[:summonerId]
+  	else
+      @matches = Match.where(:championId => params[:championId]).where(:summonerId =>params[:summonerId])
+  		redirect_to controller: "profiles", action: "show_graph", id: params[:id], championId: params[:championId], summonerId: params[:summonerId]
   	end
 end
 

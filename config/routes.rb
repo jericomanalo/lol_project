@@ -10,15 +10,20 @@ Rails.application.routes.draw do
   #show summoner profile
   get 'profiles/:id' => 'profiles#show'
   #update summoner profile
-  patch 'profiles/:id/update' => 'profiles#update'  
+  patch 'profiles/:id/update' => 'profiles#update'
   #show graphs for summoner
   get 'profiles/:id/graph/:championId' => 'profiles#show_graph'
+  #search comparison user in case not in DB
+  post 'profiles/compare' => 'profiles#compare'
+  #compare graphs with another user
+  get 'profiles/:summonerName/graph/:championId/compare/:summonerName2' => 'profiles#show_compare'
+
   # ---------------- ChampionMastery Routes -------------------
   #create champion_masteries - if not in DB
   get 'champion_masteries/create' => 'champion_masteries#create'
 
   get 'champion_masteries/update'
-  
+
   # ---------------- Matches Routes -------------------
   #create matches - if not in DB
   post 'matches/create' => 'matches#create'

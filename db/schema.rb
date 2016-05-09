@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160507124401) do
+ActiveRecord::Schema.define(version: 20160509160600) do
 
   create_table "champion_masteries", force: :cascade do |t|
     t.integer  "profile_id"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20160507124401) do
     t.integer  "lastPlayTime"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.integer  "current_points"
   end
 
   add_index "champion_masteries", ["profile_id"], name: "index_champion_masteries_on_profile_id"
@@ -73,6 +74,7 @@ ActiveRecord::Schema.define(version: 20160507124401) do
     t.integer  "profile_id"
     t.integer  "timestamp",      limit: 8
     t.integer  "championId"
+    t.integer  "masteryPoints"
   end
 
   add_index "matches", ["profile_id"], name: "index_matches_on_profile_id"

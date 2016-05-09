@@ -13,6 +13,24 @@
  *= require_tree .
  *= require_self
  */
+#landing_page{
+	background-image: url("http://na.leagueoflegends.com/sites/default/files/styles/scale_xlarge/public/upload/environmentart-sru-04_1920.jpg?itok=Pj-vA3Wa");
+	width: 100%;
+	height: auto;
+	background-size: cover;
+	color:white;
+	text-shadow: 2px 2px black;
+}
+.glyphicon-home{
+	height: 25px;
+	width: 25px;
+}
+.navbar {
+	height: 25px;
+}
+.navbar-form{
+	margin-top: -39px;
+}
 #profile_page {
 	background-image: url("bg.png");
 	width: 100%;

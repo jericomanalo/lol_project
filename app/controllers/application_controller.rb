@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   require 'json'
   require 'net/http' #to make a GET request
   require 'open-uri' #to fetch the data from the URL to then be parsed by JSON
-  $lol_key = "<INSERT LOL API KEY HURR>"
+  $lol_key = "b8a84394-c482-433d-a426-5db7d03615fc"
   $lol_uri = "https://global.api.pvp.net"
   $summoner_uri = "https://na.api.pvp.net"
   def get_lol_champions
@@ -148,6 +148,8 @@ class ApplicationController < ActionController::Base
   end
 
   def search_for_profile
+    puts "@@@@@@@@@@@@@@@@@@PARAMAS@@@@@@@@@@@@@"
+    puts params
     @profile = Profile.find_by(:summonerName => params[:summonerName], :region => params[:region])
     puts "~!~!~!~!~!~!~ THIS IS THE PROFILE REQUESTED FROM SEARCH_FOR_PROFILE ~!~!~!~!~"
     puts @profile

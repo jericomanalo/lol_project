@@ -104,6 +104,9 @@
 	display:inline-block;
 	z-index: 0;
 }
+#champion_list{
+	background-color: rgba(23, 23, 23, 0.69);
+}
 #icon_mastery_rank{
 	height:35px;
 	width:40px;
@@ -118,7 +121,7 @@
 	width: 120px;
 	height: 8px;
 	z-index: 1;
-	margin-bottom: 112px;
+	margin-bottom: 0px;
 	margin-left: -118px;
 	display: inline-block;
 }

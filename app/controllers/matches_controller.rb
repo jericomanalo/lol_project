@@ -53,9 +53,6 @@ class MatchesController < ApplicationController
 			     )
         points += average_ppm
 				counter += 1
-				puts "8=========================D ~~~~~~ ( . Y . )"
-				puts this['stats']['winner']
-				puts "~!~!~!~!~!!~!~!~!~!~!SAVING ONE MATCH!~!~!~!~!~!!~!~!~!~!~"
 	    end
 		#WE MIGHT NEED TO INJECT THE PARAMS BACK INTO HERE IE: REGION, SUMMONERNAME, SUMMONERID
   		redirect_to controller: "profiles", action: "show_graph", summonerName: params[:summonerName], championId: params[:championId], summonerId: params[:summonerId]

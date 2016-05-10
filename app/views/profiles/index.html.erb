@@ -28,9 +28,9 @@
 			<form action='/profiles/search' class='form-register' method='post'>
 				<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
 				<!-- <input type='hidden' name='profile[id]' value=''> -->
-				<input type='text' placeholder='Summoner Name' class='form-control' name='params[summonerName]'  required>
+				<input type='text' placeholder='Summoner Name' class='form-control' name='profile[summonerName]' value=''  required>
 				<br />
-				<select class='form-control' name='params[region]' required>
+				<select class='form-control' name='profile[region]' required>
 					<option value='' selected disabled>Region</option>
 					<option value="br">BR</option>
 					<option value="eune">EUNE</option>

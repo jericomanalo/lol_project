@@ -4,10 +4,6 @@ class ProfilesController < ApplicationController
 
 	def search
 		search_for_profile
-		if session[:summonerName] == nil
-			session[:summonerName] = params[:summonerName]
-			session[:region] = params[:region]
-		end
 		if @profile != nil
 			redirect_to action: "show", id: @profile.id
 		else
@@ -20,6 +16,8 @@ class ProfilesController < ApplicationController
 
       # if no profile exists in our db yet:
       search_for_summoner
+			puts "SEARCH FOR SUMM"
+			puts search_for_summoner
         profile = Profile.new(
           summonerName: @summoner[0],
           summonerId: @lol[@summoner[0]]['id'],
@@ -35,7 +33,7 @@ class ProfilesController < ApplicationController
         else
           redirect_to '/'
         end
-    end
+			end
 
 
 	def show
@@ -44,21 +42,15 @@ class ProfilesController < ApplicationController
 		@champion_masteries = ChampionMastery.where(profile_id: params[:id])
 		# Populate global variables to separate the Champions with Masteries and those without
     @progress = []
-
     @no_progress = []
-
     # Loop through all 130 champions via the @champions (== Champion.all) variable and compare all 130 against each of the heroes in @champion_masteries ( == ChampionMastery.where(profile_id: params[:id]))
-
     @champions.each do |this|
-
         if @champion_masteries.find {|t| t['championId'] == this.championId }
             @progress.push(this)
         end
-
         if not @champion_masteries.find {|t| t['championId'] == this.championId }
             @no_progress.push(this)
         end
-
     end
 	end
 	def show_graph

@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   require 'json'
   require 'net/http' #to make a GET request
   require 'open-uri' #to fetch the data from the URL to then be parsed by JSON
-  $lol_key = "b8a84394-c482-433d-a426-5db7d03615fc"
+  $lol_key = "<lol api key here during development>"
   $lol_uri = "https://global.api.pvp.net"
   $summoner_uri = "https://na.api.pvp.net"
   def get_lol_champions

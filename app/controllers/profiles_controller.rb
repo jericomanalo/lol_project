@@ -54,38 +54,43 @@ class ProfilesController < ApplicationController
     end
 	end
 	def show_graph
+		if Match.where(:summonerId => params[:summonerId]).where(:championId => params[:championId]) == nil
+			redirect_to action: "show", id: params[:id]
+		else
 		@profile = Profile.find(params[:id])
 		@champion_mastery = ChampionMastery.where(:championId => params[:championId]).where(:profile_id => params[:id])
 		@champion = Champion.find_by(:championId => params[:championId])
 		@matches = Match.where(:summonerId => params[:summonerId]).where(:championId => params[:championId])
-	end
-	def compare
-		@champion = Champion.find_by(:championId => params[:championId])
-		search_for_profile
-		puts "IN COMPARE"
-		puts params[:profile][:summonerName]
-		puts params[:profile][:region]
-		puts search_for_profile
-		if search_for_profile != nil
-			puts "COMPARE RESULTTTT::::"
-			@compare_profile = @profile
-			@compare_mastery = ChampionMastery.where(:profile_id => @profile.id).where(:championId => params[:championId])
-			@compare_matches = Match.where(:profile_id => @profile.id).where(:championId => params[:championId])
-			if @compare_mastery != nil && @compare_matches != nil
-				puts @compare_mastery
-				puts @compare_matches
-				puts "CUUURENT UUSAHHH"
-				@profile = Profile.find_by(:summonerName => params[:summonerName])
-				puts @profile.summonerId
-				@champion_mastery = ChampionMastery.where(:profile_id => @profile.id).where(:championId => params[:championId])
-				@matches = search_for_matches
-				redirect_to action: "show_compare", summonerName: @profile.summonerName, championId: params[:championId], summonerName2: @compare_profile.summonerName
-
-			end
 		end
-
-
 	end
+	######## Add Feature to Let Users Compare graph info ########
+	# def compare
+	# 	@champion = Champion.find_by(:championId => params[:championId])
+	# 	search_for_profile
+	# 	puts "IN COMPARE"
+	# 	puts params[:profile][:summonerName]
+	# 	puts params[:profile][:region]
+	# 	puts search_for_profile
+	# 	if search_for_profile != nil
+	# 		puts "COMPARE RESULTTTT::::"
+	# 		@compare_profile = @profile
+	# 		@compare_mastery = ChampionMastery.where(:profile_id => @profile.id).where(:championId => params[:championId])
+	# 		@compare_matches = Match.where(:profile_id => @profile.id).where(:championId => params[:championId])
+	# 		if not @compare_mastery == nil && @compare_matches == nil
+	# 			puts @compare_mastery
+	# 			puts @compare_matches
+	# 			puts "CUUURENT UUSAHHH"
+	# 			@profile = Profile.find_by(:summonerName => params[:summonerName])
+	# 			puts @profile.summonerId
+	# 			@champion_mastery = ChampionMastery.where(:profile_id => @profile.id).where(:championId => params[:championId])
+	# 			@matches = search_for_matches
+	# 			redirect_to action: "show_compare", summonerName: @profile.summonerName, championId: params[:championId], summonerName2: @compare_profile.summonerName
+	# 		else
+	# 			redirect_to action: "show_graph", id: @profile.id, championId: params[:championId]
+	# 		end
+	# 		redirect_to action: "show_graph", id: @profile.id, championId: params[:championId]
+	# 	end
+	# end
 	def show_compare
 		@champion = Champion.find_by(:championId => params[:championId])
 		@profile = Profile.find_by(:summonerName => params[:summonerName])

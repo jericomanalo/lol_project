@@ -7,24 +7,24 @@
 	<%= csrf_meta_tags %>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" crossorigin="anonymous">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <script src="https://code.highcharts.com/modules/data.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://www.highcharts.com/samples/static/highslide.css" />
+	<script src="http://code.highcharts.com/highcharts.js"></script>
+
+
+	<!-- Additional files for the Highslide popup effect -->
+	<script src="https://www.highcharts.com/samples/static/highslide-full.min.js"></script>
+	<script src="https://www.highcharts.com/samples/static/highslide.config.js" charset="utf-8"></script>
+
 </head>
 <body>
 
 	<nav class="navbar navbar-inverse">
   <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <form class="navbar-form navbar-brand" action="/profiles/search" method="post">
-				<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
-				<input type="hidden" name="summonerName" value="<%= session[:summonerName] %>">
-				<input type="hidden" name="summonerName" value="<%= session[:region] %>"><span class='glyphicon glyphicon-home'></span>
-			</form>
-    </div>
-
   <div class="collapse navbar-collapse">
 		<% current_uri = request.env['PATH_INFO'] %>
 			<% if current_uri != "/" %>
-      <form action='/profiles/search' class='navbar-form navbar-right' method='post' class="navbar-form navbar-right" role="search">
+      <form action='/profiles/search' class='navbar-form navbar-left' method='post' role="search">
         <div class="form-group">
         <input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
         <!-- <input type='hidden' name='profile[id]' value=''> -->

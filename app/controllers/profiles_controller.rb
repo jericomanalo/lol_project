@@ -1,5 +1,8 @@
 class ProfilesController < ApplicationController
 	def index
+		if Champion.count < 130
+			get_lol_champions
+		end
 	end
 
 	def search
@@ -54,14 +57,10 @@ class ProfilesController < ApplicationController
     end
 	end
 	def show_graph
-		if Match.where(:summonerId => params[:summonerId]).where(:championId => params[:championId]) == nil
-			redirect_to action: "show", id: params[:id]
-		else
 		@profile = Profile.find(params[:id])
 		@champion_mastery = ChampionMastery.where(:championId => params[:championId]).where(:profile_id => params[:id])
 		@champion = Champion.find_by(:championId => params[:championId])
-		@matches = Match.where(:summonerId => params[:summonerId]).where(:championId => params[:championId])
-		end
+		@matches = Match.where(:summonerId => @profile.summonerId).where(:championId => params[:championId])
 	end
 	######## Add Feature to Let Users Compare graph info ########
 	# def compare

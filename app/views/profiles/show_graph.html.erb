@@ -2,7 +2,7 @@
 	<div class="container container-fluid">
 		<div class="container" id="graph_container">
 			<div class="page-header" style="display: inline">
-				<form action='/profiles/compare' class='navbar-form navbar-right' id="compare_search" method='post' role="search">
+				<form action='' class='navbar-form navbar-right' id="compare_search" method='' role="search">
 					<div class="form-group">
 						<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
 						<input type='hidden' name='summonerName' value='<%= @profile['summonerName'] %>'>
@@ -24,7 +24,7 @@
 						</select>
 						<button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search'> </span></button>
 					</div>
-					<p class="text-left" style="color:white;">Compare against another summoner: </p>
+					<p class="text-left" style="color:white;">Compare against another summoner: (*currently unavailable) </p>
 				</form>
 				<div id="champ_div">
 					<h1 class="text-left" style="vertical-align:top"><img class="img img-circle" height="130px" width="130px" src="<%= @champion.icon %>"><%= @champion.name %><small><%= @champion.title %></small></h1>
@@ -33,7 +33,7 @@
 			</div>
 
 			<div>
-				<%= line_chart Match.group(:masteryPoints).maximum(:mdScore), label: "mdScore", xtitle: "Champion Mastery Points", ytitle: "Kills", id: "champ_chart" %>
+				<%= line_chart @matches.map{ |m| [m.masteryPoints, m.mdScore]}, discrete: true, label: "mdScore", xtitle: "Champion Mastery Points", ytitle: "mdScore", id: "champ_chart" %>
 			</div>
 		</div>
 	</div>

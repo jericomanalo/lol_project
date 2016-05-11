@@ -92,7 +92,6 @@ class MatchesController < ApplicationController
 		#WE MIGHT NEED TO INJECT THE PARAMS BACK INTO HERE IE: REGION, SUMMONERNAME, SUMMONERID
   		redirect_to controller: "profiles", action: "show_graph", id: params[:id], championId: params[:championId]
   	else
-      @matches = Match.where(:championId => params[:championId]).where(:summonerId =>params[:summonerId])
   		redirect_to controller: "profiles", action: "show_graph", id: params[:id], championId: params[:championId], summonerId: params[:summonerId]
   	end
 end

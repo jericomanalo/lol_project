@@ -1,7 +1,6 @@
 class CreateMatches < ActiveRecord::Migration
   def change
     create_table :matches do |t|
-      t.references :user, index: true, foreign_key: true
       t.integer :matchId
       t.integer :summonerId
       t.integer :kills

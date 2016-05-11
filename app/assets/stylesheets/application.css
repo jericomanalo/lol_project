@@ -21,6 +21,7 @@
 	background-size: cover;
 	color:white;
 	text-shadow: 2px 2px black;
+	background-repeat: no-repeat;
 }
 .glyphicon-home{
 	height: 25px;
@@ -37,6 +38,7 @@
 	background-position: center;
 	width: 100%;
 	height:auto;
+	background-repeat: no-repeat;
 }
 
 #summoner_banner{

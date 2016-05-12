@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   require 'json'
   require 'net/http' #to make a GET request
   require 'open-uri' #to fetch the data from the URL to then be parsed by JSON
-  $lol_key = ENV["LOL_SECRET"]
+  $lol_key = "af407e29-b013-4c39-9385-b54cf05cf67c"
   $lol_uri = "https://global.api.pvp.net"
   $summoner_uri = "https://na.api.pvp.net"
   def get_lol_champions
@@ -74,11 +74,9 @@ class ApplicationController < ActionController::Base
     #to parse JSON string; you may also use JSON.parse()
     #JSON.load() turns the data into a hash
     @match_history = JSON.parse(data)
-    @match_history = @match_history['matches']
+    # @match_history = @match_history['matches']
     puts "@@@@@@@@@@@@@@@@@@@@@@@@@ MATCH HISTORY @@@@@@@@@@@@@@@@@@@@@"
-    puts @match_history.length
-
-
+     # @match_history.length
   end
        # sending the API a match id to return back match STATS
   def get_match_info
@@ -87,34 +85,38 @@ class ApplicationController < ActionController::Base
         puts "COUNTERRRR!!!!"
         asdf = 0
         puts counter
+        puts "MATCH HISTORRRRRRYYYYY"
+        puts @match_history
+        
       if @match_history.length == 0 || count != counter
-        @matches = []
-         (count..(counter -1)).each do |this|
-            match_id = @match_history[this]['matchId']
-           	# REGION DICTIONARY
-           	match_query = "/api/lol/na/v2.2/match/"+(match_id).to_s+"?includeTimeline=false&api_key="
-           	uri = URI.parse($summoner_uri+match_query+$lol_key)
-           	http = Net::HTTP.new(uri.host, uri.port)
-           	http.use_ssl = true
-           	http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-           	request = Net::HTTP::Get.new(uri.request_uri)
-           	response = http.request(request)
-            #store the body of the requested URI (Uniform Resource Identifier)
-            data = response.body
-            #to parse JSON string; you may also use JSON.parse()
-            #JSON.load() turns the data into a hash
-            match = JSON.parse(data)
-            puts "~~~~~~~~~~~~~~~~~~~match~~~~~~~~~~~~~~~~~~~~"
-            puts match
-            asdf
-            participant = match['participantIdentities'].find { |p| p['player']['summonerId'] == params[:summonerId].to_i }
-            participantId = participant['participantId']
-            puts participant
-            puts match['participants'][participantId - 1]
-            participant_info = match['participants'][participantId - 1]
-            asdf += 1
-            @matches.push(participant_info)
-          end
+        puts "MATCH HISTORY LENGTH!!!!!!!!!!!!!!"
+          @matches = []
+           (count..(counter -1)).each do |this|
+              match_id = @match_history[this]['matchId']
+             	# REGION DICTIONARY
+             	match_query = "/api/lol/na/v2.2/match/"+(match_id).to_s+"?includeTimeline=false&api_key="
+             	uri = URI.parse($summoner_uri+match_query+$lol_key)
+             	http = Net::HTTP.new(uri.host, uri.port)
+             	http.use_ssl = true
+             	http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+             	request = Net::HTTP::Get.new(uri.request_uri)
+             	response = http.request(request)
+              #store the body of the requested URI (Uniform Resource Identifier)
+              data = response.body
+              #to parse JSON string; you may also use JSON.parse()
+              #JSON.load() turns the data into a hash
+              match = JSON.parse(data)
+              puts "~~~~~~~~~~~~~~~~~~~match~~~~~~~~~~~~~~~~~~~~"
+              puts match
+              asdf
+              participant = match['participantIdentities'].find { |p| p['player']['summonerId'] == params[:summonerId].to_i }
+              participantId = participant['participantId']
+              puts participant
+              puts match['participants'][participantId - 1]
+              participant_info = match['participants'][participantId - 1]
+              asdf += 1
+              @matches.push(participant_info)
+            end
         end
     end
 

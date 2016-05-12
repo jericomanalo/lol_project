@@ -1,4 +1,7 @@
 source 'https://rubygems.org'
+
+#Using PUMA for Heroku Deployment
+gem 'puma'
 #heroku plugins static assests and logging on heroku
 gem 'rails_12factor', group: :production
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -30,9 +33,6 @@ gem 'bcrypt', '~> 3.1.9'
 gem 'hirb'
 # json
 gem 'json'
-
-#Using PUMA for Heroku Deployment
-gem 'puma'
 
 # chartkick for graphs
 gem 'chartkick', '~> 1.5.2'

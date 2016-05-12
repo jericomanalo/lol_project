@@ -54,7 +54,7 @@ class MatchesController < ApplicationController
               mdScore -= 100
             end
   			    new_match = Match.create(
-  				    matchId: @match_history[counter]['matchId'],
+  				    matchId: @match_history['matches'][counter]['matchId'],
   				    summonerId: params[:summonerId],
   				    kills: this['stats']['kills'],
   				    deaths: this['stats']['deaths'],
@@ -84,7 +84,7 @@ class MatchesController < ApplicationController
   				    quadraKills: this['stats']['quadraKills'],
   				    pentaKills: this['stats']['pentaKills'],
   				    profile_id: params[:id],
-  				    timestamp: @match_history[counter]['timestamp'],
+  				    timestamp: @match_history['matches'][counter]['timestamp'],
   				    championId: params[:championId],
               win: this['stats']['winner'],
               masteryPoints: points,

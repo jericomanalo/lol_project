@@ -34,7 +34,7 @@
 	margin-top: -39px;
 }
 #profile_page {
-	background-image: url("../images/bg.png");
+	background-image: url("/images/bg.png");
 	background-position: center;
 	width: 100%;
 	height:auto;

@@ -14,14 +14,16 @@
  *= require_self
  */
 #landing_page{
-	background-image: url("http://na.leagueoflegends.com/sites/default/files/styles/scale_xlarge/public/upload/environmentart-sru-04_1920.jpg?itok=Pj-vA3Wa");
-	width: 100%;
-	height: auto;
-	background-position: center;
-	background-size: cover;
+ 	background-image: url("http://na.leagueoflegends.com/sites/default/files/styles/scale_xlarge/public/upload/environmentart-sru-04_1920.jpg?itok=Pj-vA3Wa"); 
 	color:white;
 	text-shadow: 2px 2px black;
-	background-repeat: no-repeat;
+}
+.background{
+	background:  no-repeat center center fixed;
+	-webkit-background-size: cover;
+ 	-moz-background-size: cover;
+ 	-o-background-size: cover;
+ 	background-size: cover;
 }
 .glyphicon-home{
 	height: 25px;

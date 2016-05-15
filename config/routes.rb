@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   #create summoner profile - if not in DB
   post '/profiles' => 'profiles#create'
   #show summoner profile
-  get 'profiles/:id' => 'profiles#show'
+  get 'profiles/:summonerName/:region' => 'profiles#show'
   #update summoner profile
   patch 'profiles/:id/update' => 'profiles#update'
   #show graphs for summoner

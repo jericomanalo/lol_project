@@ -1,4 +1,4 @@
-<body style="background-image: url(<%= @champion.splash %>); background-size: cover; background-repeat: no-repeat">
+<body style="background-image: url(<%= @champion.splash %>)" class="background">
 	<div class="container container-fluid">
 		<div class="container" id="graph_container">
 			<div class="page-header" style="display: inline">
@@ -33,7 +33,7 @@
 			</div>
 
 			<div>
-				<%= line_chart @matches.map{ |m| [m.masteryPoints, m.mdScore]}, discrete: true, label: "mdScore", xtitle: "Champion Mastery Points", ytitle: "mdScore", id: "champ_chart" %>
+				<%= line_chart @matches.map{ |m| [m.matchId, m.mdScore]}, discrete: true, label: "mdScore", xtitle: "Match Ids", ytitle: "mdScore", id: "champ_chart" %>
 			</div>
 		</div>
 	</div>

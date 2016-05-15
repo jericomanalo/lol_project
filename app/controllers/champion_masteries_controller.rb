@@ -1,42 +1,28 @@
 class ChampionMasteriesController < ApplicationController
 
   def create
-  	#call to api to search for the champion masteries
-
-  	# @profile = params[:profile]
-  	# @profile = ({id: params[:id], summonerId: params[:summonerId], summonerName: params[:summonerName], region: params[:region]}).to_json
-  	# puts "CHAMPION MASTERIES @PROFILE ~!~!~!~!~!~!~!~!~!~!~!~!~~!~!~~!~"
-  	# puts @profile
-
-  	get_summoner_champ_mastery
-  	#begin populating the db
-    @champion_masteries.each do |this|
+    # PASSED THE PARAMS OF REGION AND SUMMONERID FROM THE PROFILES CONTROLLER CREATE REDIRECT AFTER PROFILE WAS CREATED
+    champion_masteries = Riot.get_champion_masteries(params[:region], params[:summonerId])
+  	# begin populating the db
+    champion_masteries.each do |this|
       lastPlayTime = DateTime.strptime(this['lastPlayTime'].to_s, '%Q')
-      new_champ_mastery = ChampionMastery.new(
-          profile_id: params[:id],
-          championId: this['championId'],
-          current_points: this['championPoints'],
-          championPointsSinceLastLevel: this['championPointsSinceLastLevel'],
-          championPointsUntilNextLevel: this['championPointsUntilNextLevel'],
-          highestGrade: this['highestGrade'],
-          championLevel: this['championLevel'],
-          lastPlayTime: lastPlayTime
+      ChampionMastery.create(
+        profile_id: params[:id],
+        championId: this['championId'],
+        current_points: this['championPoints'],
+        championPointsSinceLastLevel: this['championPointsSinceLastLevel'],
+        championPointsUntilNextLevel: this['championPointsUntilNextLevel'],
+        highestGrade: this['highestGrade'],
+        championLevel: this['championLevel'],
+        lastPlayTime: lastPlayTime
       )
-      new_champ_mastery.save
     end
 
-    redirect_to controller: "profiles", action: "show", id: params[:id], summonerName: params[:summonerName], region: params[:region]
-  end
-
-  def show
+    redirect_to controller: "profiles", action: "show", summonerName: params[:summonerName], region: params[:region]
   end
 
   def update
+#      if this exists? # sudo code update
+#        if this['championPoints'] == that['championPoints'] # sudo code update
   end
-	# def search
-	# 	search_for_champion_masteries
-	# 	if @champion_mastery != nil
-	# 		puts @champion_mastery
-	# 		redirect_to action: ""
-	# end
 end

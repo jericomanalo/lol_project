@@ -84,6 +84,11 @@
 	color: white;
 	padding-top: 5px;
 }
+.red {
+	color: red;
+	padding-top: 5px;
+	text-shadow: none;
+}
 /* Champion Mastery Icons/Progress bars */
 #champ_icon{
 	z-index: 0;

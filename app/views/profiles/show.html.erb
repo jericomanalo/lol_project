@@ -6,9 +6,12 @@
     <div id="champion_list" class="container text-center">
 		  	<form class="form-inline" action="/matches/create" method="post">
           <div class="form-group">
-            <p class="white">
-              Ranked Champions
-            </p>
+            <p class="white">Ranked Champions</p>
+            <% if flash[:error] %>
+              <div class='alert alert-danger' role='alert'>
+                <strong class="red"><%=h flash[:error] %></strong>
+              </div>
+            <% end %>
             <% @progress.each do |this| %>
               <input type="hidden" name="summonerId" value="<%= @profile.summonerId %>">
               <input type="hidden" name="region" value="<%= @profile.region %>">
@@ -29,9 +32,7 @@
               <hr>
             </div>
           </form>
-          <p class="white">
-            Unranked Champions
-          </p>
+          <p class="white">Unranked Champions</p>
               <% @no_progress.each do |this| %>
                 <input type="hidden" name="summonerId" value="<%= @profile.summonerId %>">
                 <input type="hidden" name="region" value="<%= @profile.region %>">

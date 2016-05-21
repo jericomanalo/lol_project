@@ -21,21 +21,29 @@ class ProfilesController < ApplicationController
 
 	def create
 		profile = Riot.get_summoner(params[:profile][:region], params[:profile][:summonerName], {})
+		# Check to see if the summoner that was input does not exist in the Riot Games API
+		if profile['status']['status_code'] == 404
+			# Redirecting home til a display page is decided
+			flash[:error] = "Sorry, the summoner you wish to search for does not exist in the Riot Games database. Please try again."
+			redirect_to "/"
+		else 
+		
 		name = params[:profile][:summonerName]
-        if Profile.create(
-	          summonerName: name,
-	          summonerId: profile[name]['id'],
-	          region: params[:profile][:region],
-	          icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/" + (profile[name]['profileIconId']).to_s + ".png",
-	          summonerLevel: profile[name]['summonerLevel']
-          )
-          @profile = Profile.find_by(:summonerName => params[:profile][:summonerName], :region => params[:profile][:region] )
-          redirect_to controller: "champion_masteries", action: "create", region: @profile.region, summonerId: @profile.summonerId, id: @profile.id, summonerName: @profile.summonerName
-        else
-        	############### - ADD FLASH MESSAGES LOGIC - ##########################
-          redirect_to '/'
-          	############### - ADD FLASH MESSAGES LOGIC - ##########################
-        end
+	    if Profile.create(
+	        summonerName: name,
+	        summonerId: profile[name]['id'],
+	        region: params[:profile][:region],
+	        icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/" + (profile[name]['profileIconId']).to_s + ".png",
+	        summonerLevel: profile[name]['summonerLevel']
+	      )
+	      @profile = Profile.find_by(:summonerName => params[:profile][:summonerName], :region => params[:profile][:region] )
+	      redirect_to controller: "champion_masteries", action: "create", region: @profile.region, summonerId: @profile.summonerId, id: @profile.id, summonerName: @profile.summonerName
+	    else
+	    	############### - ADD FLASH MESSAGES LOGIC - ##########################
+	      redirect_to '/'
+	      	############### - ADD FLASH MESSAGES LOGIC - ##########################
+	    end
+	  end
 	end
 
 	def show

@@ -25,13 +25,18 @@
 		</div>
 		<div class='col-md-4 col-md-offset-1 col-push-6'>
 			<h1 class='form-register-heading'>Search for a Summoner</h1>
+			<% if flash[:error] %>
+			<div class="alert alert-danger" role="alert">
+				<strong class="red"><%=h flash[:error] %></strong>
+			</div>
+			<% end %>
 			<form action='/profiles/search' class='form-register' method='post'>
 				<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
 				<!-- <input type='hidden' name='profile[id]' value=''> -->
 				<input type='text' placeholder='Summoner Name' class='form-control' name='profile[summonerName]' value=''  required>
 				<br />
-				<select class='form-control' name='profile[region]' required>
-					<option value='' selected disabled>Region</option>
+				<select class='form-control' name='profile[region]' required autofocused>
+					<option value="na">NA</option>
 					<option value="br">BR</option>
 					<option value="eune">EUNE</option>
 					<option value="euw">EUW</option>
@@ -39,7 +44,6 @@
 					<option value="kr">KR</option>
 					<option value="lan">LAN</option>
 					<option value="las">LAS</option>
-					<option value="na">NA</option>
 					<option value="oce">OCE</option>
 					<option value="ru">RU</option>
 					<option value="tr">TR</option>

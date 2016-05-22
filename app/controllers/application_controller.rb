@@ -100,7 +100,7 @@ private
   end
 
   def self.get_api_key
-    ENV["LOL_SECRET"]
+    "b67e0d6c-4352-4e92-90fb-6fce29ee0186"
   end
 end
 

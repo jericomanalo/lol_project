@@ -24,13 +24,20 @@
   <div class="collapse navbar-collapse">
 		<% current_uri = request.env['PATH_INFO'] %>
 			<% if current_uri != "/" %>
+      <!-- TO SHOW BACK TO PROFILE BUTTON AT THE SHOW GRAPH VIEW PAGE-->
+      <% if @matches %>
+        <form action= '/profiles/<%= @profile.summonerName %>/<%= @profile.region %>'>
+          <button type="submit" class="btn btn-default navbar-form navbar-left form-control">Back to Profile</button>
+        </form>
+      <!-- TO SHOW BACK TO PROFILE BUTTON AT THE SHOW GRAPH PAGE -->
+      <% end %>
       <form action='/profiles/search' class='navbar-form navbar-left' method='post' role="search">
         <div class="form-group">
         <input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
         <!-- <input type='hidden' name='profile[id]' value=''> -->
         <input class='form-control form-control-block' name='profile[summonerName]' type='text' placeholder='Summoner Name' required>
-        <select class='form-control form-control-block' name='profile[region]' required>
-          <option value='' selected disabled>Region</option>
+        <select class='form-control form-control-block' name='profile[region]' required autofocused>
+          <option value="na">NA</option>
           <option value="br">BR</option>
           <option value="eune">EUNE</option>
           <option value="euw">EUW</option>
@@ -38,12 +45,12 @@
           <option value="kr">KR</option>
           <option value="lan">LAN</option>
           <option value="las">LAS</option>
-          <option value="na">NA</option>
           <option value="oce">OCE</option>
           <option value="ru">RU</option>
           <option value="tr">TR</option>
         </select>
         <button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search' required> </span></button>
+
       </div>
       </form>
 		<% end %>

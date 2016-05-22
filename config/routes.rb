@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   # --------------- Profile Routes -----------------
   #search summoner profile
   post 'profiles/search' => 'profiles#search'
+
+  get 'profiles/home' => 'profiles#show'
   #create summoner profile - if not in DB
   post '/profiles' => 'profiles#create'
   #show summoner profile

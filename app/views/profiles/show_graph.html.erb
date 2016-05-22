@@ -26,7 +26,7 @@
 					<p class="text-left" style="color:white;">Compare against another summoner: (*currently unavailable) </p>
 				</form>
 				<div id="champ_div">
-					<h1 class="text-left" style="vertical-align:top"><img class="img img-circle" height="130px" width="130px" src="<%= @champion.icon %>"><%= @champion.name %><small><%= @champion.title %></small></h1>
+					<h1 class="text-left white" style="vertical-align:top"><img class="img img-circle" height="130px" width="130px" src="<%= @champion.icon %>"><%= @champion.name %> <small class="white"><%= @champion.title %></small></h1>
 					<img id="rank_score" src="/images/Champion_mastery_tier_<%= @champion_mastery[0]['championLevel'] %>.png" alt="" />
 				</div>
 			</div>

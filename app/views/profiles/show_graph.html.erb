@@ -8,8 +8,8 @@
 						<input type='hidden' name='summonerName' value='<%= @profile['summonerName'] %>'>
 						<input type="hidden" name="championName" value="<%= @champion['name'] %>">
 						<input class='form-control form-control-block' name='profile[summonerName]' type='text' placeholder='Summoner Name' required></h3>
-						<select class='form-control form-control-block' name='profile[region]' required>
-							<option value='' selected disabled>Region</option>
+						<select class='form-control form-control-block' name='profile[region]' required autofocused>
+							<option value="na">NA</option>
 							<option value="br">BR</option>
 							<option value="eune">EUNE</option>
 							<option value="euw">EUW</option>
@@ -17,7 +17,6 @@
 							<option value="kr">KR</option>
 							<option value="lan">LAN</option>
 							<option value="las">LAS</option>
-							<option value="na">NA</option>
 							<option value="oce">OCE</option>
 							<option value="ru">RU</option>
 							<option value="tr">TR</option>
@@ -27,7 +26,7 @@
 					<p class="text-left" style="color:white;">Compare against another summoner: (*currently unavailable) </p>
 				</form>
 				<div id="champ_div">
-					<h1 class="text-left" style="vertical-align:top"><img class="img img-circle" height="130px" width="130px" src="<%= @champion.icon %>"><%= @champion.name %><small><%= @champion.title %></small></h1>
+					<h1 class="text-left white" style="vertical-align:top"><img class="img img-circle" height="130px" width="130px" src="<%= @champion.icon %>"><%= @champion.name %> <small class='white'><%= @champion.title %></small></h1>
 					<img id="rank_score" src="/images/Champion_mastery_tier_<%= @champion_mastery[0]['championLevel'] %>.png" alt="" />
 				</div>
 			</div>

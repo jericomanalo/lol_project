@@ -8,6 +8,11 @@
           <div class="form-group">
             <p class="white">
               Ranked Champions
+              <% if flash[:error] %>
+              <div class='alert alert-danger' role='alert'>
+              <strong class="red"><%=h flash[:error] %></strong>
+              </div>
+              <% end %>
             </p>
             <% @progress.each do |this| %>
               <input type="hidden" name="summonerId" value="<%= @profile.summonerId %>">

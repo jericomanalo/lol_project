@@ -681,7 +681,7 @@
     },
     plotOptions: {
       line: {
-        allowPointSelect: !1,
+        allowPointSelect: true,
         showCheckbox: !1,
         animation: {
           duration: 1E3
@@ -706,7 +706,12 @@
           }
         },
         point: {
-          events: {}
+          events: {
+            click: function(){
+              alert(this.name);
+              location.href = '/match/' + this.name
+            }
+          }
         },
         dataLabels: {
           align: "center",
@@ -821,6 +826,7 @@
         year: "%Y"
       },
       footerFormat: "",
+      /* THIS IS WHERE HIGHCHARTS PRINTS INFO IN HOVERBOXES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
       headerFormat: '<span style="font-size: 10px">{point.key}</span><br/>',
       pointFormat: '<span style="color:{point.color}">\u25cf</span> {series.name}: <b>{point.y}</b><br/>',
       shadow: !0,

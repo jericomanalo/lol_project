@@ -47,7 +47,7 @@ private
     res = Net::HTTP.get(uri)
     JSON.parse(res)
   end
- 
+
  def self.region_converter(region)
     if region == "br"
       "br"
@@ -73,12 +73,12 @@ private
       "tr1"
     end
  end
-  
+
   def self.get_champion_mastery_url(region, summonerId)
     true_region = self.region_converter(region)
     "https://#{region}.api.pvp.net/championmastery/location/#{true_region}/player/#{summonerId}/champions"
   end
-  
+
   def self.get_static_url
     "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion"
   end

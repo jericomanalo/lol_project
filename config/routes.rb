@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   #create matches - if not in DB
   post 'matches/create' => 'matches#create'
 
+  get 'matches/:id' => 'matches#show'
+
   get 'matches/update'
 
 

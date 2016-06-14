@@ -708,8 +708,7 @@
         point: {
           events: {
             click: function(){
-              alert(this.name);
-              location.href = '/match/' + this.name
+              location.href = '/matches/' + this.name
             }
           }
         },

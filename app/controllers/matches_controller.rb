@@ -5,7 +5,7 @@ class MatchesController < ApplicationController
       matchlist = Riot.get_matchlist(params[:region], params[:summonerId], {
         championIds: params[:championId],
         seasons: 'SEASON2016',
-        endTime: last_known_match[:timestamp]
+        startTime: last_known_match[:timestamp]
       })
       else
       matchlist = Riot.get_matchlist(params[:region], params[:summonerId], {
@@ -17,7 +17,7 @@ class MatchesController < ApplicationController
 
 
 
-      
+
       if matchlist["totalGames"] == 0
         flash[:error] = "Sorry, this Summoner currently has no matches played with this Champion for the 2016 Season."
         redirect_to controller: "profiles", action: "show", summonerName: params[:summonerName], region: params[:region]
@@ -100,7 +100,11 @@ class MatchesController < ApplicationController
         redirect_to controller: "profiles", action: "show_graph", id: params[:id], championId: params[:championId]
     end
   end
-
+  def show
+    @match = Match.find_by(:matchId => params[:id])
+    @champion = Champion.find_by(:championId => @match.championId)
+    @profile = Profile.find(@match.profile_id)
+  end
 
 	def update
 	end

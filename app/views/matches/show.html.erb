@@ -1,1 +1,71 @@
-<h1> MATCHES # SHOW </h1>
+<div class="container container-fluid">
+  	<div id="summoner_banner" class="page-header">
+            <h1 id="summoner_header"><img height="70px" width="70px" src="<%= @profile['icon'] %>" <small> <%= @profile['summonerName'] %> : Level <%= @profile["summonerLevel"] %></small></h1>
+    </div>
+    <div class="container container-fluid">
+      <ul>
+        <li>
+          <strong>Match ID:</strong> <%= @match.matchId %>
+        </li>
+        <li><strong>
+          <% if @match.win == 't' %>
+            Victory!
+          <% else %>
+            Defeat!
+          <% end %></strong>
+        </li>
+        <li>
+          <strong>Played as:</strong> <img src="<%= @champion.icon %>" alt="" /> <%= @champion.name %> - level <%= @match.championLevel %>
+        </li>
+        <li>
+          <strong>K/D/A:</strong> <%= @match.kills %>/<%= @match.deaths %>/<%= @match.assists %>
+        </li>
+        <% if @match.doubleKills > 0 %>
+        <li>
+          <strong>Double Kills:</strong> <%= @match.doubleKills %>
+        </li>
+        <% end %>
+        <% if @match.tripleKills > 0 %>
+        <li>
+          <strong>Triple Kills:</strong> <%= @match.tripleKills %>
+        </li>
+        <% end %>
+        <% if @match.quadraKills > 0 %>
+        <li>
+          <strong>Quadra Kills:</strong> <%= @match.quadraKills %>
+        </li>
+        <% end %>
+        <% if @match.pentaKills > 0 %>
+        <li>
+          <strong>Penta Kills:</strong> <%= @match.pentaKills %>
+        </li>
+        <% end %>
+        <li>
+          <strong>Summoner Spells:</strong> <%= @match.summonerSpell1 %>, <%= @match.summonerSpell2 %>
+        </li>
+        <li>
+          <strong>Keystone:</strong> <%= @match.mastery %>
+        </li>
+        <li>
+          <strong>Items:</strong> <%= @match.item1 %>, <%= @match.item2 %>, <%= @match.item3 %>, <%= @match.item4 %>, <%= @match.item5 %>, <%= @match.item6 %>
+        </li>
+        <li>
+          <strong>Gold Earned:</strong> <%= @match.goldEarned %>
+        </li>
+        <li>
+          <strong>Total CS:</strong> <%= @match.cs %>
+        </li>
+        <li>
+          <strong>Jungle CS:</strong> <%= @match.jungleCs %>
+        </li>
+        <li>
+          <strong>Wards Placed:</strong> <%= @match.wardsPlaced %>
+        </li>
+      </ul>
+      <div class="well well-sm" height="200px" width="400px">
+        Total Damage Dealt: <%= @match.totalDamage %>
+        <%= pie_chart({"Magic Damage Dealt" => @match.magicDamage, "Physical Damage Dealt" => @match.physicalDamage}) %>
+        <%= pie_chart({"Damage Taken" => @match.damageTaken, "Total Healed" => @match.totalHeal, "Total CC Dealt" => @match.totalCcDealt}) %>
+      </div>
+
+    </div>

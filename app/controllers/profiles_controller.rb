@@ -5,6 +5,7 @@ class ProfilesController < ApplicationController
 			all_champions = all_champions['data']
 			all_champions.each do |this|
 				Champion.create(championId: this[1]["id"], name: this[1]["name"], title: this[1]["title"], icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this[1]['key']+".png", splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+this[1]['key']+"_0.jpg")
+
 			end
 		end
 	end
@@ -23,7 +24,7 @@ class ProfilesController < ApplicationController
 		profile = Riot.get_summoner(params[:profile][:region], params[:profile][:summonerName], {})
 		############################# FIX THE REDIRECT ##########################################
 		# checking if the summoner that is being looked up does not exist from the api response #
-		
+
 		############################# FIX THE REDIRECT ##########################################
 		name = params[:profile][:summonerName]
 		if profile[name]
@@ -71,7 +72,7 @@ class ProfilesController < ApplicationController
 		@champion = Champion.find_by(:championId => params[:championId])
 		@matches = Match.where(:summonerId => @profile.summonerId).where(:championId => params[:championId])
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
-	
+
 	end
 	######## Add Feature to Let Users Compare graph info ########
 	# def compare

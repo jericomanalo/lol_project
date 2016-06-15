@@ -14,7 +14,7 @@
  *= require_self
  */
 #landing_page{
- 	background-image: url("http://na.leagueoflegends.com/sites/default/files/styles/scale_xlarge/public/upload/environmentart-sru-04_1920.jpg?itok=Pj-vA3Wa"); 
+ 	background-image: url("http://na.leagueoflegends.com/sites/default/files/styles/scale_xlarge/public/upload/environmentart-sru-04_1920.jpg?itok=Pj-vA3Wa");
 	color:white;
 	text-shadow: 2px 2px black;
 }
@@ -104,7 +104,13 @@
 	margin-left: -50px;
 
 }
-
+#chests{
+  height: 50px;
+  width:50px;
+  z-index: 4;
+  margin-top: -40px;
+  margin-right: -50px;
+}
 #icon_mastery_progress{
 	width: 120px;
 	height: 8px;
@@ -138,4 +144,8 @@
 	z-index: 1;
 	margin-left: 15px;
 	margin-top: -45px;
+}
+
+.right {
+  margin-left:350px;
 }

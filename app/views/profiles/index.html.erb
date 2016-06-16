@@ -26,10 +26,17 @@
 		<div class='col-md-4 col-md-offset-1 col-push-6'>
 			<h1 class='form-register-heading'>Search for a Summoner</h1>
 			<% if flash[:error] %>
+<<<<<<< HEAD
 			<div class='alert alert-danger' role='alert'>
             	<strong class="red"><%=h flash[:error] %></strong>
         	</div>
             <% end %>
+=======
+			<div class="alert alert-danger" role="alert">
+				<strong class="red"><%=h flash[:error] %></strong>
+			</div>
+			<% end %>
+>>>>>>> upstream/master
 			<form action='/profiles/search' class='form-register' method='post'>
 				<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
 				<!-- <input type='hidden' name='profile[id]' value=''> -->

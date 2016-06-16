@@ -5,6 +5,10 @@ class ProfilesController < ApplicationController
 			all_champions = all_champions['data']
 			all_champions.each do |this|
 				Champion.create(championId: this[1]["id"], name: this[1]["name"], title: this[1]["title"], icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this[1]['key']+".png", splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+this[1]['key']+"_0.jpg")
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
 			end
 		end
 	end
@@ -21,6 +25,7 @@ class ProfilesController < ApplicationController
 
 	def create
 		profile = Riot.get_summoner(params[:profile][:region], params[:profile][:summonerName], {})
+<<<<<<< HEAD
 		name = params[:profile][:summonerName]
 			# Checks to make sure that the response comes back as a JSON with the Key of params[:profile][:summonerName] that was input
 			if profile[name]
@@ -39,6 +44,29 @@ class ProfilesController < ApplicationController
 	    	flash[:error] = "Sorry, the summoner you wish to search for does not exist in the Riot Games database. Please try again."
 				redirect_to "/"
 	  end
+=======
+		############################# FIX THE REDIRECT ##########################################
+		# checking if the summoner that is being looked up does not exist from the api response #
+
+		############################# FIX THE REDIRECT ##########################################
+		name = params[:profile][:summonerName]
+		if profile[name]
+	        Profile.create(
+	          summonerName: name,
+	          summonerId: profile[name]['id'],
+	          region: params[:profile][:region],
+	          icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/" + (profile[name]['profileIconId']).to_s + ".png",
+	          summonerLevel: profile[name]['summonerLevel']
+          )
+	          @profile = Profile.find_by(:summonerName => params[:profile][:summonerName], :region => params[:profile][:region] )
+	          redirect_to controller: "champion_masteries", action: "create", region: @profile.region, summonerId: @profile.summonerId, id: @profile.id, summonerName: @profile.summonerName
+	        else
+	        	############### - ADD FLASH MESSAGES LOGIC - ##########################
+	        flash[:error] = "Sorry, the Summoner you wish to search for does not exist in the Riot Games database, please try again."
+	     	redirect_to '/'
+	          	############### - ADD FLASH MESSAGES LOGIC - ##########################
+		end
+>>>>>>> upstream/master
 	end
 
 	def show
@@ -68,7 +96,11 @@ class ProfilesController < ApplicationController
 		@champion = Champion.find_by(:championId => params[:championId])
 		@matches = Match.where(:summonerId => @profile.summonerId).where(:championId => params[:championId])
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> upstream/master
 	end
 	######## Add Feature to Let Users Compare graph info ########
 	# def compare

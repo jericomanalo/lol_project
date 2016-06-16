@@ -1,1 +1,87 @@
-<h1> MATCHES # SHOW </h1>
+<% if @match.win == 't' %>
+<body style= "background-image: url('/images/victory.png'); color: white" class="background">
+<% else %>
+<body style= "background-image: url('/images/defeat.png'); color: white" class="background">
+<% end %>
+
+<div class="container container-fluid">
+  	<div id="summoner_banner" class="page-header">
+            <h1 id="summoner_header"><img src="<%= @profile['icon'] %>" height="120px" width="120px"> <small style="color:white"> <%= @profile['summonerName'] %> : Level <%= @profile["summonerLevel"] %> <span class="right"> Played as: <%= @champion.name %> - level <%= @match.championLevel %> <img src="<%= @champion.icon %>" alt="" /></span>
+</small></h1>
+    </div>
+    <div id="graph_container" style="height: 700px; overflow-y: scroll" class="container container-fluid">
+      <div class="row" style="margin-right:0px">
+        <div class="col-sm-4 col-offset-1 text-right">
+          <h1><strong>K/D/A:</strong> <%= @match.kills %>/<%= @match.deaths %>/<%= @match.assists %></h1>
+
+        <% if @match.doubleKills %>
+
+          <h4><strong>Double Kills:</strong> <%= @match.doubleKills %></h4>
+
+        <% end %>
+        <% if @match.tripleKills %>
+
+          <h3><strong>Triple Kills:</strong> <%= @match.tripleKills %></h3>
+
+        <% end %>
+        <% if @match.quadraKills %>
+
+          <h2><strong>Quadra Kills:</strong> <%= @match.quadraKills %></h2>
+
+        <% end %>
+        <% if @match.pentaKills %>
+
+          <h1><strong>Penta Kills:</strong> <%= @match.pentaKills %></h1>
+
+        <% end %>
+      </div>
+      <div class="col-sm-4 col-offset-1 text-center">
+
+          <h2><strong>Summoner Spells:</strong>
+            <br>
+            <img src='http://ddragon.leagueoflegends.com/cdn/6.11.1/img/spell/<%= @summspell1 %>.png' alt="" />
+          <img src='http://ddragon.leagueoflegends.com/cdn/6.11.1/img/spell/<%= @summspell2 %>.png' alt="" />
+        </h2>
+
+
+          <h2><strong>Keystone:</strong>
+            <br>
+            <img src="http://ddragon.leagueoflegends.com/cdn/6.11.1/img/mastery/<%= @match.mastery %>.png" alt="" />
+          </h2>
+      </div>
+      <div class="col-sm-4 col-offset-1 text-center">
+
+          <h1><strong>Items:</strong></h1>
+          <% if @match.item1 > 0 %>
+          <img src="http://ddragon.leagueoflegends.com/cdn/6.11.1/img/item/<%= @match.item1 %>.png" alt="" />
+          <% end %>
+          <% if @match.item2 > 0 %>
+          <img src="http://ddragon.leagueoflegends.com/cdn/6.11.1/img/item/<%= @match.item2 %>.png" alt="" />
+          <% end %>
+          <% if @match.item3 > 0 %>
+          <img src="http://ddragon.leagueoflegends.com/cdn/6.11.1/img/item/<%= @match.item3 %>.png" alt="" />
+          <% end %>
+          <% if @match.item4 > 0 %>
+          <img src="http://ddragon.leagueoflegends.com/cdn/6.11.1/img/item/<%= @match.item4 %>.png" alt="" />
+          <% end %>
+          <% if @match.item5 > 0 %>
+          <img src="http://ddragon.leagueoflegends.com/cdn/6.11.1/img/item/<%= @match.item5 %>.png" alt="" />
+          <% end %>
+          <% if @match.item6 > 0 %>
+          <img src="http://ddragon.leagueoflegends.com/cdn/6.11.1/img/item/<%= @match.item6 %>.png" alt="" />
+          <% end %>
+        </div>
+        </div>
+      <div height="200px" width="400px">
+        <%= pie_chart({"Magic Damage Dealt" => @match.magicDamage, "Physical Damage Dealt" => @match.physicalDamage, "Damage Taken" => @match.damageTaken}, colors: ["rgba(0, 87, 125, 0.6)", "rgba(145, 85, 5, 0.6)", "rgba(179, 40, 4, 0.6)"]) %>
+        <h1 class="page-header text-center"> Support Stats: </h1>
+        <%= column_chart({"Total Healed" => @match.totalHeal, "Total CC Dealt" => @match.totalCcDealt, "Wards Placed" => @match.wardsPlaced}, colors: ["rgba(0, 87, 125, 0.6)"]) %>
+        <h1 class="page-header text-center"> CS Stats: </h1>
+        <%= column_chart({"Total CS" => @match.cs, "Jungle CS" => @match.jungleCs}, colors: ["rgba(5, 129, 114, 0.6)"]) %>
+        <h1 class="page-header text-center"> Gold Stats: </h1>
+        <%= column_chart({"This Match" => @match.goldEarned, "Personal Best" => @personal_best_gold.goldEarned}, ytitle:"Gold Earned", colors: ["rgba(145, 85, 5, 0.6)"]) %>
+
+      </div>
+
+    </div>
+</body>

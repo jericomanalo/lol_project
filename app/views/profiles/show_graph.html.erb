@@ -26,13 +26,25 @@
 					<p class="text-left" style="color:white;">Compare against another summoner: (*currently unavailable) </p>
 				</form>
 				<div id="champ_div">
+<<<<<<< HEAD
 					<h1 class="text-left white" style="vertical-align:top"><img class="img img-circle" height="130px" width="130px" src="<%= @champion.icon %>"><%= @champion.name %> <small class="white"><%= @champion.title %></small></h1>
+=======
+					<h1 class="text-left white" style="vertical-align:top"><img class="img img-circle" height="130px" width="130px" src="<%= @champion.icon %>"><%= @champion.name %> <small class='white'><%= @champion.title %></small></h1>
+>>>>>>> upstream/master
 					<img id="rank_score" src="/images/Champion_mastery_tier_<%= @champion_mastery[0]['championLevel'] %>.png" alt="" />
 				</div>
 			</div>
 
+<<<<<<< HEAD
 			<div>
 				<%= line_chart @matches.map{ |m| [m.matchId, m.mdScore]}, discrete: true, label: "mdScore", xtitle: "Match Ids", ytitle: "mdScore", id: "champ_chart" %>
+=======
+				<!-- <%= select(:selected, "selection", options_for_select(Match.columns.map {|p| [ p.name ] }), :include_blank => false)%>
+			<h1 id="selecteddd"><%=  %></h1> -->
+			<div id="chart_area">
+				<%= line_chart @matches.map{ |m| [m.matchId, m.mdScore]}, discrete: true, label: "md Score", xtitle: "Match Ids", ytitle: "md Score", id: "champ_chart" %>
+				<span class="glyphicon glyphicon-question-sign" style="color:white" data-toggle="tooltip" data-placement="right" title="MD Score is a loose interpretation of your performance in each match"></span>
+>>>>>>> upstream/master
 			</div>
 		</div>
 	</div>

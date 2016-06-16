@@ -23,6 +23,7 @@
   <div class="container-fluid">
   <div class="collapse navbar-collapse">
 		<% current_uri = request.env['PATH_INFO'] %>
+<<<<<<< HEAD
       <% if current_uri != "/" %>
       
       <!-- TO SHOW BACK TO PROFILE BUTTON AT THE SHOW_GRAPH VIEW PAGE -->
@@ -33,6 +34,16 @@
       <% end %>
       <!-- TO SHOW BACK TO PROFILE BUTTON AT THE SHOW_GRAPH VIEW PAGE -->
 
+=======
+			<% if current_uri != "/" %>
+      <!-- TO SHOW BACK TO PROFILE BUTTON AT THE SHOW GRAPH VIEW PAGE-->
+      <% if @matches %>
+        <form action= '/profiles/<%= @profile.summonerName %>/<%= @profile.region %>'>
+          <button type="submit" class="btn btn-default navbar-form navbar-left form-control">Back to Profile</button>
+        </form>
+      <!-- TO SHOW BACK TO PROFILE BUTTON AT THE SHOW GRAPH PAGE -->
+      <% end %>
+>>>>>>> upstream/master
       <form action='/profiles/search' class='navbar-form navbar-left' method='post' role="search">
         <div class="form-group">
         <input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
@@ -52,6 +63,7 @@
           <option value="tr">TR</option>
         </select>
         <button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search' required> </span></button>
+
       </div>
       </form>
 		<% end %>

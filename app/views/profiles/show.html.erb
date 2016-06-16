@@ -6,18 +6,31 @@
     <div id="champion_list" class="container text-center">
 		  	<form class="form-inline" action="/matches/create" method="post">
           <div class="form-group">
+<<<<<<< HEAD
             <p class="white">Ranked Champions</p>
             <% if flash[:error] %>
               <div class='alert alert-danger' role='alert'>
                 <strong class="red"><%=h flash[:error] %></strong>
               </div>
             <% end %>
+=======
+            <p class="white">
+              Ranked Champions
+              <% if flash[:error] %>
+              <div class='alert alert-danger' role='alert'>
+              <strong class="red"><%=h flash[:error] %></strong>
+              </div>
+              <% end %>
+            </p>
+>>>>>>> upstream/master
             <% @progress.each do |this| %>
               <input type="hidden" name="summonerId" value="<%= @profile.summonerId %>">
               <input type="hidden" name="region" value="<%= @profile.region %>">
               <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
               <input type="hidden" name="summonerName" value="<%= @profile.summonerName %>">
               <input type="hidden" name="id" value="<%= @profile.id %>" >
+              <!-- need to fix z-index of chest and only show IF player has earned a chest -->
+              <img src="/images/chest.png" alt="" id="chests" z-index="2"/>
               <input type="image" src="<%= this.icon %>" name="championId" value="<%= this.championId %>">
               <% champ = @champion_masteries.find {|t| t['championId'] == this.championId } %>
               <% @current_xp = champ['championPointsSinceLastLevel'] %>

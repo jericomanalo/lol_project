@@ -1,11 +1,10 @@
 source 'https://rubygems.org'
 
 #Using PUMA for Heroku Deployment
-<<<<<<< HEAD
+
 gem 'puma'
-=======
 # gem 'puma'
->>>>>>> upstream/master
+
 #heroku plugins static assests and logging on heroku
 gem 'rails_12factor', group: :production
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -64,8 +63,8 @@ group :development do
   gem 'spring'
 end
 
-<<<<<<< HEAD
+
 ruby "2.2.1"
-=======
+
 # ruby "2.0.0"
->>>>>>> upstream/master
+

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615215100) do
+ActiveRecord::Schema.define(version: 20160623084552) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,12 +21,13 @@ ActiveRecord::Schema.define(version: 20160615215100) do
     t.integer  "championId"
     t.integer  "championPointsSinceLastLevel"
     t.integer  "championPointsUntilNextLevel"
-    t.string   "highestGrade"
     t.integer  "championLevel"
     t.integer  "lastPlayTime"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.integer  "current_points"
+    t.integer  "tokensEarned"
+    t.string   "chestGranted"
   end
 
   add_index "champion_masteries", ["profile_id"], name: "index_champion_masteries_on_profile_id", using: :btree
@@ -39,7 +40,7 @@ ActiveRecord::Schema.define(version: 20160615215100) do
     t.string   "splash"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string   "type"
+    t.string   "tag"
   end
 
   create_table "matches", force: :cascade do |t|

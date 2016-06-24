@@ -5,31 +5,39 @@
 <% end %>
 
 <div class="container container-fluid">
-  	<div id="summoner_banner" class="page-header">
-            <h1 id="summoner_header"><img src="<%= @profile['icon'] %>" height="120px" width="120px"> <small style="color:white"> <%= @profile['summonerName'] %> : Level <%= @profile["summonerLevel"] %> <span class="right"> Played as: <%= @champion.name %> - level <%= @match.championLevel %> <img src="<%= @champion.icon %>" alt="" /></span>
-</small></h1>
+  <div class="row" style="vertical-align:middle; margin: 20px -15px 25px 0px" id="summoner_banner">
+    <div class="col-lg-6" style="border-right:1px solid white;">
+      <h1><img src="<%= @profile['icon'] %>" height="120px" width="120px"> <%= @profile['summonerName'] %> <small> Level <%= @profile["summonerLevel"] %></small></h1>
     </div>
-    <div id="graph_container" style="height: 700px; overflow-y: scroll" class="container container-fluid">
-      <div class="row" style="margin-right:0px">
-        <div class="col-sm-4 col-offset-1 text-right">
-          <h1><strong>K/D/A:</strong> <%= @match.kills %>/<%= @match.deaths %>/<%= @match.assists %></h1>
+    <div class="col-lg-6">
+      <h1> <small>Played as</small> <%= @champion.name %> - level <%= @match.championLevel %> <img src="<%= @champion.icon %>" alt="" > </h1>
 
-        <% if @match.doubleKills %>
+    </div>
+  </div>
+
+    <div id="graph_container" style="height: 700px" class="container container-fluid  mCustomScrollbar">
+      <div class="row" style="margin-right:0px">
+        <div class="col-sm-4 col-offset-1 text-center">
+          <h1><strong> K/D/A:</strong>
+            <br>
+           <%= @match.kills %>/<%= @match.deaths %>/<%= @match.assists %></h1>
+
+        <% if @match.doubleKills > 0 %>
 
           <h4><strong>Double Kills:</strong> <%= @match.doubleKills %></h4>
 
         <% end %>
-        <% if @match.tripleKills %>
+        <% if @match.tripleKills > 0 %>
 
           <h3><strong>Triple Kills:</strong> <%= @match.tripleKills %></h3>
 
         <% end %>
-        <% if @match.quadraKills %>
+        <% if @match.quadraKills > 0 %>
 
           <h2><strong>Quadra Kills:</strong> <%= @match.quadraKills %></h2>
 
         <% end %>
-        <% if @match.pentaKills %>
+        <% if @match.pentaKills > 0 %>
 
           <h1><strong>Penta Kills:</strong> <%= @match.pentaKills %></h1>
 
@@ -72,14 +80,37 @@
           <% end %>
         </div>
         </div>
+        <hr>
       <div height="200px" width="400px">
         <%= pie_chart({"Magic Damage Dealt" => @match.magicDamage, "Physical Damage Dealt" => @match.physicalDamage, "Damage Taken" => @match.damageTaken}, colors: ["rgba(0, 87, 125, 0.6)", "rgba(145, 85, 5, 0.6)", "rgba(179, 40, 4, 0.6)"]) %>
         <h1 class="page-header text-center"> Support Stats: </h1>
-        <%= column_chart({"Total Healed" => @match.totalHeal, "Total CC Dealt" => @match.totalCcDealt, "Wards Placed" => @match.wardsPlaced}, colors: ["rgba(0, 87, 125, 0.6)"]) %>
+        <div class="row">
+          <div class="col-lg-4">
+            <%= column_chart({"This Match" => @match.totalHeal, "Personal Best" => @pb_totalHeal.totalHeal}, colors: ["rgba(0, 71, 102, 0.7)", "rgba(0, 87, 125, 0.6)"], ytitle:"Total Healed" ) %>
+          </div>
+          <div class="col-lg-4">
+            <%= column_chart({"This Match" => @match.totalCcDealt, "Personal Best" => @pb_totalCcDealt.totalCcDealt}, colors: ["rgba(0, 71, 102, 0.7)", "rgba(0, 87, 125, 0.6)"], ytitle:"Total CC Dealt (seconds)" ) %>
+          </div>
+          <div class="col-lg-4">
+            <%= column_chart({"This Match" => @match.wardsPlaced, "Personal Best" => @pb_wardsPlaced.wardsPlaced}, colors: ["rgba(0, 71, 102, 0.7)", "rgba(0, 87, 125, 0.6)"], ytitle:"Wards Placed" ) %>
+          </div>
+        </div>
         <h1 class="page-header text-center"> CS Stats: </h1>
-        <%= column_chart({"Total CS" => @match.cs, "Jungle CS" => @match.jungleCs}, colors: ["rgba(5, 129, 114, 0.6)"]) %>
+        <div class="row">
+          <div class="col-lg-5 col-lg-offset-1">
+            <%= column_chart({"This Match" => @match.cs, "Personal Best" => @pb_cs.cs}, colors: ["rgba(5, 129, 114, 0.6)", "rgba(0, 96, 84, 0.7)"], ytitle:"Total CS") %>
+          </div>
+          <div class="col-lg-5">
+            <%= column_chart({"This Match" => @match.jungleCs, "Personal Best" => @pb_jungleCs.jungleCs}, colors: ["rgba(5, 129, 114, 0.6)", "rgba(0, 96, 84, 0.7)"], ytitle:"Jungle CS") %>
+          </div>
+
+        </div>
         <h1 class="page-header text-center"> Gold Stats: </h1>
-        <%= column_chart({"This Match" => @match.goldEarned, "Personal Best" => @personal_best_gold.goldEarned}, ytitle:"Gold Earned", colors: ["rgba(145, 85, 5, 0.6)"]) %>
+        <div class="row">
+          <div class="col-lg-6 col-lg-offset-3">
+            <%= column_chart({"This Match" => @match.goldEarned, "Personal Best" => @personal_best_gold.goldEarned}, ytitle:"Gold Earned", colors: ["rgba(145, 85, 5, 0.6)"]) %>
+          </div>
+        </div>
 
       </div>
 

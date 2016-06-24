@@ -105,8 +105,11 @@ class MatchesController < ApplicationController
     @champion = Champion.find_by(:championId => @match.championId)
     @profile = Profile.find(@match.profile_id)
     @personal_best_gold = Match.where(:profile_id => @match.profile_id, :championId => @match.championId).order(goldEarned: :desc).first
-    puts "!!!!!!!!!!!!!!!!!!!!!!!! @PERSONALBESTGOLD"
-    puts @personal_best_gold
+    @pb_totalHeal = Match.where(:profile_id => @match.profile_id, :championId => @match.championId).order(totalHeal: :desc).first
+    @pb_totalCcDealt = Match.where(:profile_id => @match.profile_id, :championId => @match.championId).order(totalCcDealt: :desc).first
+    @pb_wardsPlaced = Match.where(:profile_id => @match.profile_id, :championId => @match.championId).order(wardsPlaced: :desc).first
+    @pb_cs = Match.where(:profile_id => @match.profile_id, :championId => @match.championId).order(cs: :desc).first
+    @pb_jungleCs = Match.where(:profile_id => @match.profile_id, :championId => @match.championId).order(jungleCs: :desc).first
     summonerSpells =  {
         "SummonerBoost" => 1,
         "SummonerTeleport" => 12,

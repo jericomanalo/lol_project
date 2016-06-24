@@ -13,10 +13,22 @@
  *= require_tree .
  *= require_self
  */
+*{
+  font-family: Impact, Charcoal, sans-serif;
+
+}
+
 #landing_page{
  	background-image: url("http://na.leagueoflegends.com/sites/default/files/styles/scale_xlarge/public/upload/environmentart-sru-04_1920.jpg?itok=Pj-vA3Wa");
 	color:white;
-	text-shadow: 2px 2px black;
+}
+#main_content{
+  margin-bottom:200px;
+  margin-top:200px;
+}
+#footer{
+  background-color: white;
+  color:#464444;
 }
 .background{
 	background:  no-repeat center center fixed;
@@ -29,7 +41,9 @@
 	height: 25px;
 	width: 25px;
 }
+
 .navbar {
+  background-color: rgba(23, 23, 23, 0.69);
 	height: 25px;
 }
 .navbar-form{
@@ -41,6 +55,11 @@
 	width: 100%;
 	height:auto;
 	background-repeat: no-repeat;
+  overflow: visible;
+  position: relative;
+}
+#footer{
+  background-color: white;
 }
 
 #summoner_banner{
@@ -48,10 +67,10 @@
   color: white;
   margin-top: 20px;
   background-color: rgba(23, 23, 23, 0.69);
+  padding-left:15px;
 }
-#summoner_header{
-  margin: 0px;
-  margin-top: 20px;
+#top_champ{
+  vertical-align: middle;
 }
 #profileModal{
   padding-top: 0px;
@@ -76,9 +95,10 @@
   text-decoration: none;
   color: white;
 }
-#champion_list{
-  height: 800px;
-  overflow-y: scroll;
+.index_container{
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  text-align: center;
 }
 .white {
 	color: white;
@@ -93,33 +113,85 @@
 #champ_icon{
 	z-index: 0;
 }
+
+.thumb {
+  text-transform: uppercase;
+  background: #ececec;
+  color: #555;
+  font-size: 17px;
+  display:inline-block;
+  vertical-align: top;
+  position: relative;
+  text-align: center;
+  margin-bottom: 5px;
+  height:110px;
+  width: 110px;
+  -webkit-transform: translateZ(0); /* webkit flicker fix */
+  -webkit-font-smoothing: antialiased; /* webkit text rendering fix */
+}
+.thumb:hover > .mastered_champ, .unmastered_champ{
+  opacity: .5;
+}
+
+.popover-title{
+  font-family: "Gill Sans", Impact, sans-serif;
+
+}
 #champion_list{
 	background-color: rgba(23, 23, 23, 0.69);
+  height: auto;
+  padding-bottom: 15px;
+
+}
+#champ_mastery_wrapper {
+  height: 510px;
+  text-transform: uppercase;
+   color: #555;
+}
+
+.thumb:hover > #chests {
+  opacity: 1.0;
+}
+.thumb:hover > #no_chest {
+  opacity: 1.0;
+}
+#chests, #no_chest{
+  top: 26px;
+  left: 65px;
+  height: 50px;
+  width: 55px;
+  position: absolute;
+    z-index: 9999999;
+  opacity: 0;
+}
+
+#no_chest{
+  -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+  filter: grayscale(100%);
+}
+#progress_wrapper{
+  height:45px;
+  position: absolute;
+  bottom:48px;
+}
+#icon_mastery_progress{
+	width: 110px;
+	height: 8px;
+	z-index: 1;
+  position:absolute;
+  top:85px;
+
+	display: inline-block;
 }
 #icon_mastery_rank{
 	height:35px;
 	width:40px;
+  position: absolute;
+  top:48px;
+  left: 65px;
 	z-index: 1;
-	margin-top: -40px;
-	margin-left: -50px;
 
 }
-#chests{
-  height: 50px;
-  width:50px;
-  z-index: 4;
-  margin-top: -40px;
-  margin-right: -50px;
-}
-#icon_mastery_progress{
-	width: 120px;
-	height: 8px;
-	z-index: 1;
-	margin-bottom: 0px;
-	margin-left: -118px;
-	display: inline-block;
-}
-
 /* Show Graph View */
 #compare_search{
 	vertical-align: top;
@@ -132,8 +204,12 @@
 	padding: 5px;
 	background-color: rgba(23, 23, 23, 0.4);
 }
-#champ_div{
-
+tspan{
+  font-weight: normal;
+  font-size: 14px;
+}
+text{
+  color: white;
 }
 #rank_score{
 	vertical-align: top;
@@ -142,10 +218,13 @@
 	width: 85px;
 	font-style: none;
 	z-index: 1;
-	margin-left: 15px;
+	margin-left: 19px;
 	margin-top: -45px;
 }
 
 .right {
-  margin-left:350px;
+  margin-left:400px;
+}
+#summoner_header{
+  padding-top: 15px;
 }

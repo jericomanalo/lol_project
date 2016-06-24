@@ -12,8 +12,9 @@ class ChampionMasteriesController < ApplicationController
         current_points: this['championPoints'],
         championPointsSinceLastLevel: this['championPointsSinceLastLevel'],
         championPointsUntilNextLevel: this['championPointsUntilNextLevel'],
-        highestGrade: this['highestGrade'],
+        tokensEarned: this['tokensEarned'],
         championLevel: this['championLevel'],
+        chestGranted: (this['chestGranted']).to_s,
         lastPlayTime: lastPlayTime
       )
     end

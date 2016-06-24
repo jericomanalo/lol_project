@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   #search comparison user in case not in DB
   post 'profiles/compare' => 'profiles#compare'
   #compare graphs with another user
-  get 'profiles/:summonerName/graph/:championId/compare/:summonerName2' => 'profiles#show_compare'
+  get 'profiles/:summonerName1/:region1/graph/:championId/compare/:summonerName2/:region2' => 'profiles#show_compare'
 
   # ---------------- ChampionMastery Routes -------------------
   #create champion_masteries - if not in DB

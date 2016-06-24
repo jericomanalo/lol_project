@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
 class Riot
   def self.get_all_champions(params)
     url = self.get_static_url
+    params = { champData: 'tags' }
     params = self.get_params(params)
     self.http_get(url, params)
   end

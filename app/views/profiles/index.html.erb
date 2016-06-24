@@ -48,12 +48,14 @@
 				-No worries, click below for a random profile to get started!
 				<br>
 				<br>
+				<% if @randomProfile %>
 				<form action='/profiles/search' class='form-register' method='post'>
 					<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
 					<input type='hidden' name="profile[summonerName]" value="<%= @randomProfile.summonerName %>">
 					<input type='hidden' name="profile[region]" value="<%= @randomProfile.region %>">
 					<button type='submit' class='btn btn-primary btn-md btn-block'>Random Search</button>
 				</form>
+				<% end %>
 			</h4>
 
 		</div>

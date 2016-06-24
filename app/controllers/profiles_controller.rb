@@ -9,9 +9,11 @@ class ProfilesController < ApplicationController
 			end
 		end
 		randomInt = rand(1...(Profile.count)+1)
+		if Profile.count > 0
 		@randomProfile = Profile.find(randomInt)
 		puts "@PROOOOOOOOFIIIIIIIIIILES"
 		puts @randomProfile
+		end
 	end
 
 	def search

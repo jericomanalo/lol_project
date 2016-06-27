@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 #Using PUMA for Heroku Deployment
 
-gem 'puma'
 # gem 'puma'
 
 #heroku plugins static assests and logging on heroku
@@ -60,7 +59,6 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-
 
 ruby "2.2.1"
 

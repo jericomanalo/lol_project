@@ -9,11 +9,38 @@ class ApplicationController < ActionController::Base
   require 'json'
   require 'net/http' #to make a GET request
   require 'open-uri' #to fetch the data from the URL to then be parsed by JSON
+<<<<<<< 0e6bf758646c2fd606d3c8d22c003c619bd892f5
 
   helper_method :current_user, :logged_in?
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
+=======
+  $lol_key = ENV['LOL_SECRET']
+  $lol_uri = "https://global.api.pvp.net"
+  $summoner_uri = "https://na.api.pvp.net"
+  def get_lol_champions
+    champion_query = "/api/lol/static-data/na/v1.2/champion?&api_key="
+    uri = URI.parse($summoner_uri+champion_query+$lol_key)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    request = Net::HTTP::Get.new(uri.request_uri)
+    response = http.request(request)
+    #store the body of the requested URI (Uniform Resource Identifier)
+    data = response.body
+    #to parse JSON string; you may also use JSON.parse()
+    #JSON.load() turns the data into a hash
+    champions = JSON.load(data)
+    champions = champions["data"]
+    champions.each do |this|
+
+      champ = Champion.new(championId: this[1]['id'], name: this[1]['name'], title: this[1]['title'], icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this[1]['key']+".png", splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+this[1]['key']+"_0.jpg")
+      puts "champion image::"
+      champ.save!
+      puts champ.splash
+    end
+>>>>>>> removed sensi keys
   end
 
   def logged_in?
@@ -112,7 +139,7 @@ class ApplicationController < ActionController::Base
     end
 
     def self.get_api_key
-      "b8a84394-c482-433d-a426-5db7d03615fc"
+      
     end
   end
 

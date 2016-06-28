@@ -1,7 +1,11 @@
 source 'https://rubygems.org'
 
 #Using PUMA for Heroku Deployment
+<<<<<<< 0e6bf758646c2fd606d3c8d22c003c619bd892f5
 # gem 'puma'
+=======
+gem 'puma'
+>>>>>>> removed sensi keys
 #heroku plugins static assests and logging on heroku
 gem 'rails_12factor', group: :production
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

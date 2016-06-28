@@ -11,8 +11,6 @@ class ProfilesController < ApplicationController
 		randomInt = rand(1...(Profile.count)+1)
 		if Profile.count > 0
 		@randomProfile = Profile.find(randomInt)
-		puts "@PROOOOOOOOFIIIIIIIIIILES"
-		puts @randomProfile
 		end
 	end
 

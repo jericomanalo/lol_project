@@ -116,7 +116,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  class masteryDex
+  class Dex
 
     def self.create_profile
       profile = Riot.get_summoner(params[:profile][:region], params[:profile][:summonerName], {})

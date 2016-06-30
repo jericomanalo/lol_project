@@ -7,7 +7,7 @@
 <div class="container container-fluid">
   <div class="row" style="vertical-align:middle; margin: 20px -15px 25px 0px" id="summoner_banner">
     <div class="col-lg-6" style="border-right:1px solid white;">
-      <h1><img src="<%= @profile['icon'] %>" height="120px" width="120px"> <%= @profile['summonerName'] %> <small> Level <%= @profile["summonerLevel"] %></small></h1>
+      <h1><img src="<%= @summoner['icon'] %>" height="120px" width="120px"> <%= @summoner['summonerName'] %> <small> Level <%= @summoner["summonerLevel"] %></small></h1>
     </div>
     <div class="col-lg-6">
       <h1> <small>Played as</small> <%= @champion.name %> - level <%= @match.championLevel %> <img src="<%= @champion.icon %>" alt="" > </h1>

@@ -49,7 +49,7 @@
 .navbar-form{
 	margin-top: -39px;
 }
-#profile_page {
+#summoner_page {
 	background-image: url("/images/bg.png");
 	background-position: center;
 	width: 100%;
@@ -72,7 +72,7 @@
 #top_champ{
   vertical-align: middle;
 }
-#profileModal{
+#summonerModal{
   padding-top: 0px;
 }
 #modalBody{
@@ -81,17 +81,17 @@
   margin-top: -10px;
   background-color: rgba(23, 23, 23, 0.69);
 }
-#profileTabs{
+#summonerTabs{
   border-bottom: none;
 }
-#profileTabs li a{
+#summonerTabs li a{
   background-color: rgba(0, 0, 0, 0.43);
 }
-#profileTabs li.active a{
+#summonerTabs li.active a{
   border:none;
   background-color: rgba(185, 169, 137, 0.25);
 }
-#profileTabs a{
+#summonerTabs a{
   text-decoration: none;
   color: white;
 }

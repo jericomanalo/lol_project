@@ -34,6 +34,8 @@ gem 'bcrypt', '~> 3.1.9'
 gem 'hirb'
 # json
 gem 'json'
+# Paperclip for file uploads
+gem 'paperclip'
 
 # chartkick for graphs
 gem 'chartkick', '~> 1.5.2'

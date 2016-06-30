@@ -35,7 +35,7 @@ gem 'hirb'
 # json
 gem 'json'
 # Paperclip for file uploads
-gem 'paperclip'
+gem 'paperclip', "~> 4.2"
 
 # chartkick for graphs
 gem 'chartkick', '~> 1.5.2'

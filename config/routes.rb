@@ -7,9 +7,9 @@ Rails.application.routes.draw do
   # --------------- Users Routes -----------------
   get 'signup' => 'users#index'
   post 'users' => 'users#create'
-  get 'masteryDex' => 'users#show'
 
   # --------------- Sessions Routes -----------------
+  get 'dashboard' => 'sessions#index'
   post 'login' => 'sessions#create'
   get 'logout' => 'sessions#destroy'
 

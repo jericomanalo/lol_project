@@ -8,10 +8,11 @@ class ProfilesController < ApplicationController
 				Champion.create(championId: this[1]["id"], name: this[1]["name"], title: this[1]["title"], icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this[1]['key']+".png", splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+this[1]['key']+"_0.jpg", tag: tag)
 			end
 		end
-		randomInt = rand(1...(Profile.count)+1)
-		if Profile.count > 0
-		@randomProfile = Profile.find(randomInt)
-		end
+		# Method for random profile needs to be changed
+		# randomInt = rand(1...(Profile.count)+1)
+		# if Profile.count > 0
+		# @randomProfile = Profile.find(randomInt)
+		# end
 	end
 
 	def search
@@ -19,34 +20,21 @@ class ProfilesController < ApplicationController
 		if  @profile != nil
 			redirect_to action: "show", summonerName: @profile.summonerName, region: @profile.region
 		else
-      # if no profile exists in our db yet:
 			create
 		end
 	end
 
 	def create
-		profile = Riot.get_summoner(params[:profile][:region], params[:profile][:summonerName], {})
-		############################# FIX THE REDIRECT ##########################################
-		# checking if the summoner that is being looked up does not exist from the api response #
+		region = params[:profile][:region]
+		summonerName = params[:profile][:summonerName]
 
-		############################# FIX THE REDIRECT ##########################################
-		name = params[:profile][:summonerName]
-		if profile[name]
-	        Profile.create(
-	          summonerName: name,
-	          summonerId: profile[name]['id'],
-	          region: params[:profile][:region],
-	          icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/" + (profile[name]['profileIconId']).to_s + ".png",
-	          summonerLevel: profile[name]['summonerLevel']
-          )
-	          @profile = Profile.find_by(:summonerName => params[:profile][:summonerName], :region => params[:profile][:region] )
-	          redirect_to controller: "champion_masteries", action: "create", region: @profile.region, summonerId: @profile.summonerId, id: @profile.id, summonerName: @profile.summonerName
-	        else
-	        	############### - ADD FLASH MESSAGES LOGIC - ##########################
-	        flash[:error] = "Sorry, the Summoner you wish to search for does not exist in the Riot Games database, please try again."
-	     	redirect_to '/'
-	          	############### - ADD FLASH MESSAGES LOGIC - ##########################
-		end
+		if Md.create_profile(region, summonerName)
+			@profile = Profile.find_by(:summonerName => summonerName, :region => region )
+      redirect_to controller: "champion_masteries", action: "create", region: @profile.region, summonerId: @profile.summonerId, id: @profile.id, summonerName: @profile.summonerName
+    else
+      flash[:error] = "Sorry, the Summoner you wish to search for does not exist in the Riot Games database, please try again."
+      redirect_to '/'
+    end
 	end
 
 	def show
@@ -108,6 +96,7 @@ class ProfilesController < ApplicationController
 	        end
 	    end
 	end
+
 	def show_graph
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
 		@profile = Profile.find(params[:id])
@@ -117,7 +106,7 @@ class ProfilesController < ApplicationController
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
 
 	end
-	######## Add Feature to Let Users Compare graph info ########
+	
 	def compare
 		@champion = Champion.find_by(:championId => params[:championId])
 		puts "IN COMPARE"
@@ -138,6 +127,7 @@ class ProfilesController < ApplicationController
 			# redirect_to action: "show_graph", id: @profile.id, championId: params[:championId]
 		# end
 	end
+
 	def show_compare
 		@champion = Champion.find_by(:championId => params[:championId])
 		@profile = Profile.find_by(:summonerName => params[:summonerName1], :region => params[:region1])
@@ -153,7 +143,9 @@ class ProfilesController < ApplicationController
 	end
 
 	private
+
 	def profile_params
-		params.require(:profile).permit(:summonerName, :region)
+		params.require(:profile).permit(:region, :summonerName)
 	end
+
 end

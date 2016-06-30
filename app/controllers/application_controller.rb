@@ -9,38 +9,11 @@ class ApplicationController < ActionController::Base
   require 'json'
   require 'net/http' #to make a GET request
   require 'open-uri' #to fetch the data from the URL to then be parsed by JSON
-<<<<<<< 0e6bf758646c2fd606d3c8d22c003c619bd892f5
 
   helper_method :current_user, :logged_in?
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
-=======
-  $lol_key = ENV['LOL_SECRET']
-  $lol_uri = "https://global.api.pvp.net"
-  $summoner_uri = "https://na.api.pvp.net"
-  def get_lol_champions
-    champion_query = "/api/lol/static-data/na/v1.2/champion?&api_key="
-    uri = URI.parse($summoner_uri+champion_query+$lol_key)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    request = Net::HTTP::Get.new(uri.request_uri)
-    response = http.request(request)
-    #store the body of the requested URI (Uniform Resource Identifier)
-    data = response.body
-    #to parse JSON string; you may also use JSON.parse()
-    #JSON.load() turns the data into a hash
-    champions = JSON.load(data)
-    champions = champions["data"]
-    champions.each do |this|
-
-      champ = Champion.new(championId: this[1]['id'], name: this[1]['name'], title: this[1]['title'], icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this[1]['key']+".png", splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+this[1]['key']+"_0.jpg")
-      puts "champion image::"
-      champ.save!
-      puts champ.splash
-    end
->>>>>>> removed sensi keys
   end
 
   def logged_in?
@@ -139,56 +112,138 @@ class ApplicationController < ActionController::Base
     end
 
     def self.get_api_key
-      
+      "b8a84394-c482-433d-a426-5db7d03615fc"
     end
   end
 
-  class Dex
+  class Md
 
-    def self.create_profile
-      profile = Riot.get_summoner(params[:profile][:region], params[:profile][:summonerName], {})
-      ############################# FIX THE REDIRECT ##########################################
-      # checking if the summoner that is being looked up does not exist from the api response #
-
-      ############################# FIX THE REDIRECT ##########################################
-      name = params[:profile][:summonerName]
-      if profile[name]
-            Profile.create(
-              summonerName: name,
-              summonerId: profile[name]['id'],
-              region: params[:profile][:region],
-              icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/" + (profile[name]['profileIconId']).to_s + ".png",
-              summonerLevel: profile[name]['summonerLevel']
-            )
-              @profile = Profile.find_by(:summonerName => params[:profile][:summonerName], :region => params[:profile][:region] )
-              redirect_to controller: "champion_masteries", action: "create", region: @profile.region, summonerId: @profile.summonerId, id: @profile.id, summonerName: @profile.summonerName
-            else
-              ############### - ADD FLASH MESSAGES LOGIC - ##########################
-            flash[:error] = "Sorry, the Summoner you wish to search for does not exist in the Riot Games database, please try again."
-          redirect_to '/'
-                ############### - ADD FLASH MESSAGES LOGIC - ##########################
+    def self.create_profile(region, summonerName)
+      profile = Riot.get_summoner(region, summonerName, {})
+      if profile[summonerName]
+        Profile.create(
+          summonerName: summonerName,
+          summonerId: profile[summonerName]['id'],
+          region: region,
+          icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/" + (profile[summonerName]['profileIconId']).to_s + ".png",
+          summonerLevel: profile[summonerName]['summonerLevel']
+        )
       end
     end
 
-    def self.create_championMastery
+    def self.create_champion_mastery(region, summonerId, id)
+      champion_masteries = Riot.get_champion_masteries(region, summonerId)
+      champion_masteries.each do |this|
+        lastPlayTime = DateTime.strptime(this['lastPlayTime'].to_s, '%Q')
+        ChampionMastery.create(
+          profile_id: id,
+          championId: this['championId'],
+          current_points: this['championPoints'],
+          championPointsSinceLastLevel: this['championPointsSinceLastLevel'],
+          championPointsUntilNextLevel: this['championPointsUntilNextLevel'],
+          tokensEarned: this['tokensEarned'],
+          championLevel: this['championLevel'],
+          chestGranted: (this['chestGranted']).to_s,
+          lastPlayTime: lastPlayTime
+        )
+      end
     end
 
-    def self.create_match
+    def self.create_match(summonerId, championId, region, summonerName, id)
+      last_known_match = Match.where(:summonerId => summonerId, :championId => championId).order('timestamp desc').first
+      if last_known_match != nil
+        matchlist = Riot.get_matchlist(region, summonerId, {
+          championIds: championId,
+          seasons: 'SEASON2016',
+          startTime: last_known_match[:timestamp]
+        })
+      else
+        matchlist = Riot.get_matchlist(region, summonerId, {
+          championIds: championId,
+          seasons: 'SEASON2016',
+        })
+      end
+      if matchlist["totalGames"] == 0
+        flash[:error] = "Sorry, this Summoner currently has no matches played with this Champion for the 2016 Season."
+        redirect_to controller: "profiles", action: "show", summonerName: summonerName, region: region
+      else
+        matchlist["matches"].each do |match|
+          unless Match.exists?(matchId: match["matchId"])
+            match = Riot.get_match(region, match["matchId"])
+              participant = match['participantIdentities'].find { |p| p['player']['summonerId'] == summonerId.to_i }
+              participantId = participant['participantId']
+              participant_info = match['participants'][participantId - 1]
+              ##math to calculate mdScore:::::: ##
+                mdScore = 0
+                mdScore += ((participant_info['stats']['kills']) * 10)
+                mdScore -=  ((participant_info['stats']['deaths']) * 5)
+                mdScore += ((participant_info['stats']['assists']) * 2.5)
+                mdScore += (((participant_info['stats']['goldEarned']) /500) * 4)
+                mdScore += ((participant_info['stats']['champLevel']) * 2)
+                mdScore += (((participant_info['stats']['minionsKilled']) / 50) * 4)
+                mdScore += ((participant_info['stats']['neutralMinionsKilled']) * 3)
+                mdScore += (((participant_info['stats']['totalDamageDealt']) / 1000) * 2)
+                mdScore += (((participant_info['stats']['totalTimeCrowdControlDealt']) / 100) * 5)
+                mdScore += (((participant_info['stats']['totalHeal']) / 1000) * 4)
+                mdScore += (((participant_info['stats']['magicDamageDealt']) / 1000) * 5)
+                mdScore += (((participant_info['stats']['physicalDamageDealt']) / 1000) * 2)
+                mdScore -= (((participant_info['stats']['totalDamageTaken']) / 1000) * 1)
+                mdScore += ((participant_info['stats']['wardsPlaced']) * 4)
+                mdScore += ((participant_info['stats']['doubleKills']) * 10)
+                mdScore += ((participant_info['stats']['tripleKills']) * 18)
+                mdScore += ((participant_info['stats']['quadraKills']) * 25)
+                mdScore += ((participant_info['stats']['pentaKills']) * 40)
+                  if participant_info['stats']['winner'] == 't'
+                    mdScore += 100
+                    puts "MDSCORE::::::::::::::::::::::::::::::"
+                    puts mdScore
+                  else
+                    puts "MDSCOOOOREEE:::::::::::::::::::::::::"
+                    puts mdScore
+                    mdScore -= 100
+                  end
+                timestamp = matchlist["matches"].find { |t| t['matchId'].to_i == match["matchId"].to_i}
+            Match.create(
+                  matchId: match['matchId'],
+                  summonerId: summonerId,
+                  kills: participant_info['stats']['kills'],
+                  deaths: participant_info['stats']['deaths'],
+                  assists: participant_info['stats']['assists'],
+                  goldEarned: participant_info['stats']['goldEarned'],
+                  championLevel: participant_info['stats']['champLevel'],
+                  summonerSpell1: participant_info['spell1Id'],
+                  summonerSpell2: participant_info['spell2Id'],
+                  item1: participant_info['stats']['item0'],
+                  item2: participant_info['stats']['item1'],
+                  item3: participant_info['stats']['item2'],
+                  item4: participant_info['stats']['item3'],
+                  item5: participant_info['stats']['item4'],
+                  item6: participant_info['stats']['item5'],
+                  mastery: participant_info['masteries'].last['masteryId'],
+                  cs: participant_info['stats']['minionsKilled'],
+                  jungleCs: participant_info['stats']['neutralMinionsKilled'],
+                  totalDamage: participant_info['stats']['totalDamageDealt'],
+                  totalCcDealt: participant_info['stats']['totalTimeCrowdControlDealt'],
+                  totalHeal: participant_info['stats']['totalHeal'],
+                  magicDamage: participant_info['stats']['magicDamageDealt'],
+                  physicalDamage: participant_info['stats']['physicalDamageDealt'],
+                  damageTaken: participant_info['stats']['totalDamageTaken'],
+                  wardsPlaced: participant_info['stats']['wardsPlaced'],
+                  doubleKills: participant_info['stats']['doubleKills'],
+                  tripleKills: participant_info['stats']['tripleKills'],
+                  quadraKills: participant_info['stats']['quadraKills'],
+                  pentaKills: participant_info['stats']['pentaKills'],
+                  profile_id: id,
+                  timestamp: timestamp['timestamp'],
+                  championId: championId,
+                  win: participant_info['stats']['winner'],
+                  mdScore: mdScore
+              )
+              mdScore = 0
+          end
+        end
+      end
     end
-
-
   end
-
-
-
-
-
-
-
-
-
-
-
-
 
 end

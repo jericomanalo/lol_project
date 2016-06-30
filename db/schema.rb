@@ -11,14 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160623084552) do
+ActiveRecord::Schema.define(version: 20160629073953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "champion_masteries", force: :cascade do |t|
-    t.integer  "profile_id"
-    t.integer  "championId"
+    t.integer  "summoner_id"
     t.integer  "championPointsSinceLastLevel"
     t.integer  "championPointsUntilNextLevel"
     t.integer  "championLevel"
@@ -28,9 +27,11 @@ ActiveRecord::Schema.define(version: 20160623084552) do
     t.integer  "current_points"
     t.integer  "tokensEarned"
     t.string   "chestGranted"
+    t.integer  "champion_id"
   end
 
-  add_index "champion_masteries", ["profile_id"], name: "index_champion_masteries_on_profile_id", using: :btree
+  add_index "champion_masteries", ["champion_id"], name: "index_champion_masteries_on_champion_id", using: :btree
+  add_index "champion_masteries", ["summoner_id"], name: "index_champion_masteries_on_summoner_id", using: :btree
 
   create_table "champions", force: :cascade do |t|
     t.integer  "championId"
@@ -42,6 +43,28 @@ ActiveRecord::Schema.define(version: 20160623084552) do
     t.datetime "updated_at", null: false
     t.string   "tag"
   end
+
+  create_table "champs", force: :cascade do |t|
+    t.integer  "champion_id"
+    t.integer  "match_id"
+    t.integer  "champion_mastery_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  add_index "champs", ["champion_id"], name: "index_champs_on_champion_id", using: :btree
+  add_index "champs", ["champion_mastery_id"], name: "index_champs_on_champion_mastery_id", using: :btree
+  add_index "champs", ["match_id"], name: "index_champs_on_match_id", using: :btree
+
+  create_table "favorites", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "summoner_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "favorites", ["summoner_id"], name: "index_favorites_on_summoner_id", using: :btree
+  add_index "favorites", ["user_id"], name: "index_favorites_on_user_id", using: :btree
 
   create_table "matches", force: :cascade do |t|
     t.integer  "matchId",        limit: 8
@@ -76,16 +99,17 @@ ActiveRecord::Schema.define(version: 20160623084552) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.integer  "championLevel",  limit: 8
-    t.integer  "profile_id"
+    t.integer  "summoner_id"
     t.integer  "timestamp",      limit: 8
-    t.integer  "championId"
     t.integer  "masteryPoints"
     t.integer  "mdScore"
+    t.integer  "champion_id"
   end
 
-  add_index "matches", ["profile_id"], name: "index_matches_on_profile_id", using: :btree
+  add_index "matches", ["champion_id"], name: "index_matches_on_champion_id", using: :btree
+  add_index "matches", ["summoner_id"], name: "index_matches_on_summoner_id", using: :btree
 
-  create_table "profiles", force: :cascade do |t|
+  create_table "summoners", force: :cascade do |t|
     t.string   "summonerName"
     t.integer  "summonerId"
     t.string   "region"
@@ -95,6 +119,22 @@ ActiveRecord::Schema.define(version: 20160623084552) do
     t.datetime "updated_at",    null: false
   end
 
-  add_foreign_key "champion_masteries", "profiles"
-  add_foreign_key "matches", "profiles"
+  create_table "users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "password_digest"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "summoner_id"
+  end
+
+  add_index "users", ["summoner_id"], name: "index_users_on_summoner_id", using: :btree
+
+  add_foreign_key "champion_masteries", "summoners"
+  add_foreign_key "champs", "champion_masteries"
+  add_foreign_key "champs", "champions"
+  add_foreign_key "champs", "matches"
+  add_foreign_key "favorites", "summoners"
+  add_foreign_key "favorites", "users"
+  add_foreign_key "matches", "summoners"
 end

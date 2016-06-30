@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  champion_id: 
+  match_id: 
+  champion_mastery_id: 
+
+two:
+  champion_id: 
+  match_id: 
+  champion_mastery_id: 

@@ -8,16 +8,16 @@ class ProfilesController < ApplicationController
 				Champion.create(championId: this[1]["id"], name: this[1]["name"], title: this[1]["title"], icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this[1]['key']+".png", splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+this[1]['key']+"_0.jpg", tag: tag)
 			end
 		end
-		randomInt = rand(1...(Profile.count)+1)
-		if Profile.count > 0
-		@randomProfile = Profile.find(randomInt)
+		randomInt = rand(1...(Summoner.count)+1)
+		if Summoner.count > 0
+		@randomSummoner = Summoner.find(randomInt)
 		puts "@PROOOOOOOOFIIIIIIIIIILES"
-		puts @randomProfile
+		puts @randomSummoner
 		end
 	end
 
 	def search
-		@profile = Profile.find_by(:region => params[:profile][:region], :summonerName => params[:profile][:summonerName])
+		@profile = Summoner.find_by(:region => params[:profile][:region], :summonerName => params[:profile][:summonerName])
 		if  @profile != nil
 			redirect_to action: "show", summonerName: @profile.summonerName, region: @profile.region
 		else
@@ -34,14 +34,14 @@ class ProfilesController < ApplicationController
 		############################# FIX THE REDIRECT ##########################################
 		name = params[:profile][:summonerName]
 		if profile[name]
-	        Profile.create(
+	        Summoner.create(
 	          summonerName: name,
 	          summonerId: profile[name]['id'],
 	          region: params[:profile][:region],
 	          icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/" + (profile[name]['profileIconId']).to_s + ".png",
 	          summonerLevel: profile[name]['summonerLevel']
           )
-	          @profile = Profile.find_by(:summonerName => params[:profile][:summonerName], :region => params[:profile][:region] )
+	          @profile = Summoner.find_by(:summonerName => params[:profile][:summonerName], :region => params[:profile][:region] )
 	          redirect_to controller: "champion_masteries", action: "create", region: @profile.region, summonerId: @profile.summonerId, id: @profile.id, summonerName: @profile.summonerName
 	        else
 	        	############### - ADD FLASH MESSAGES LOGIC - ##########################
@@ -54,10 +54,14 @@ class ProfilesController < ApplicationController
 	def show
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
 		@champions = Champion.all
-		@profile = Profile.find_by(:summonerName => params[:summonerName], :region => params[:region])
-		@champion_masteries = ChampionMastery.where(profile_id: @profile.id)
-		top_champion = ChampionMastery.where(profile_id: @profile.id).order(current_points: :desc).first
-		@top_champion = @champions.find { |t| t['championId'] == top_champion['championId']}
+		@profile = Summoner.find_by(:summonerName => params[:summonerName], :region => params[:region])
+		@champion_masteries = @profile.champion_masteries.all
+		@top_champion = @champion_masteries.order(current_points: :desc).first.champion
+		@test_query = @profile.champion_masteries.includes(:champions)
+		puts "ASLKDJALSFJLASGKJLAKGSJLASIDGJLAKGJLAKGJSLAKGJLAKGJSLKAGJ"
+		@test_query.each do |this|
+			puts this.champion.name
+		end
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
 
 		# Populate global variables to separate the Champions with Masteries and those without
@@ -76,7 +80,7 @@ class ProfilesController < ApplicationController
 			@unmastered_marksmen = []
 
 	    @no_progress = []
-	    # Loop through all 130 champions via the @champions (== Champion.all) variable and compare all 130 against each of the heroes in @champion_masteries ( == ChampionMastery.where(profile_id: params[:id]))
+	    # Loop through all 130 champions via the @champions (== Champion.all) variable and compare all 130 against each of the heroes in @champion_masteries ( == ChampionMastery.where(summoner_id: params[:id]))
 	    @champions.each do |this|
 	        if @champion_masteries.find {|t| t['championId'] == this.championId }
 						if this.tag == 'Support'
@@ -112,10 +116,10 @@ class ProfilesController < ApplicationController
 	end
 	def show_graph
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
-		@profile = Profile.find(params[:id])
-		@champion_mastery = ChampionMastery.where(:championId => params[:championId]).where(:profile_id => params[:id])
+		@profile = Summoner.find(params[:id])
 		@champion = Champion.find_by(:championId => params[:championId])
-		@matches = Match.where(:summonerId => @profile.summonerId).where(:championId => params[:championId])
+		@champion_mastery = ChampionMastery.where(:champion_id => @champion.id).where(:summoner_id => params[:id])
+		@matches = Match.where(:summoner_id => @profile.id).where(:champion_id => params[:championId])
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
 
 	end
@@ -127,9 +131,9 @@ class ProfilesController < ApplicationController
 		puts params[:profile][:region]
 		puts params[:summonerName]
 		puts params[:region]
-		profile = Profile.find_by(:summonerName => params[:summonerName], :region => params[:region])
-		compare_profile = Profile.find_by(:summonerName => params[:profile][:summonerName], :region => params[:profile][:region])
-		match_search = Profile.where(:championId => @champion.championId).where(:summonerId => [compare_profile.summonerId])
+		profile = Summoner.find_by(:summonerName => params[:summonerName], :region => params[:region])
+		compare_profile = Summoner.find_by(:summonerName => params[:profile][:summonerName], :region => params[:profile][:region])
+		match_search = Match.where(:champion_id => @champion.id).where(:summoner_id => [compare_profile.id])
 		if profile.summonerName != nil && compare_profile != nil && match_search != nil
 				 redirect_to action: "show_compare", summonerName1: profile.summonerName, region1: profile.region, championId: params[:championId], summonerName2: compare_profile.summonerName, region2: compare_profile.region
 		elsif profile.summonerName != nil && compare_profile == nil
@@ -142,12 +146,12 @@ class ProfilesController < ApplicationController
 	end
 	def show_compare
 		@champion = Champion.find_by(:championId => params[:championId])
-		@profile = Profile.find_by(:summonerName => params[:summonerName1], :region => params[:region1])
-		@champion_mastery = ChampionMastery.where(:championId => params[:championId]).where(:profile_id => @profile.id)
-		@compare_profile = Profile.find_by(:summonerName => params[:summonerName2], :region => params[:region2])
-		@compare_mastery = ChampionMastery.where(:profile_id => @compare_profile.id).where(:championId => params[:championId])
-		@matches = Match.where(:championId => params[:championId], :profile_id => @profile.id)
-		@compare_matches = Match.where(:championId => params[:championId], :profile_id => @compare_profile.id)
+		@profile = Summoner.find_by(:summonerName => params[:summonerName1], :region => params[:region1])
+		@champion_mastery = ChampionMastery.where(:champion_id => @champion.id).where(:summoner_id => @profile.id)
+		@compare_profile = Summoner.find_by(:summonerName => params[:summonerName2], :region => params[:region2])
+		@compare_mastery = ChampionMastery.where(:summoner_id => @compare_profile.id).where(:champion_id => @champion.id)
+		@matches = Match.where(:champion_id => @champion.id, :summoner_id => @profile.id)
+		@compare_matches = Match.where(:champion_id => @champion.id, :summoner_id => @compare_profile.id)
 		params[:championId] = @champion.championId
 		puts "COMPARE NAMESSSSSSSSSSSSSSSSSSSSSSSS"
 		puts @profile.summonerName

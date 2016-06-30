@@ -4,12 +4,8 @@ one:
   name: MyString
   email: MyString
   password_digest: <%= BCrypt::Password.create('secret') %>
-  summonerName: MyString
-  summonerId: 1
 
 two:
   name: MyString
   email: MyString
   password_digest: <%= BCrypt::Password.create('secret') %>
-  summonerName: MyString
-  summonerId: 1

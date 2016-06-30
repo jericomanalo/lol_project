@@ -10,7 +10,7 @@
         </div>
         <div class="col-lg-4"  >
           <form class="form-inline" action="/matches/create" method="post">
-            <% champ = @champion_masteries.find {|t| t['championId'] == @top_champion.championId } %>
+            <% champ = @champion_masteries.find {|t| t['champion_id'] == @top_champion.id } %>
             <h1>Top Champion:
             <div class="thumb" data-placement="bottom" data-toggle="popover" id="top_champ" data-container="body" data-placement="top" type="button" data-html="true" title="<%= @top_champion.name %>" data-content="Current Level: <%= champ.championLevel %> <br> Total Pts: <%= champ.current_points %> <br> Points Until Next Level: <%= champ.championPointsUntilNextLevel %> <br> Tokens Earned: <%= champ.tokensEarned %> <br> Chest Earned: <% if champ.chestGranted == 'true' %> Yes <% else %> No <% end %> <br> Last Played: <%= DateTime.strptime((champ.lastPlayTime).to_s,'%s').strftime('%m/%d/%y') %>">
             <input type="hidden" name="summonerId" value="<%= @profile.summonerId %>">

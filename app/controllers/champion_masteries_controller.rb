@@ -6,9 +6,10 @@ class ChampionMasteriesController < ApplicationController
   	# begin populating the db
     champion_masteries.each do |this|
       lastPlayTime = DateTime.strptime(this['lastPlayTime'].to_s, '%Q')
-      ChampionMastery.create(
-        profile_id: params[:id],
-        championId: this['championId'],
+      champion = Champion.find_by(:championId => this['championId'])
+      new_mastery = ChampionMastery.create(
+        summoner_id: params[:id],
+        champion_id: champion.id,
         current_points: this['championPoints'],
         championPointsSinceLastLevel: this['championPointsSinceLastLevel'],
         championPointsUntilNextLevel: this['championPointsUntilNextLevel'],
@@ -16,6 +17,10 @@ class ChampionMasteriesController < ApplicationController
         championLevel: this['championLevel'],
         chestGranted: (this['chestGranted']).to_s,
         lastPlayTime: lastPlayTime
+      )
+      Champ.create(
+        champion_id: champion.id,
+        champion_mastery_id: new_mastery.id
       )
     end
 

@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 
 #Using PUMA for Heroku Deployment
-gem 'puma'
+# gem 'puma'
+
 #heroku plugins static assests and logging on heroku
 gem 'rails_12factor', group: :production
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -41,8 +42,8 @@ gem 'groupdate'
 
 gem 'hightop'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-#gem 'tzinfo', platforms: [:x64_mingw, :mingw, :mswin]
-#gem 'tzinfo-data', platforms: [:x64_mingw, :mingw, :mswin]
+# gem 'tzinfo', platforms: [:x64_mingw, :mingw, :mswin]
+# gem 'tzinfo-data', platforms: [:x64_mingw, :mingw, :mswin]
 
 
 gem 'active_median'

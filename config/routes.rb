@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   #home/landing page
-  root 'profiles#index'
+  root 'summoners#index'
 
   # --------------- Users Routes -----------------
   get 'signup' => 'users#index'
@@ -12,23 +12,23 @@ Rails.application.routes.draw do
   post 'login' => 'sessions#create'
   get 'logout' => 'sessions#destroy'
 
-  # --------------- Profile Routes -----------------
-  #search summoner profile
-  post 'profiles/search' => 'profiles#search'
+  # --------------- Summoners Routes -----------------
+  #search summoner Summoners
+  post 'summoners/search' => 'summoners#search'
 
-  get 'profiles/home' => 'profiles#show'
-  #create summoner profile - if not in DB
-  post '/profiles' => 'profiles#create'
-  #show summoner profile
-  get 'profiles/:summonerName/:region' => 'profiles#show'
-  #update summoner profile
-  patch 'profiles/:id/update' => 'profiles#update'
+  get 'summoners/home' => 'summoners#show'
+  #create summoner Summoners - if not in DB
+  post 'summoners' => 'summoners#create'
+  #show summoner Summoners
+  get 'summoners/:summonerName/:region' => 'summoners#show'
+  #update summoner Summoners
+  patch 'summoners/:id/update' => 'summoners#update'
   #show graphs for summoner
-  get 'profiles/:id/graph/:championId' => 'profiles#show_graph'
+  get 'summoners/:id/graph/:championId' => 'summoners#show_graph'
   #search comparison user in case not in DB
-  post 'profiles/compare' => 'profiles#compare'
+  post 'summoners/compare' => 'summoners#compare'
   #compare graphs with another user
-  get 'profiles/:summonerName1/:region1/graph/:championId/compare/:summonerName2/:region2' => 'profiles#show_compare'
+  get 'summoners/:summonerName1/:region1/graph/:championId/compare/:summonerName2/:region2' => 'summoners#show_compare'
 
   # ---------------- ChampionMastery Routes -------------------
   #create champion_masteries - if not in DB

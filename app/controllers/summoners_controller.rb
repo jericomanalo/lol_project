@@ -41,71 +41,51 @@ class SummonersController < ApplicationController
 		@champions = Champion.all
 		@summoner = Summoner.find_by(:summonerName => params[:summonerName], :region => params[:region])
 		@champion_masteries = @summoner.champion_masteries.all
-		@top_champion = @champion_masteries.order(current_points: :desc).first.champion
+		@top_champion = @champion_masteries.includes(:champion).order(current_points: :desc).first
 		@test_query = @summoner.champion_masteries.includes(:champions)
-		puts "ASLKDJALSFJLASGKJLAKGSJLASIDGJLAKGJLAKGJSLAKGJLAKGJSLKAGJ"
-		@test_query.each do |this|
-			puts this.champion.name
-		end
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
 
 		# Populate global variables to separate the Champions with Masteries and those without
-			@mastered_supports = []
-			@mastered_tanks = []
-			@mastered_fighters = []
-			@mastered_mages = []
-			@mastered_assassins = []
-			@mastered_marksmen = []
+			@mastered_supports = ChampionMastery.includes(:champions).where('champions.tag = ?', 'Support').references(:champions)
+			@unmastered_supports = Champion.where(tag: "Support").where.not(id: @mastered_supports.pluck(:champion_id).flatten)
+			@mastered_tanks = ChampionMastery.includes(:champions).where('champions.tag = ?', 'Tank').references(:champions)
+			@unmastered_tanks = Champion.where(tag: "Tank").where.not(id: @mastered_supports.pluck(:champion_id).flatten)
+			@mastered_assassins = ChampionMastery.includes(:champions).where('champions.tag = ?', 'Assassin').references(:champions)
+			@unmastered_assassins = Champion.where(tag: "Assassin").where.not(id: @mastered_supports.pluck(:champion_id).flatten)
+			@mastered_fighters = ChampionMastery.includes(:champions).where('champions.tag = ?', 'Fighter').references(:champions)
+			@unmastered_fighters = Champion.where(tag: "Fighter").where.not(id: @mastered_supports.pluck(:champion_id).flatten)
+			@mastered_mages = ChampionMastery.includes(:champions).where('champions.tag = ?', 'Mage').references(:champions)
+			@unmastered_mages = Champion.where(tag: "Mage").where.not(id: @mastered_supports.pluck(:champion_id).flatten)
+			@mastered_marksmen = ChampionMastery.includes(:champions).where('champions.tag = ?', 'Marksman').references(:champions)
+			@unmastered_marksmen = Champion.where(tag: "Marksman").where.not(id: @mastered_supports.pluck(:champion_id).flatten)
+			@champion_list = {
+				:Assassins => { :Mastered => @mastered_assassins,
+											:Unmastered => @unmastered_assassins},
+				:Supports => { :Mastered => @mastered_supports,
+											:Unmastered => @unmastered_supports},
+				:Tanks => { :Mastered => @mastered_tanks,
+											:Unmastered => @unmastered_tanks},
+				:Fighters => { :Mastered => @mastered_fighters,
+											:Unmastered => @unmastered_fighters},
+				:Mages => { :Mastered => @mastered_mages,
+											:Unmastered => @unmastered_mages},
+				:Marksmen => { :Mastered => @mastered_marksmen,
+											:Unmastered => @unmastered_marksmen},}
 
-			@unmastered_supports = []
-			@unmastered_tanks = []
-			@unmastered_fighters = []
-			@unmastered_mages = []
-			@unmastered_assassins = []
-			@unmastered_marksmen = []
+			@champion_list = @champion_list.sort_by { |key, value| value[:Mastered].count}.reverse
 
-	    @no_progress = []
+
 	    # Loop through all 130 champions via the @champions (== Champion.all) variable and compare all 130 against each of the heroes in @champion_masteries ( == ChampionMastery.where(summoner_id: params[:id]))
-	    @champions.each do |this|
-	        if @champion_masteries.find {|t| t['championId'] == this.championId }
-						if this.tag == 'Support'
-							@mastered_supports.push(this)
-						elsif this.tag == 'Tank'
-							@mastered_tanks.push(this)
-						elsif this.tag == 'Fighter'
-							@mastered_fighters.push(this)
-						elsif this.tag == 'Mage'
-							@mastered_mages.push(this)
-						elsif this.tag == 'Assassin'
-							@mastered_assassins.push(this)
-						elsif this.tag == 'Marksman'
-							@mastered_marksmen.push(this)
-						end
-	        end
-	        if not @champion_masteries.find {|t| t['championId'] == this.championId }
-						if this.tag == 'Support'
-							@unmastered_supports.push(this)
-						elsif this.tag == 'Tank'
-							@unmastered_tanks.push(this)
-						elsif this.tag == 'Fighter'
-							@unmastered_fighters.push(this)
-						elsif this.tag == 'Mage'
-							@unmastered_mages.push(this)
-						elsif this.tag == 'Assassin'
-							@unmastered_assassins.push(this)
-						elsif this.tag == 'Marksman'
-							@unmastered_marksmen.push(this)
-						end
-	        end
-	    end
 	end
 
 	def show_graph
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
 		@summoner = Summoner.find(params[:id])
 		@champion = Champion.find_by(:championId => params[:championId])
-		@champion_mastery = ChampionMastery.where(:champion_id => @champion.id).where(:summoner_id => params[:id])
-		@matches = Match.where(:summoner_id => @summoner.id).where(:champion_id => params[:championId])
+		@champion_mastery = ChampionMastery.find_by(:champion_id => @champion.id, :summoner_id => params[:id])
+		puts "@CHAMPION_____________________________MASTERY"
+		puts @champion_mastery
+		@matches = Match.where(:summoner_id => @summoner.id).where(:champion_id => @champion.id)
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
 
 	end

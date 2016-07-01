@@ -1,36 +1,63 @@
 <body style="background-image: url(<%= @champion.splash %>)" class="background">
 	<div class="container container-fluid">
 		<div class="container" id="graph_container">
-			<div class="page-header" style="display: inline">
-				<form action='' class='navbar-form navbar-right' id="compare_search" method='' role="search">
-					<div class="form-group">
-						<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
-						<input type='hidden' name='summonerName' value='<%= @summoner["summonerName"] %>'>
-						<input type="hidden" name="region" value="<%= @summoner['region'] %>">
-						<input type="hidden" name="championId" value="<%= @champion['championId'] %>">
-						<input class='form-control form-control-block' name='summoner[summonerName]' type='text' placeholder='Summoner Name' required></h3>
-						<select class='form-control form-control-block' name='summoner[region]' required autofocused>
-							<option value="na">NA</option>
-							<option value="br">BR</option>
-							<option value="eune">EUNE</option>
-							<option value="euw">EUW</option>
-							<option value="jp">JP</option>
-							<option value="kr">KR</option>
-							<option value="lan">LAN</option>
-							<option value="las">LAS</option>
-							<option value="oce">OCE</option>
-							<option value="ru">RU</option>
-							<option value="tr">TR</option>
-						</select>
-						<button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search'> </span></button>
-					</div>
-					<p class="text-left" style="color:white;">Compare against another summoner: (*currently unavailable) </p>
-				</form>
 				<div id="champ_div">
-					<h1 class="text-left white" style="vertical-align:top"><img class="img img-circle" height="130px" width="130px" src="<%= @champion.icon %>"><%= @champion.name %> <small><%= @champion.title %></small></h1>
-					<img id="rank_score" src="/images/Champion_mastery_tier_<%= @champion_mastery[0]['championLevel'] %>.png" alt="" />
+					<div class="row">
+
+						<div class="col-md-6">
+
+							<h1 class="text-center white"><%= @champion.name %><small><%= @champion.title %></small></h1>
+							<img class="img img-responsive img-thumb" id="layered_icon" height="90px" width="90px" src="<%= @champion.icon %>">
+							<img class="img img-responsive" id="layered_border" src="/images/Champion_mastery_border_<%= @champion_mastery.championLevel %>.png"  alt="" />
+
+						</div>
+						<div class="col-lg-6">
+							<h2 class="text-center page-header white"><%= @summoner.summonerName %>'s Mastery Stats: </h2>
+						<div class="col-md-4">
+							<h4>
+								Current Level:
+								<div class="progress">
+									<div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="<%= @champion_mastery.championLevel %>" aria-valuemin="0" aria-valuemax="7" style="color: rgb(0, 87, 125); width: <%= number_to_percentage(( @champion_mastery.championLevel.to_f / (7))*100) %>">
+										<!-- Progress bar should be of total champion levels added together out of max possible champ level (7 per champion) -->
+										<%= @champion_mastery.championLevel %> / 7
+									</div>
+								</div>
+							<h4>
+								Pts Until Next Level:
+								<div class="progress">
+		              <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="<%= @champion_mastery.championPointsSinceLastLevel %>" aria-valuemin="0" aria-valuemax="<%= @champion_mastery.championPointsUntilNextLevel + @champion_mastery.championPointsSinceLastLevel %>" style="color: rgb(0, 87, 125); width: <%= number_to_percentage((@champion_mastery.championPointsUntilNextLevel.to_f / (@champion_mastery.championPointsUntilNextLevel + @champion_mastery.championPointsSinceLastLevel))*100) %>">
+		                <!-- Progress bar should be of total champion levels added together out of max possible champ level (7 per champion) -->
+		                <%= @champion_mastery.championPointsUntilNextLevel %> / <%= (@champion_mastery.championPointsUntilNextLevel + @champion_mastery.championPointsSinceLastLevel) %>
+									</div>
+								</div>
+							</h4>
+						</div>
+						<div class="col-md-4">
+								<h4>
+									Total Pts:
+									<br><%= @champion_mastery.current_points %>
+								</h4>
+								<br>
+								<h4>
+									Last Played: <%= DateTime.strptime((@champion_mastery.lastPlayTime).to_s,'%s').strftime('%m/%d/%y') %>
+								</h4>
+						</div>
+						<div class="col-md-4">
+								<h4>
+									<% if @champion_mastery.chestGranted == 'true' %>
+									<img class="img img-responsive" src="/images/chest.png" alt="" id="chest">
+									<% else %>
+									<img class="img img-responsive" src="/images/chest.png" alt="" id="noChest">
+									<% end %>
+								</h4>
+								<img class="img img-responsive img-circle" id="token_border" height="100px" width="100px" style="vertical-align:top" src="/images/champion_token.png">
+								<img class="img img-responsive img-circle" id="champion_token" height="60px" width="60px" style="vertical-align:top" src="<%= @champion.icon %>">
+								<h4 id="token_amount"><%= @champion_mastery.tokensEarned %></h4>
+						</div>
+
+					</div>
 				</div>
-			</div>
+		</div>
 
 				<!-- <%= select(:selected, "selection", options_for_select(Match.columns.map {|p| [ p.name ] }), :include_blank => false)%>
 			<h1 id="selecteddd"><%=  %></h1> -->
@@ -38,6 +65,31 @@
 				<span class="glyphicon glyphicon-question-sign" style="color:white" data-toggle="tooltip" data-placement="right" title="Click on a chart node to view your full match details!"></span>
 				<%= line_chart @matches.map{ |m| [m.matchId, m.mdScore]}, discrete: true, label: "md Score", xtitle: "Match Ids", ytitle: "md Score", id: "champ_chart" %>
 				<span class="glyphicon glyphicon-question-sign" style="color:white" data-toggle="tooltip" data-placement="right" title="MD Score is a loose interpretation of your performance in each match"></span>
+				<div class="page-header" style="display: inline">
+					<form action='' class='navbar-form navbar-right' id="compare_search" method='' role="search">
+						<div class="form-group">
+							<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
+							<input type='hidden' name='summonerName' value='<%= @summoner["summonerName"] %>'>
+							<input type="hidden" name="region" value="<%= @summoner['region'] %>">
+							<input type="hidden" name="championId" value="<%= @champion['championId'] %>">
+							<input class='form-control form-control-block' name='summoner[summonerName]' type='text' placeholder='Summoner Name' required></h3>
+							<select class='form-control form-control-block' name='summoner[region]' required autofocused>
+								<option value="na">NA</option>
+								<option value="br">BR</option>
+								<option value="eune">EUNE</option>
+								<option value="euw">EUW</option>
+								<option value="jp">JP</option>
+								<option value="kr">KR</option>
+								<option value="lan">LAN</option>
+								<option value="las">LAS</option>
+								<option value="oce">OCE</option>
+								<option value="ru">RU</option>
+								<option value="tr">TR</option>
+							</select>
+							<button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search'> </span></button>
+						</div>
+						<p class="text-left" style="color:white;">Compare against another summoner: (*currently unavailable) </p>
+					</form>
 			</div>
 		</div>
 	</div>

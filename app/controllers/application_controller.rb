@@ -20,6 +20,10 @@ class ApplicationController < ActionController::Base
     current_user != nil
   end
 
+  def authorize
+    redirect_to '/' unless current_user
+  end
+
   class Riot
     def self.get_all_champions(params)
       url = self.get_static_url

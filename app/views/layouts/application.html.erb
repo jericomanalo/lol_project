@@ -23,9 +23,12 @@
 	<nav class="navbar">
   <div class="container-fluid">
   <div class="collapse navbar-collapse">
-   
+    <% unless current_user %>
       <a href="/"><button type="button" class="btn btn-default navbar-form navbar-left form-control"><span class='glyphicon glyphicon-home'> </span></button></a>
-    
+    <% else %>
+      <a href="/dashboard"><button type="button" class="btn btn-default navbar-form navbar-left form-control"><span class='glyphicon glyphicon-home'> </span></button></a>
+    <% end %>
+  
     <% current_uri = request.env['PATH_INFO'] %>
 			<% if current_uri != "/" %>
       <!-- TO SHOW BACK TO summoner BUTTON AT THE SHOW GRAPH VIEW PAGE-->
@@ -66,6 +69,7 @@
 		<% end %>
     <div class="navbar-form navbar-right">
       <% if logged_in? %>
+        <a href="/users/<%= current_user.name %>/edit"><button class="btn btn-default">Edit Profile</button></a>
         <a href="/logout"><button class="btn btn-default">Logout</button></a>
       <% else %>
         <a href="/signup"><button class="btn btn-default">Sign Up</button></a>

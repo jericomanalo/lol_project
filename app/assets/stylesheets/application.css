@@ -156,10 +156,10 @@
   opacity: 1.0;
 }
 #chests, #no_chest{
-  top: 26px;
-  left: 65px;
-  height: 50px;
-  width: 55px;
+  top: 68px;
+  left: 6px;
+  height: 30px;
+  width: 30px;
   position: absolute;
     z-index: 9999999;
   opacity: 0;
@@ -203,6 +203,7 @@
 #graph_container{
 	padding: 5px;
 	background-color: rgba(23, 23, 23, 0.4);
+  color: white
 }
 tspan{
   font-weight: normal;
@@ -221,6 +222,48 @@ text{
 	margin-left: 19px;
 	margin-top: -45px;
 }
+/* Align champion_token and token_amount on top of eachother to produce champ_token */
+#champion_token, #token_amount, #token_border{
+  position: absolute;
+  margin:auto;
+  top:0;
+  right:0;
+  bottom:0;
+  left:75px;
+}
+#champion_token{
+  z-index: -2;
+}
+#token_amount{
+  top:40%;
+  left:68%;
+  z-index: -1;
+}
+/* Show_Graph Align Champion_Icon and Mastery_Border on top of each other */
+#layered_icon, #layered_border{
+  position: absolute;
+  margin:auto;
+  top:110%;
+  right:0;
+  left:0;
+}
+#layered_border{
+  top:90%;
+  height: 180px;
+  width: 100px;
+}
+
+/* Show_Graph Chest color-filled when true, black/white when false */
+#chest, #noChest{
+  height: 70px;
+  width: 70px;
+}
+
+#noChest{
+  -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+  filter: grayscale(100%);
+}
+
 
 .right {
   margin-left:400px;

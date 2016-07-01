@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   # --------------- Users Routes -----------------
   get 'signup' => 'users#index'
   post 'users' => 'users#create'
+  get 'users/:name/edit' => 'users#edit'
+  post 'users/:name' => 'users#update'
 
   # --------------- Sessions Routes -----------------
   get 'dashboard' => 'sessions#index'

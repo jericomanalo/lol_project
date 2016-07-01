@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   has_secure_password
-  has_attached_file :avatar
+  has_attached_file :avatar, :styles => {:thumb => "200x200"}
 
   belongs_to :summoner
   has_many :favorites

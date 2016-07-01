@@ -1,7 +1,6 @@
 class User < ActiveRecord::Base
   has_secure_password
-  has_attached_file :avatar, :styles => {:thumb => "200x200"}
-
+  has_attached_file :avatar, :styles => {:thumb => "200x200"}, default_url: "/images/default_avatar.jpg"
   belongs_to :summoner
   has_many :favorites
   has_many :summoners, through: :favorites

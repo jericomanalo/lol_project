@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<body class="background_grad">
+	<div class="row">
+
+		<div class="col-lg-8 col-lg-push-2"> <!-- Main Div, Champion Stats, Match History, Etc. -->
+		<div class="container container-fluid">
+			<div class="row" id="header_bg" style="background-image: url(<%= @champion.splash %>)">
+				<div class="col-lg-12 opaque">
+							<div class="col-lg-6">
+									<h1 class="text-center white"><%= @champion.name %><small><%= @champion.title %></small></h1>
+									<img class="img img-responsive img-thumb" id="layered_icon" height="90px" width="90px" src="<%= @champion.icon %>">
+									<img class="img img-responsive" id="layered_border" src="/images/Champion_mastery_border_<%= @champion_mastery.championLevel %>.png"  alt="" />
+							</div>
+							<div class="col-lg-6 white">
+								<h2 class="text-center page-header white"><%= @summoner.summonerName %>'s Mastery Stats: </h2>
+							<div class="col-md-4">
+								<h4>
+									Current Level:
+									<div class="progress">
+										<div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="<%= @champion_mastery.championLevel %>" aria-valuemin="0" aria-valuemax="7" style="color: rgb(0, 87, 125); width: <%= number_to_percentage(( @champion_mastery.championLevel.to_f / (7))*100) %>">
+											<%= @champion_mastery.championLevel %> / 7
+										</div>
+									</div>
+								<h4>
+									Pts Until Next Level:
+									<div class="progress">
+			              <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="<%= @champion_mastery.championPointsSinceLastLevel %>" aria-valuemin="0" aria-valuemax="<%= @champion_mastery.championPointsUntilNextLevel + @champion_mastery.championPointsSinceLastLevel %>" style="color: rgb(0, 87, 125); width: <%= number_to_percentage((@champion_mastery.championPointsUntilNextLevel.to_f / (@champion_mastery.championPointsUntilNextLevel + @champion_mastery.championPointsSinceLastLevel))*100) %>">
+			                <!-- Progress bar should be of total champion levels added together out of max possible champ level (7 per champion) -->
+			                <%= @champion_mastery.championPointsUntilNextLevel %> / <%= (@champion_mastery.championPointsUntilNextLevel + @champion_mastery.championPointsSinceLastLevel) %>
+										</div>
+									</div>
+								</h4>
+							</div>
+							<div class="col-md-4">
+									<h4>Total Pts:
+									<br> <%= @champion_mastery.current_points %>
+								</h4>
+									<h4>
+										Last Played: <%= DateTime.strptime((@champion_mastery.lastPlayTime).to_s,'%s').strftime('%m/%d/%y') %>
+									</h4>
+							</div>
+							<div class="col-md-4">
+									<h4>
+										<% if @champion_mastery.chestGranted == 'true' %>
+										<img class="img img-responsive" src="/images/chest.png" alt="" id="chest">
+										<% else %>
+										<img class="img img-responsive" src="/images/chest.png" alt="" id="noChest">
+										<% end %>
+									</h4>
+									<img class="img img-responsive img-circle" id="token_border" height="100px" width="100px" style="vertical-align:top" src="/images/champion_token.png">
+									<img class="img img-responsive img-circle" id="champion_token" height="60px" width="60px" style="vertical-align:top" src="<%= @champion.icon %>">
+									<h4 id="token_amount"><%= @champion_mastery.tokensEarned %></h4>
+							</div>
+
+						</div>
+						</div>
+					</div>
+	<!-- Modal tabinated tab1 = Match History Chart, tab2 = Player AVG Stats, tab3 = Champion Lore/Info -->
+				<ul class="nav nav-pills" id="tabContent">
+				        <li class="active"><a href="#match_history" data-toggle="tab">Match History</a></li>
+				        <li><a href="#stat_averages" data-toggle="tab">Stat Averages</a></li>
+				        <li><a href="#champion_info" data-toggle="tab">Champion Info</a></li>
+				</ul>
+
+				      <div class="tab-content" id="header_bg" style="background-image: url(<%= @champion.splash %>)">
+				        <div class="tab-pane active opaque" id="match_history">
+									<div class="row" id="chart_area">
+										<div class="col-md-7">
+											<h2 class="text-center white"><%= @summoner.summonerName %>'s Match History as <%= @champion.name %> </h2>
+											<h4 class="text-center"><small>First time here <span class="glyphicon glyphicon-question-sign" style="color:white" data-toggle="tooltip" data-placement="right" title="Click on a chart node to view your full match details!"></span></small></h4>
+										</div>
+										<div class="col-md-5">
+											<form action='' class='navbar-form navbar-right' id="compare_search" method='' role="search">
+												<div class="form-group">
+													<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
+													<input type='hidden' name='summonerName' value='<%= @summoner["summonerName"] %>'>
+													<input type="hidden" name="region" value="<%= @summoner['region'] %>">
+													<input type="hidden" name="championId" value="<%= @champion['championId'] %>">
+													<input class='form-control form-control-block' name='summoner[summonerName]' type='text' placeholder='Summoner Name' required></h3>
+													<select class='form-control form-control-block' name='summoner[region]' required autofocused>
+														<option value="na">NA</option>
+														<option value="br">BR</option>
+														<option value="eune">EUNE</option>
+														<option value="euw">EUW</option>
+														<option value="jp">JP</option>
+														<option value="kr">KR</option>
+														<option value="lan">LAN</option>
+														<option value="las">LAS</option>
+														<option value="oce">OCE</option>
+														<option value="ru">RU</option>
+														<option value="tr">TR</option>
+													</select>
+													<button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search'> </span></button>
+												</div>
+												<p class="text-left" style="color:white;">Compare against another summoner: (*currently unavailable) </p>
+											</form>
+										</div>
+										<div class="col-md-10 col-md-offset-1">
+
+										<%= line_chart @matches.map{ |m| [m.matchId, m.mdScore]}, discrete: true, label: "md Score", xtitle: "Match Ids", ytitle: "md Score ", id: "champ_chart" %>
+
+									</div>
+
+									</div>
+				      </div>
+
+				        <div class="tab-pane opaque white" id="stat_averages">
+				        	<div class="row">
+										<div class="col-lg-12 text-center">
+											<h1 class="page-header"><%= @summoner.summonerName %>'s Average Stats:</h1>
+											<div class="col-md-5">
+												<h3 class="page-header">Combat:</h3>
+												<div class="col-md-6 text-left">
+													<h4>K / D / A: <span class="pull-right">13 / 3 / 7</span></h4>
+													<h4>Double Kills:<span class="pull-right"> 8</span></h4>
+													<h4>Triple Kills:<span class="pull-right"> 3</span></h4>
+													<h4>Quadra Kills:<span class="pull-right"> 4</span></h4>
+													<h4>Penta Kills:<span class="pull-right"> 1</span></h4>
+												</div>
+												<div class="col-md-6 text-left">
+													<h4>Total Dmg: <span class="pull-right">999999</span></h4>
+													<h4>Magic Dmg: <span class="pull-right">999999</span></h4>
+													<h4>Physical Dmg:<span class="pull-right"> 999999</span></h4>
+												</div>
+
+											</div>
+											<div class="col-md-4 text-left">
+												<h3 class="page-header text-center">Support:</h3>
+												<h4>Total Healed: <span class="pull-right">999999</span></h4>
+												<h4>Damage Taken: <span class="pull-right">999999</span></h4>
+												<h4>Crowd Control Dealt: <span class="pull-right">888</span></h4>
+												<h4>Wards Placed: <span class="pull-right">9999</span></h4>
+												<h4>Assists: <span class="pull-right">9999</span></h4>
+
+											</div>
+											<div class="col-md-3 text-left">
+												<h3 class="page-header text-center">Gold:</h3>
+												<h4>Gold Earned:<span class="pull-right"> 99999</span></h4>
+												<h4>Creep Score:<span class="pull-right"> 99999</span></h4>
+												<h4>Jungle CS:<span class="pull-right"> 8888</span></h4>
+											</div>
+										</div>
+				        	</div>
+				        </div>
+
+
+				        <div class="tab-pane" id="champion_info">
+				        content 1
+				       </div>
+				</div>
+			</div>
+		</div> <!-- End of Main Div, Champion Stats, Match History, Etc.  -->
+		<div class="col-lg-2 col-lg-pull-8 white">
+
+
+				<ul class="nav nav-pills" id="tabContent">
+								<li class="active"><a href="#favorites" data-toggle="tab">Favorites</a></li>
+								<li><a href="#following" data-toggle="tab">Following</a></li>
+				</ul>
+
+							<div class="tab-content" id="header_bg" style="background-image: url(<%= @champion.splash %>)">
+								<div class="tab-pane active opaque" id="favorites">
+										<% summoners = Summoner.all %>
+										<% summoners.each do |this| %>
+										<div class="row">
+												<div class="col-md-12">
+										<div class="btn-group" style="width:100%; text-align:middle;">
+										  <button type="button" class="btn btn-default dropdown-toggle btn-block dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" action="/summoners/<%= this.summonerName %>/<%= this.region %>">
+												<img class="img img-responsive pull-left" src="<%= this.icon %>" height="40px" width="40px" alt="" />
+													<h4 class="pull-left" style="text-align:middle"><%= this.summonerName %> <span class="caret"></span></h4>
+											</button>
+										  <ul class="dropdown-menu">
+												<li><form action='/summoners/<%= this.summonerName%>/<%=this.region%>' class='' id="compare_search" method='' role="search">
+															<button type="submit" class="btn btn-default btn-block"><span class="glyphicon glyphicon-user"></span> Summoner Profile</button>
+														</form>
+												</li>
+
+												<li><button type="button" class="btn btn-default btn-block" name="button"><span class="glyphicon glyphicon-remove-sign"></span> Unfollow</button></li> <!-- form to UnFavorite here? -->
+
+												<li><form class="" action="" method="post"> <!-- Form to Compare Summoner straight from Favorites list -->
+												<input type="hidden" name="region" value="<%= @summoner['region'] %>">
+												<input type='hidden' name='summonerName' value='<%= @summoner["summonerName"] %>'>
+												<input type="hidden" name="championId" value="<%= @champion['championId'] %>">
+												<input type="hidden" name="summoner[summonerName]" value="<%= this.summonerName %>">
+												<input type="hidden" name="summoner[region]" value="<%= this.region %>">
+												<button type="submit" class="btn btn-default btn-block" name="button"><span class="glyphicon glyphicon-transfer"></span> Compare Stats</button>
+												</form></li>
+
+											</ul>
+										</div>
+										</div>
+									</div>
+										<% end %>
+							</div>
+
+								<div class="tab-pane opaque white" id="following">
+									<div class="" id="list_wrapper">
+									<ul>
+										<li>
+
+										</li>
+									</ul>
+									</div>
+								</div>
+
+							</div>
+		</div>
+
+	</div> <!-- End of row -->
+	<br>
+	<br>
+	<br>
+	<br>
+
+</body>

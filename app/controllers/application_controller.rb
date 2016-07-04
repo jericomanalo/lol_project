@@ -20,6 +20,10 @@ class ApplicationController < ActionController::Base
     current_user != nil
   end
 
+  def authorize
+    redirect_to '/' unless current_user
+  end
+
   class Riot
     def self.get_all_champions(params)
       url = self.get_static_url
@@ -112,21 +116,21 @@ class ApplicationController < ActionController::Base
     end
 
     def self.get_api_key
-      ENV["LOL_SECRET"]
+      "af407e29-b013-4c39-9385-b54cf05cf67c"
     end
   end
 
   class Md
 
-    def self.create_profile(region, summonerName)
-      profile = Riot.get_summoner(region, summonerName, {})
-      if profile[summonerName]
-        Profile.create(
+    def self.create_summoner(region, summonerName)
+      summoner = Riot.get_summoner(region, summonerName, {})
+      if summoner[summonerName]
+        Summoner.create(
           summonerName: summonerName,
-          summonerId: profile[summonerName]['id'],
+          summonerId: summoner[summonerName]['id'],
           region: region,
-          icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/" + (profile[summonerName]['profileIconId']).to_s + ".png",
-          summonerLevel: profile[summonerName]['summonerLevel']
+          icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/profileicon/" + (summoner[summonerName]['profileIconId']).to_s + ".png",
+          summonerLevel: summoner[summonerName]['summonerLevel']
         )
       end
     end
@@ -137,8 +141,8 @@ class ApplicationController < ActionController::Base
         champion = Champion.find_by(:championId => this['championId'])
         lastPlayTime = DateTime.strptime(this['lastPlayTime'].to_s, '%Q')
         new_mastery = ChampionMastery.create(
-          profile_id: id,
-          championId: this['championId'],
+          summoner_id: id,
+          champion_id: champion.id,
           current_points: this['championPoints'],
           championPointsSinceLastLevel: this['championPointsSinceLastLevel'],
           championPointsUntilNextLevel: this['championPointsUntilNextLevel'],
@@ -155,7 +159,10 @@ class ApplicationController < ActionController::Base
     end
 
     def self.create_match(summonerId, championId, region, summonerName, id)
-      last_known_match = Match.where(:summonerId => summonerId, :championId => championId).order('timestamp desc').first
+      puts "PARAMS___________________"
+      puts summonerId, championId, region, summonerName, id
+      champion = Champion.find_by(:championId => championId)
+      last_known_match = Match.where(:summoner_id => id, :champion_id => champion.id).order('timestamp desc').first
       if last_known_match != nil
         matchlist = Riot.get_matchlist(region, summonerId, {
           championIds: championId,
@@ -170,9 +177,10 @@ class ApplicationController < ActionController::Base
       end
       if matchlist["totalGames"] == 0
         flash[:error] = "Sorry, this Summoner currently has no matches played with this Champion for the 2016 Season."
-        redirect_to controller: "profiles", action: "show", summonerName: summonerName, region: region
+        redirect_to controller: "summoners", action: "show", summonerName: summonerName, region: region
       else
         matchlist["matches"].each do |match|
+
           unless Match.exists?(matchId: match["matchId"])
             match = Riot.get_match(region, match["matchId"])
               participant = match['participantIdentities'].find { |p| p['player']['summonerId'] == summonerId.to_i }
@@ -210,7 +218,7 @@ class ApplicationController < ActionController::Base
                 timestamp = matchlist["matches"].find { |t| t['matchId'].to_i == match["matchId"].to_i}
             new_match = Match.create(
                   matchId: match['matchId'],
-                  summonerId: summonerId,
+                  summoner_id: id,
                   kills: participant_info['stats']['kills'],
                   deaths: participant_info['stats']['deaths'],
                   assists: participant_info['stats']['assists'],
@@ -238,9 +246,9 @@ class ApplicationController < ActionController::Base
                   tripleKills: participant_info['stats']['tripleKills'],
                   quadraKills: participant_info['stats']['quadraKills'],
                   pentaKills: participant_info['stats']['pentaKills'],
-                  profile_id: id,
+                  summoner_id: id,
                   timestamp: timestamp['timestamp'],
-                  championId: championId,
+                  champion_id: champion.id,
                   win: participant_info['stats']['winner'],
                   mdScore: mdScore
               )

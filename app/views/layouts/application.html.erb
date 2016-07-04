@@ -28,113 +28,89 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="/">MasteryDex</a>
-    </div>
+  <div class="collapse navbar-collapse">
+    <% unless current_user %>
+      <a href="/"><button type="button" class="btn btn-default navbar-form navbar-left form-control"><span class='glyphicon glyphicon-home'> </span></button></a>
+    <% else %>
+      <a href="/dashboard"><button type="button" class="btn btn-default navbar-form navbar-left form-control"><span class='glyphicon glyphicon-home'> </span></button></a>
+    <% end %>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-				<% unless current_user %>
-					<li><a href="/"><span class='glyphicon glyphicon-home text-center'> </span></a></li>
-				<% else %>
-					<li><a href="/dashboard"><span class='glyphicon glyphicon-home text-center'> </span></a></li>
-				<% end %>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Summoners <span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li><form action='/summoners/search' class='navbar-form navbar-left' method='post' role="search">
-			        <div class="form-group-lg">
-			        <input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
-			        <!-- <input type='hidden' name='summoner[id]' value=''> -->
-			        <input class='form-control' name='summoner[summonerName]' type='text' placeholder='Summoner Name' required>
-			        <select class='form-control' name='summoner[region]' required autofocused>
-			          <option value="na">NA</option>
-			          <option value="br">BR</option>
-			          <option value="eune">EUNE</option>
-			          <option value="euw">EUW</option>
-			          <option value="jp">JP</option>
-			          <option value="kr">KR</option>
-			          <option value="lan">LAN</option>
-			          <option value="las">LAS</option>
-			          <option value="oce">OCE</option>
-			          <option value="ru">RU</option>
-			          <option value="tr">TR</option>
-			        </select>
-			        <button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search' required> </span></button>
+    <% current_uri = request.env['PATH_INFO'] %>
+			<% if current_uri != "/" %>
+      <!-- TO SHOW BACK TO summoner BUTTON AT THE SHOW GRAPH VIEW PAGE-->
+      <% if @matches %>
+        <form action= '/summoners/<%= @summoner.summonerName %>/<%= @summoner.region %>'>
+          <button type="submit" class="btn btn-default navbar-form navbar-left form-control">Back to summoner</button>
+        </form>
+      <!-- TO SHOW BACK TO summoner BUTTON AT THE SHOW GRAPH PAGE -->
+      <!-- TO SHOW BACK TO CHAMP GRAPH BUTTON AT THE MATCH VIEW PAGE-->
+      <% elsif @match %>
+        <form action= '/summoners/<%= @summoner.id %>/graph/<%= @champion.championId %>'>
+          <button type="submit" class="btn btn-default navbar-form navbar-left form-control">Back to Champion Graph</button>
+        </form>
+      <!-- TO SHOW BACK TO CHAMP GRAPH BUTTON AT THE MATCH VIEW PAGE -->
+      <% end %>
+      <form action='/summoners/search' class='navbar-form navbar-left' method='post' role="search">
+        <div class="form-group">
+        <input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
+        <!-- <input type='hidden' name='summoner[id]' value=''> -->
+        <input class='form-control form-control-block' name='summoner[summonerName]' type='text' placeholder='Summoner Name' required>
+        <select class='form-control form-control-block' name='summoner[region]' required autofocused>
+          <option value="na">NA</option>
+          <option value="br">BR</option>
+          <option value="eune">EUNE</option>
+          <option value="euw">EUW</option>
+          <option value="jp">JP</option>
+          <option value="kr">KR</option>
+          <option value="lan">LAN</option>
+          <option value="las">LAS</option>
+          <option value="oce">OCE</option>
+          <option value="ru">RU</option>
+          <option value="tr">TR</option>
+        </select>
+        <button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search' required> </span></button>
 
-			      </div>
-			      </form></li>
-            <li class="text-center">Favorites</li>
-						<li role="separator" class="divider"></li>
-						<% summoners = Summoner.all %>
-						<% summoners.each do |this| %>
-						<li><div class="btn-group" style="width:100%; text-align:middle;">
-							<button type="button" class="btn btn-default dropdown-toggle btn-block" id="dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" action="/summoners/<%= this.summonerName %>/<%= this.region %>">
-								<img class="img img-responsive pull-left" src="<%= this.icon %>" height="30px" width="30px" alt="" />
-									<h4 class="pull-left" style="text-align:middle"><%= this.summonerName %> <span class="caret"></span></h4>
-							</button>
-							<ul class="dropdown-menu">
-								<li><form action='/summoners/<%= this.summonerName%>/<%=this.region%>' class='' id="compare_search" method='' role="search">
-											<button type="submit" class="btn btn-default btn-block"><span class="glyphicon glyphicon-user"></span> Summoner Profile</button>
-										</form>
-								</li>
+      </div>
+      </form>
+		<% end %>
+    <div class="navbar-form navbar-right">
+      <% if logged_in? %>
+        <a href="/users/<%= current_user.name %>/edit"><button class="btn btn-default">Edit Profile</button></a>
+        <a href="/logout"><button class="btn btn-default">Logout</button></a>
+      <% else %>
+        <a href="/signup"><button class="btn btn-default">Sign Up</button></a>
 
-								<li><button type="button" class="btn btn-default btn-block" name="button"><span class="glyphicon glyphicon-remove-sign"></span> Unfollow</button></li> <!-- form to UnFavorite here? -->
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#loginModal">Login</button>
 
-								<li><form class="" action="" method="post"> <!-- Form to Compare Summoner straight from Favorites list -->
-								<input type="hidden" name="region" value="<%= @summoner['region'] %>">
-								<input type='hidden' name='summonerName' value='<%= @summoner["summonerName"] %>'>
-								<input type="hidden" name="championId" value="<%= @champion['championId'] %>">
-								<input type="hidden" name="summoner[summonerName]" value="<%= this.summonerName %>">
-								<input type="hidden" name="summoner[region]" value="<%= this.region %>">
-								<button type="submit" class="btn btn-default btn-block" name="button"><span class="glyphicon glyphicon-transfer"></span> Compare Stats</button>
-								</form></li>
+        <div style="color:black" class="modal" id="loginModal" tabindex="-1" role="dialog"
+             aria-labelledby="loginModalLabel1" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="loginModalLabel1">Welcome back!</h4>
+              </div>
+              <div class="modal-body">
 
-							</ul>
-						</div></li>
-						<% end %>
-          </ul>
+                  <form class="form-register" action="/login" method="post">
+                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                    <input class="form-control" placeholder="Email" type="text" name="email"><br>
+                    <input class="form-control" placeholder="Password" type="password" name="password"><br>
+                    <button class="form-control" type="submit" class="btn btn-success btn-md btn-block">Login</button>
+                  </form>
 
-        </li>
-      </ul>
-				<div class="navbar-form navbar-right">
-					<% if logged_in? %>
-						<a href="/users/<%= current_user.name %>/edit"><button class="btn btn-default">Edit Profile</button></a>
-						<a href="/logout"><button class="btn btn-default">Logout</button></a>
-					<% else %>
-						<a href="/signup"><button class="btn btn-default">Sign Up</button></a>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#loginModal">Login</button>
+      <% end %>
 
-						<div style="color:black" class="modal" id="loginModal" tabindex="-1" role="dialog"
-								 aria-labelledby="loginModalLabel1" aria-hidden="true">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-										<h4 class="modal-title" id="loginModalLabel1">Welcome back!</h4>
-									</div>
-									<div class="modal-body">
-
-											<form class="form-register" action="/login" method="post">
-												<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-												<input class="form-control" placeholder="Email" type="text" name="email"><br>
-												<input class="form-control" placeholder="Password" type="password" name="password"><br>
-												<button class="form-control" type="submit" class="btn btn-success btn-md btn-block">Login</button>
-											</form>
-
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-									</div>
-								</div>
-							</div>
-						</div>
-
-					<% end %>
-				</div>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

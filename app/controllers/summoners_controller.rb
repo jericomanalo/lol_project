@@ -46,6 +46,7 @@ class SummonersController < ApplicationController
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
 
 		# Populate global variables to separate the Champions with Masteries and those without
+<<<<<<< HEAD
 			mastered_supports = @champion_masteries.includes(:champions).where('champions.tag = ?', 'Support').references(:champions)
 			unmastered_supports = @champions.where(tag: "Support").where.not(id: mastered_supports.pluck(:champion_id).flatten)
 			mastered_tanks = @champion_masteries.includes(:champions).where('champions.tag = ?', 'Tank').references(:champions)

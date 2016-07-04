@@ -1,4 +1,6 @@
-<body class="background_grad">
+
+<body id="summoner_page" class="background">
+>>>>>>> 19ac6c312aefabf17a9ab67ff7ee061322935343
 <div class="container container-fluid">
   	<div id="summoner_banner" class="page-header">
       <div class="row">
@@ -53,13 +55,13 @@
               </div>
               <% end %>
             </p>
-        <% @champion_list.each do |key, value| %>
+       < <% @champion_list.each do |key, value| %>
          <div class="col-md-4">
-           <h1 class="page-header white"><%= key %>: <small> <%= value[:Progress] %> / <%= ((value[:Mastered].count + (value[:Unmastered].count))*7) %> Champ Lvls </small></h1>
+           <h1 class="page-header white"><%= key %>: <small><%= value[:Mastered].count %> / <%= value[:Mastered].count + value[:Unmastered].count %> Mastered </small></h1>
            <div class="progress">
-             <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="<%= value[:Mastered].count %>" aria-valuemin="0" aria-valuemax="<%= ((value[:Mastered].count + (value[:Unmastered].count))*7) %>" style="color: rgb(0, 87, 125); width: <%= number_to_percentage((value[:Progress].to_f / (value[:Unmastered].count*7)*100), precision: 2) %>">
-               <!-- <%= number_to_percentage((value[:Mastered].count.to_f / (value[:Mastered].count + value[:Unmastered].count))*100) %> -->
-               <%= number_to_percentage((value[:Progress].to_f / ((value[:Mastered].count + (value[:Unmastered].count))*7)*100), precision: 2) %>
+             <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="<%= value[:Mastered].count %>" aria-valuemin="0" aria-valuemax="<%= value[:Mastered].count + value[:Mastered].count %>" style="color: rgb(0, 87, 125); width: <%= number_to_percentage((value[:Mastered].count.to_f / (value[:Mastered].count + value[:Unmastered].count))*100) %>">
+               <!-- Progress bar should be of total champion levels added together out of max possible champ level (7 per champion) -->
+               <%= number_to_percentage((value[:Mastered].count.to_f / (value[:Mastered].count + value[:Unmastered].count))*100) %>
              </div>
            </div>
            <div class="mCustomScrollbar" id="champ_mastery_wrapper" >

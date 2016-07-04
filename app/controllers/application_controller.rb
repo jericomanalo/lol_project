@@ -116,7 +116,7 @@ class ApplicationController < ActionController::Base
     end
 
     def self.get_api_key
-      "af407e29-b013-4c39-9385-b54cf05cf67c"
+      ENV["LOL_SECRET"]
     end
   end
 
@@ -159,8 +159,6 @@ class ApplicationController < ActionController::Base
     end
 
     def self.create_match(summonerId, championId, region, summonerName, id)
-      puts "PARAMS___________________"
-      puts summonerId, championId, region, summonerName, id
       champion = Champion.find_by(:championId => championId)
       last_known_match = Match.where(:summoner_id => id, :champion_id => champion.id).order('timestamp desc').first
       if last_known_match != nil

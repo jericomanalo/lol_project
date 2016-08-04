@@ -27,6 +27,7 @@
   margin-bottom:200px;
   margin-top:200px;
 }
+
 #footer{
   background-color: white;
   color:#464444;
@@ -51,7 +52,7 @@
 	height: 25px;
 	width: 25px;
 }
-
+/* - Navbar CSS - */
 .navbar {
   background-color: rgba(27, 47, 54, 0.8);
 	height: 25px;
@@ -59,6 +60,77 @@
 .navbar-form{
 	margin-top: -39px;
 }
+#summoner_dropdown{
+  min-width: 315px;
+}
+#user_dropdown{
+  min-width: 240px;
+}
+.dropdown-toggle{
+  color:#333;
+  text-decoration: none;
+}
+.dropdown-toggle:focus{
+  color:#333;
+  text-decoration: none;
+}
+.dropdown-toggle:hover{
+  color:#333;
+  text-decoration: none;
+}
+
+.inline{
+  display:inline
+}
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    min-width: 240px;
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
 
 #summoner_page {
 	background-image: url("/images/bg.png");
@@ -79,6 +151,8 @@
   margin-top: 20px;
   background-color: rgba(27, 47, 54, 0.90);
   padding-left:15px;
+  -webkit-box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
+  box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
 }
 #top_champ{
   vertical-align: middle;
@@ -110,6 +184,8 @@
   background-color: rgb(27, 47, 54);
   border-radius: 5px;
   text-align: center;
+  -webkit-box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
+  box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
 }
 .white {
 	color: white;
@@ -150,8 +226,9 @@
 }
 #champion_list{
 	background-color: rgba(27, 47, 54, 0.90);
-  height: auto;
   padding-bottom: 15px;
+  -webkit-box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
+  box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
 
 }
 #champ_mastery_wrapper {
@@ -235,7 +312,7 @@ text{
 }
 .opaque{
   background-color: rgba(51, 58, 64, 0.45);
-
+}
 /* Align champion_token and token_amount on top of eachother to produce champ_token */
 #champion_token, #token_amount, #token_border{
   position: absolute;
@@ -247,6 +324,8 @@ text{
 }
 #champion_token{
   z-index: -2;
+  -webkit-filter: grayscale(50%); /* Chrome, Safari, Opera */
+  filter: grayscale(50%);
 }
 #token_amount{
   top:40%;
@@ -272,7 +351,6 @@ text{
   height: 70px;
   width: 70px;
 }
-
 #noChest{
   -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
   filter: grayscale(100%);
@@ -324,7 +402,7 @@ text{
 }
 
 /* Show_Graph Chest color-filled when true, black/white when false */
-#chest, #noChest{
+#chest{
   height: 70px;
   width: 70px;
 }
@@ -343,10 +421,10 @@ text{
 #summoner_header{
   padding-top: 15px;
 }
-#favorites, #following{
+.favorites, .following{
   padding:5px;
 }
-#favorites > ul, #following > ul {
+.favorites > ul, .following > ul {
   list-style:none;
   padding-left: 0;
 }
@@ -359,6 +437,21 @@ div.hoverRow {
 div.hoverRow:hover {
 	background-color: #e3e3e3;
 }
+
+/* USER DASHBOARD*/
+#list_btn{
+  margin-bottom: 2px;
+  width:100%;
+}
+#followers{
+  padding: 5px;
+}
+.well{
+  background-color:rgba(108, 145, 159, 0.94);
+}
+
+
+
 /*/* CSS - Cascading Style Sheet */
 /* Palette color codes */
 /* Palette URL: http://paletton.com/#uid=33q0u0kllllaFw0g0qFqFg0w0aF */

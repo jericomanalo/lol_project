@@ -186,11 +186,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   json
-<<<<<<< HEAD
-  paperclip
-=======
   paperclip (~> 4.2)
->>>>>>> 19ac6c312aefabf17a9ab67ff7ee061322935343
   pg
   rails (= 4.2.5.1)
   rails_12factor

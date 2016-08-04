@@ -1,0 +1,151 @@
+<body class="background_grad">
+
+<div class="container-fluid text-center">
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+      <div class="well" id="summoner_banner">
+        <img class="img img-responsive" src="https://avatars1.githubusercontent.com/u/15368821?v=3&s=400" alt="example img" height="250px" width="250px" />
+        <!-- <div class="stats">
+          <a href="<%= following_user_path(@user) %>">
+            <strong id="following" class="stat">
+              <%= @user.following.count %>
+            </strong>
+            following
+          </a>
+          <a href="<%= followers_user_path(@user) %>">
+            <strong id="followers" class="stat">
+              <%= @user.followers.count %>
+            </strong>
+            followers
+          </a>
+        </div> -->
+
+        <% if @current_user.following?(@user) %>
+          <%= form_for(current_user.active_relationships.find_by(followed_id: @user.id),
+                      html: { method: :delete }) do |f| %>
+            <%= button_tag( :id => "follow_btn", :class => "btn btn-danger") do %>
+            Unfollow <span class="fa fa-user-times"></span>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= form_for(current_user.active_relationships.build) do |f| %>
+            <div><%= hidden_field_tag :followed_id, @user.id %></div>
+            <%= button_tag( :id => "follow_btn", :class => "btn btn-primary") do %>
+            Follow <span class="fa fa-user-plus"></span>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+      <ul class="nav nav-pills" id="tabContent">
+              <li class="active"><a href="#following_list" data-toggle="tab">Following <span class="badge"><%= @user.following.count %></span></a></li>
+              <li><a href="#followers_list" data-toggle="tab">Followers <span class="badge"><%= @user.followers.count %></span></a></li>
+      </ul>
+
+            <div class="tab-content" id="summoner_banner">
+              <div class="tab-pane active" id="following_list">
+                  <% users = @user.following %>
+                  <% if users.count == 0 %>
+                    <p>
+                      Looks like <%= @user.name %> doesn't have any followers yet!
+                    </p>
+                  <% else %>
+                  <% users.each do |this| %>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <a href="/users/<%= this.id %>"><button type="button" class="btn btn-default" id="list_btn">
+                          <img class="img img-responsive pull-left" src="https://avatars1.githubusercontent.com/u/15368821?v=3&s=400" height="40px" width="40px" alt="example img" />
+                            <h4 class="pull-left" style="text-align:middle"> <%= this.name %></h4>
+                        </button></a>
+                    </div>
+                </div>
+                  <% end %>
+                  <% end %>
+              </div>
+              <div class="tab-pane" id="followers_list">
+                  <% users = @user.followers %>
+                  <% if users.count == 0 %>
+                    <p>
+                      Looks like <%= @user.name %> doesn't have any followers yet!
+                    </p>
+                  <% else %>
+                  <% users.each do |this| %>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <a href="/users/<%= this.id %>"><button type="button" class="btn btn-default" id="list_btn">
+                          <img class="img img-responsive pull-left" src="https://avatars1.githubusercontent.com/u/15368821?v=3&s=400" height="40px" width="40px" alt="example img" />
+                            <h4 class="pull-left" style="text-align:middle"> <%= this.name %></h4>
+                        </button></a>
+                    </div>
+                </div>
+                  <% end %>
+                  <% end %>
+              </div>
+
+          </div>
+    </div>
+    <div class="col-sm-8 text-left well" id="summoner_banner">
+      <h2 class="text-center"><%= @user.name %></h1>
+      <hr>
+      <div class="col-sm-12">
+
+      	<div class="">
+
+	      	<h3>MasteryDex Feed</h3>
+	      	<p>What others are posting...</p>
+
+	      	<div class='well'>
+	      		<p>Name</p>
+	      		<p>Random Post</p>
+	      	</div>
+
+	      	<div class='well'>
+	      		<p>Name</p>
+	      		<p>Random Post</p>
+	      	</div>
+
+	    	</div>
+
+			</div>
+    </div>
+    <div class="col-sm-2 sidenav">
+      <div class="well white favorites" id="summoner_banner">
+      	<h3 class="page-header">Favorite Summoners</h3>
+      	<ul>
+          <% if @user.summoners.count > 0 %>
+            <% @user.summoners.each do |favorite| %>
+              <li>
+
+                <div class="btn-group" style="width:100%; text-align:middle;">
+                  <a href="/summoners/<%= favorite.summonerName %>/<%= favorite.region %>">
+                    <button type="button" class="btn btn-default btn-block">
+                    <img class="img img-responsive pull-left" src="<%= favorite.icon %>" height="40px" width="40px" alt="" />
+                      <h4 class="pull-left" style="text-align:middle"><%= favorite.summonerName %></h4>
+                  </button>
+                  </a>
+                </div>
+
+              </li>
+            <% end %>
+            <% else %>
+            <li class="text-center">Looks like you dont have any favorites yet,</li>
+            <li class="text-center">search for a summoner and click the <span class="glyphicon glyphicon-heart-empty"></span></li>
+            <li class="text-center">to start getting updates on that player!</li>
+          <% end %>
+        </ul>
+      	<br>
+      	<br>
+      	<br>
+      	<br>
+      	<br>
+      	<br>
+      	<br>
+      	<br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <p>Footer Text</p>
+</footer>
+</body>

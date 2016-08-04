@@ -1,18 +1,18 @@
 class SummonersController < ApplicationController
+	before_action :current_user
 	def index
+		if Summoner.count > 0
+			randomInt = rand(1...(Summoner.count))
+			@randomSummoner = Summoner.find(1)
+		end
 		if Champion.all.count < 130
 			all_champions = Riot.get_all_champions(params)
 			all_champions = all_champions['data']
 			all_champions.each do |this|
 				tag = this[1]["tags"][0].to_s
-				Champion.create(championId: this[1]["id"], name: this[1]["name"], title: this[1]["title"], icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this[1]['key']+".png", splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+this[1]['key']+"_0.jpg", tag: tag)
+				Champion.create(championId: this[1]["id"], name: this[1]["name"], title: this[1]["title"], icon: "http://ddragon.leagueoflegends.com/cdn/6.15.1/img/champion/"+this[1]['key']+".png", splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+this[1]['key']+"_0.jpg", tag: tag, lore: this[1]["lore"])
 			end
 		end
-		# Method for random summoner needs to be changed
-		# randomInt = rand(1...(Summoner.count)+1)
-		# if Summoner.count > 0
-		# @randomsummoner = Summoner.find(randomInt)
-		# end
 	end
 
 	def search
@@ -46,7 +46,6 @@ class SummonersController < ApplicationController
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
 
 		# Populate global variables to separate the Champions with Masteries and those without
-<<<<<<< HEAD
 			mastered_supports = @champion_masteries.includes(:champions).where('champions.tag = ?', 'Support').references(:champions)
 			unmastered_supports = @champions.where(tag: "Support").where.not(id: mastered_supports.pluck(:champion_id).flatten)
 			mastered_tanks = @champion_masteries.includes(:champions).where('champions.tag = ?', 'Tank').references(:champions)

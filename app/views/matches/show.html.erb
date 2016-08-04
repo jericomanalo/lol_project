@@ -82,26 +82,26 @@
         </div>
         <hr>
       <div height="200px" width="400px">
-        <%= pie_chart({"Magic Damage Dealt" => @match.magicDamage, "Physical Damage Dealt" => @match.physicalDamage, "Damage Taken" => @match.damageTaken}, colors: ["rgba(0, 87, 125, 0.6)", "rgba(145, 85, 5, 0.6)", "rgba(179, 40, 4, 0.6)"]) %>
+        <%= pie_chart({"Magic Damage Dealt" => @match.magicDamage, "Physical Damage Dealt" => @match.physicalDamage, "Damage Taken" => @match.damageTaken}, colors: ["rgba(27, 47, 54, 0.90)", "rgba(145, 85, 5, 0.6)", "rgba(179, 40, 4, 0.6)"]) %>
         <h1 class="page-header text-center"> Support Stats: </h1>
         <div class="row">
           <div class="col-lg-4">
-            <%= column_chart({"This Match" => @match.totalHeal, "Personal Best" => @pb_totalHeal.totalHeal}, colors: ["rgba(0, 71, 102, 0.7)", "rgba(0, 87, 125, 0.6)"], ytitle:"Total Healed" ) %>
+            <%= column_chart({"This Match" => @match.totalHeal, "Personal Best" => @pb_totalHeal.totalHeal}, colors: ["rgba(27, 47, 54, 0.90)", "rgba(27, 47, 54, 0.90)"], ytitle:"Total Healed" ) %>
           </div>
           <div class="col-lg-4">
-            <%= column_chart({"This Match" => @match.totalCcDealt, "Personal Best" => @pb_totalCcDealt.totalCcDealt}, colors: ["rgba(0, 71, 102, 0.7)", "rgba(0, 87, 125, 0.6)"], ytitle:"Total CC Dealt (seconds)" ) %>
+            <%= column_chart({"This Match" => @match.totalCcDealt, "Personal Best" => @pb_totalCcDealt.totalCcDealt}, colors: ["rgba(27, 47, 54, 0.90)", "rgba(27, 47, 54, 0.90)"], ytitle:"Total CC Dealt (seconds)" ) %>
           </div>
           <div class="col-lg-4">
-            <%= column_chart({"This Match" => @match.wardsPlaced, "Personal Best" => @pb_wardsPlaced.wardsPlaced}, colors: ["rgba(0, 71, 102, 0.7)", "rgba(0, 87, 125, 0.6)"], ytitle:"Wards Placed" ) %>
+            <%= column_chart({"This Match" => @match.wardsPlaced, "Personal Best" => @pb_wardsPlaced.wardsPlaced}, colors: ["rgba(27, 47, 54, 0.90)", "rgba(27, 47, 54, 0.90)"], ytitle:"Wards Placed" ) %>
           </div>
         </div>
         <h1 class="page-header text-center"> CS Stats: </h1>
         <div class="row">
           <div class="col-lg-5 col-lg-offset-1">
-            <%= column_chart({"This Match" => @match.cs, "Personal Best" => @pb_cs.cs}, colors: ["rgba(5, 129, 114, 0.6)", "rgba(0, 96, 84, 0.7)"], ytitle:"Total CS") %>
+            <%= column_chart({"This Match" => @match.cs, "Personal Best" => @pb_cs.cs}, colors: ["rgba(179, 40, 4, 0.6)", "rgba(179, 40, 4, 0.6)"], ytitle:"Total CS") %>
           </div>
           <div class="col-lg-5">
-            <%= column_chart({"This Match" => @match.jungleCs, "Personal Best" => @pb_jungleCs.jungleCs}, colors: ["rgba(5, 129, 114, 0.6)", "rgba(0, 96, 84, 0.7)"], ytitle:"Jungle CS") %>
+            <%= column_chart({"This Match" => @match.jungleCs, "Personal Best" => @pb_jungleCs.jungleCs}, colors: ["rgba(179, 40, 4, 0.6)", "rgba(179, 40, 4, 0.6)"], ytitle:"Jungle CS") %>
           </div>
 
         </div>

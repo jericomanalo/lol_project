@@ -1,11 +1,23 @@
 
-<body id="summoner_page" class="background">
->>>>>>> 19ac6c312aefabf17a9ab67ff7ee061322935343
+<body class="background_grad">
 <div class="container container-fluid">
-  	<div id="summoner_banner" class="page-header">
-      <div class="row">
+  <div class="row">
+      <div class="row page-header" id="summoner_banner">
         <div class="col-md-4">
           <h1 style="width:500px"><img height="110px" width="110px" src="<%= @summoner['icon'] %>"> <%= @summoner['summonerName'] %> :<small> Lvl <%= @summoner["summonerLevel"] %></small></h1>
+          <% if !isFavorite(@summoner.id) %>
+          <form action="/users/favorite" method="post">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <input type="hidden" name="summonerId" value="<%= @summoner.summonerId %>">
+          <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-heart-empty"></span> Favorite</button>
+          </form>
+          <% else %>
+          <form action="/users/unfavorite" method="post">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <input type="hidden" name="summonerId" value="<%= @summoner.summonerId %>">
+          <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-heart"></span> Unfavorite</button>
+          </form>
+          <% end %>
         </div>
         <div class="col-lg-4 text-right">
           <h1 style="margin-top:55px;">Mastery Score: <small><%= @champion_masteries.map {|s| s['championLevel']}.reduce(0, :+) %></small></h1>
@@ -41,7 +53,6 @@
         </div>
 
       </div>
-    </div>
 
      <div id="champion_list" class="container text-center">
        <form class="form-inline" action="/matches/create" method="post">
@@ -116,5 +127,5 @@
 </div>
 
 
-
+  </div> <!-- end of row -->
 </body>

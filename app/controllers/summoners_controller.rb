@@ -1,5 +1,4 @@
 class SummonersController < ApplicationController
-	before_action :current_user
 	def index
 		if Summoner.count > 0
 			randomInt = rand(1...(Summoner.count))

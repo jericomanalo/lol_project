@@ -5,7 +5,11 @@
       <div class="row page-header" id="summoner_banner">
         <div class="col-md-4">
           <h1 style="width:500px"><img height="110px" width="110px" src="<%= @summoner['icon'] %>"> <%= @summoner['summonerName'] %> :<small> Lvl <%= @summoner["summonerLevel"] %></small></h1>
-          <% if !isFavorite(@summoner.id) %>
+          <% if !@current_user %>
+          <p>
+            Sign up or log in to favorite this Summoner!
+          </p>
+          <% elsif !isFavorite(@summoner.id) %>
           <form action="/users/favorite" method="post">
           <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
           <input type="hidden" name="summonerId" value="<%= @summoner.summonerId %>">

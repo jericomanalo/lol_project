@@ -1,5 +1,6 @@
 class SummonersController < ApplicationController
 	def index
+		current_user
 		if Summoner.count > 0
 			randomInt = rand(1...(Summoner.count))
 			@randomSummoner = Summoner.find(1)

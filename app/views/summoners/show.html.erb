@@ -90,7 +90,7 @@
             <!-- key is supports/etc -->
             <!-- value is the mastery object -->
             <% value[:Mastered].each do |this| %>
-            <li class="<%= this.champion.name %>"><div id="toolTip">
+            <li class="<%= this.champion.name.delete(' ') %>"><div id="toolTip">
               <div <% if this == value[:Mastered].first %> class="selected" <% end %>>
                 <img class="img img-responsive mastered" src="<%= this.champion.splash %>" id="img_<%= this.champion.id %>">
                 <div id="tail2"></div>
@@ -113,7 +113,7 @@
             <br>
             <% end %>
             <% value[:Unmastered].each do |this| %>
-            <li class="<%= this.name %>"><div>
+            <li class="<%= this.name.delete(' ') %>"><div>
               <div id="toolTip">
                 <img src="<%= this.splash %>" class="img img-responsive unmastered" id="img_<%= this.id %>">
                 <h1 class="text-center unmastered_mark"><span class="fa fa-question-circle-o fa-5x"></span>
@@ -137,14 +137,14 @@
                         <!-- key is supports/etc -->
                         <!-- value is the mastery object -->
                         <% value[:Mastered].each do |this| %>
-                          <li class="text-left mastered_text <%= this.champion.name %>" value="<%= this.champion.id %>" id="id_<%= this.champion.id %>">
+                          <li class="text-left mastered_text <%= this.champion.name.delete(' ') %>" value="<%= this.champion.id %>" id="id_<%= this.champion.id %>">
                             <h1><a href="#"><small> No<%= this.champion.id %></small> <span><%= this.champion.name %></span></a><small>
                               <img class="img" src="/images/Champion_mastery_tier_<%= this.championLevel %>.png" alt="" height="35px" width="35px" /></small>
                             </h1>
                           </li>
                         <% end %>
                         <% value[:Unmastered].each do |this| %>
-                            <li class="text-left <%= this.name %>" value="<%= this.id %>" id="id_<%= this.id %>"><a href="#"> <h1><small>No <%= this.id %></small> <span><%= this.name %></span></a></h1></li>
+                            <li class="text-left <%= this.name.delete(' ') %>" value="<%= this.id %>" id="id_<%= this.id %>"><a href="#"> <h1><small>No <%= this.id %></small> <span><%= this.name %></span></a></h1></li>
                         <% end %>
                         <% end %>
             </select>

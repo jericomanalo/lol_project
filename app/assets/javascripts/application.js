@@ -26,8 +26,8 @@ $(document).ready(function (){
             var splash_height = $("#splash_container").height();
             var offset = (splash_height - imgHeight) / 2;
             console.log("IMG HEIGHT", imgHeight, splash_height);
-            $('#splash_container').scrollTo($('#splash_container li:eq(0)'), 800, {offset: -offset});
-            $("#name_container").scrollTo($('#name_container li:eq(0)'),800, {offset: -(offset * 2 )});
+            $('#splash_container').scrollTo($('#splash_container li:eq(0)'), 100, {offset: -offset});
+            $("#name_container").scrollTo($('#name_container li:eq(0)'),100, {offset: -(offset * 2 )});
 
             $("#splash_container li").eq(current).addClass('first');
             $('#name_container li').eq(current).addClass('active');
@@ -48,7 +48,7 @@ $(document).ready(function (){
                 next.addClass('active').trigger('click');
             });
             $('#searchlist a').click(function (){
-              var champ_name = $(this).find('span').html().replace("'", "\\'").replace('"', '\\"');
+              var champ_name = $(this).find('span').html().replace("'", "\\'").replace('"', '\\"').replace(/\s/g, '');
               console.log("CLICKED:", champ_name);
               var li_link = $("#name_container li."+champ_name);
               console.log("LI_LINK", li_link);
@@ -57,7 +57,7 @@ $(document).ready(function (){
             });
             //when li item click also scroll with offsets
             $("#name_container li").click(function (){
-              var champ_name = $(this).find('span').html().replace("'", "\\'").replace('"', '\\"');
+              var champ_name = $(this).find('span').html().replace("'", "\\'").replace('"', '\\"').replace(/\s/g, '');
               console.log("CHAMP CLICKED:", champ_name);
               var champion_id = $(this).val();
               console.log("CHAMPION____ID:", champion_id);
@@ -71,9 +71,9 @@ $(document).ready(function (){
               var offset = (imgHeight - document.getElementById("splash_container").clientHeight) / 2;
               $('.active').removeClass('active');
               $(this).addClass('active');
-              $('#splash_container').scrollTo($("#splash_container li."+champ_name), 800, {offset: offset});
-              // $('#name_container ul').scrollTo(document.getElementById(selected), 800);
-              $('#name_container .scroll').scrollTo($('#name_container li.'+champ_name), 800, {offset: -name_offset});
+              $('#splash_container').scrollTo($("#splash_container li."+champ_name), 100, {offset: offset});
+              // $('#name_container ul').scrollTo(document.getElementById(selected), 100);
+              $('#name_container .scroll').scrollTo($('#name_container li.'+champ_name), 100, {offset: -name_offset});
               return false;
             });
 

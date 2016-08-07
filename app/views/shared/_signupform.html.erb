@@ -1,0 +1,37 @@
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#signUpModal"><span class="fa fa-plus-square" aria-hidden="true"></span> Sign Up</button>
+
+<div style="color:black" class="modal" id="signUpModal" tabindex="-1" role="dialog"
+aria-labelledby="signUpModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title" id="signUpModalLabel">Sign Up to MasteryDex!</h4>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h2 class="form-heading">Why Sign Up?</h2>
+  					<p>Create an account to keep track of your favorite summoners, customize your dashboard, and all that other stuff.</p>
+        </div>
+        <div class="col-md-6">
+          <form class="form-horizontal" style="width: 100%;" action ="/users" role="form" method="post">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <input class="form-control input-block-level" placeholder="Name" type="text" name="user[name]" style="width: 100%;">
+            <input class="form-control input-block-level" placeholder="Email" type="text" name="user[email]" style="width: 100%;">
+            <input class="form-control input-block-level" placeholder="Password" type="password" name="user[password]" style="width: 100%;">
+            <input class="form-control input-block-level" placeholder="Confirm Password" type="password" name="user[password_confirmation]" style="width: 100%;">
+            <button type='submit' class='btn btn-primary btn-md btn-block'>Create Account</button><br>
+          </form>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>

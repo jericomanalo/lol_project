@@ -16,6 +16,8 @@ class User < ActiveRecord::Base
                                   dependent:   :destroy
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
+  # Post relationships
+  has_many :posts, dependent: :destroy
 
 
   # Validations upon create User

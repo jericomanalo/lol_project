@@ -43,6 +43,7 @@ class SummonersController < ApplicationController
 		@champion_masteries = @summoner.champion_masteries.all
 		@top_champion = @champion_masteries.includes(:champion).order(current_points: :desc).first
 		@test_query = @summoner.champion_masteries.includes(:champions)
+		@favorites = Favorite.where(:summoner_id => @summoner.id)
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
 
 		# Populate global variables to separate the Champions with Masteries and those without

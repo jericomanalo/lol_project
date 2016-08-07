@@ -5,7 +5,7 @@
   <div class="row content">
     <div class="col-sm-2 sidenav">
       <div class="well" id="summoner_banner">
-        <img class="img img-responsive" src="https://avatars1.githubusercontent.com/u/15368821?v=3&s=400" alt="example img" height="250px" width="250px" />
+        <img class="img img-responsive" src="https://thesocietypages.org/socimages/files/2009/05/vimeo.jpg" alt="example img" height="250px" width="250px" />
       </div>
       <ul class="nav nav-pills" id="tabContent">
               <li class="active"><a href="#following" data-toggle="tab">Following <span class="badge"><%= @current_user.following.count %></span></a></li>
@@ -59,14 +59,7 @@
       <p class="text-center">Share some of your thoughts to your followers.</p>
 	      <div class="col-sm-12 well">
 	      	<div class="col-sm-12">
-		      <form class="form-register" action ='' method =''>
-					  <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-
-					  <input type='hidden' name='current_user.id' value='<%=  %>'>
-
-					  <textarea class="form-control" rows="6" name="content"></textarea>
-					  <button type='submit' class='btn btn-primary btn-md btn-block'>Post it</button>
-					</form>
+		          <%= render 'shared/postform' %>
 				</div>
 			</div>
       <hr>
@@ -77,15 +70,18 @@
 	      	<h3>MasteryDex Feed</h3>
 	      	<p>What others are posting...</p>
 
-	      	<div class='well'>
-	      		<p>Name</p>
-	      		<p>Random Post</p>
-	      	</div>
+          <div class='well'>
+            <p>Name</p>
+            <p>Random Post</p>
+          </div>
 
-	      	<div class='well'>
-	      		<p>Name</p>
-	      		<p>Random Post</p>
-	      	</div>
+          <% if @user.posts.any? %>
+            <h3>Posts (<%= @user.posts.count %>)</h3>
+            <ol class="posts">
+              <%= render @posts %>
+            </ol>
+            <%= will_paginate @posts %>
+          <% end %>
 
 	    	</div>
 

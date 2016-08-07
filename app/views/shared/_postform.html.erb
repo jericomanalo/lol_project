@@ -1,0 +1,29 @@
+
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#postModal"><span class="fa fa-share-square-o"></span> Share a post!</button>
+
+<div style="color:black" class="modal" id="postModal" tabindex="-1" role="dialog"
+aria-labelledby="postModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title" id="postModalLabel">Share a post to your followers!</h4>
+    </div>
+    <div class="modal-body">
+
+      <form class="form-register" action ='' method =''>
+        <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+        <input type='hidden' name='current_user.id' value='<%=  %>'>
+        <textarea class="form-control" rows="6" name="content" style="min-width: 100%"></textarea>
+        <button type='submit' class='btn btn-primary btn-md btn-block'><span class="fa fa-share-square-o"></span> Post it!</button>
+      </form>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+    </div>
+  </div>
+</div>
+</div>

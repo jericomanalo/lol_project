@@ -1,0 +1,138 @@
+
+<body class="background_grad">
+<div class="container container-fluid">
+  <div class="row">
+      <div class="row page-header" id="summoner_banner">
+        <div class="col-md-4">
+          <h1 style="width:500px"><img height="110px" width="110px" src="<%= @summoner['icon'] %>"> <%= @summoner['summonerName'] %> :<small> Lvl <%= @summoner["summonerLevel"] %></small></h1>
+          <div class="text-left">
+            <button class="btn btn-default inline"><span class="badge inline"><%= @favorites.count %></span> favorites</button>
+            <% if !current_user %>
+            <p>
+              Sign up or log in to favorite this Summoner!
+            </p>
+            <% elsif !isFavorite(@summoner.id) %>
+            <form action="/users/favorite" method="post" class="inline">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <input type="hidden" name="summonerId" value="<%= @summoner.summonerId %>">
+            <button class="btn btn-default inline" type="submit"><span class="glyphicon glyphicon-heart-empty"></span> Favorite</button>
+            </form>
+            <% else %>
+            <form action="/users/unfavorite" method="post" class="inline">
+              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+              <input type="hidden" name="summonerId" value="<%= @summoner.summonerId %>">
+            <button class="btn btn-danger inline" type="submit"><span class="glyphicon glyphicon-heart"></span> Unfavorite</button>
+            </form>
+            <% end %>
+        </div>
+      </div>
+        <div class="col-lg-4 text-right">
+          <h1 style="margin-top:55px;">Mastery Score: <small><%= @champion_masteries.map {|s| s['championLevel']}.reduce(0, :+) %></small></h1>
+        </div>
+        <div class="col-lg-4"  >
+          <form class="form-inline" action="/matches/create" method="post">
+            <h1>Top Champion:
+            <div class="thumb" data-placement="bottom" data-toggle="popover" id="top_champ" data-container="body" data-placement="top" type="button" data-html="true" title="<%= @top_champion.champion.name %>" data-content="Current Level: <%= @top_champion.championLevel %> <br> Total Pts: <%= @top_champion.current_points %> <br> Points Until Next Level: <%= @top_champion.championPointsUntilNextLevel %> <br> Tokens Earned: <%= @top_champion.tokensEarned %> <br> Chest Earned: <% if @top_champion.chestGranted == 'true' %> Yes <% else %> No <% end %> <br> Last Played: <%= DateTime.strptime((@top_champion.lastPlayTime).to_s,'%s').strftime('%m/%d/%y') %>">
+            <input type="hidden" name="summonerId" value="<%= @summoner.summonerId %>">
+            <input type="hidden" name="region" value="<%= @summoner.region %>">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <input type="hidden" name="summonerName" value="<%= @summoner.summonerName %>">
+            <input type="hidden" name="id" value="<%= @summoner.id %>" >
+            <!-- need to fix z-index of chest and only show IF player has earned a chest -->
+            <% if @top_champion.chestGranted == 'true' %>
+            <img src="/images/chest.png" alt="" id="chests">
+            <% else %>
+            <img src="/images/chest.png" alt="" id="no_chest">
+            <% end %>
+            <input type="image" class="mastered_champ" height="110px" width= "110px" src="<%= @top_champion.champion.icon %>" name="championId" value="<%= @top_champion.champion.championId %>">
+            <% current_xp = @top_champion.championPointsSinceLastLevel %>
+            <% total_lvl_xp = ( @top_champion.championPointsUntilNextLevel + @top_champion.championPointsSinceLastLevel) %>
+            <% percent_to_level = number_to_percentage((current_xp.to_f / total_lvl_xp) * 100) %>
+            <div id="progress_wrapper">
+              <img src="/images/Champion_mastery_tier_<%= @top_champion.championLevel %>.png" id="icon_mastery_rank" height="90px" width="80px" alt=""/>
+              <div class="progress" id="icon_mastery_progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<%= @current_xp %>" aria-valuemin="0" aria-valuemax=" <%= total_lvl_xp %>" style="width: <%=percent_to_level %> ">
+                </div>
+              </div>
+            </div>
+          </div></h1>
+        </form>
+        </div>
+
+      </div>
+
+     <div id="champion_list" class="container text-center">
+       <form class="form-inline" action="/matches/create" method="post">
+        <div class="row">
+
+          <div class="form-group" style="z-index:0;" id="form_group">
+            <p class="white">
+              <% if flash[:error] %>
+              <div class='alert alert-danger' role='alert'>
+              <strong class="red"><%=h flash[:error] %></strong>
+              </div>
+              <% end %>
+            </p>
+        <% @champion_list.each do |key, value| %>
+         <div class="col-md-4">
+           <h1 class="page-header white"><%= key %>: <small><%= value[:Mastered].count %> / <%= value[:Mastered].count + value[:Unmastered].count %> Mastered </small></h1>
+           <div class="progress">
+             <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="<%= value[:Mastered].count %>" aria-valuemin="0" aria-valuemax="<%= value[:Mastered].count + value[:Mastered].count %>" style="color: rgb(0, 87, 125); width: <%= number_to_percentage((value[:Mastered].count.to_f / (value[:Mastered].count + value[:Unmastered].count))*100) %>">
+               <!-- Progress bar should be of total champion levels added together out of max possible champ level (7 per champion) -->
+               <%= number_to_percentage((value[:Mastered].count.to_f / (value[:Mastered].count + value[:Unmastered].count))*100) %>
+             </div>
+           </div>
+           <div class="mCustomScrollbar" id="champ_mastery_wrapper" >
+
+                          <!-- key is supports/etc -->
+                          <!-- k is the mastery object -->
+                          <% value[:Mastered].each do |this| %>
+                          <div class="thumb" data-placement="bottom" data-toggle="popover" id="sup-popover" data-container="body" data-placement="top" type="button" data-html="true" title="<%= this.champion.name %>" data-content="Current Level: <%= this.championLevel %> <br> Total Pts: <%= this.current_points %> <br> Points Until Next Level: <%= this.championPointsUntilNextLevel %> <br> Tokens Earned: <%= this.tokensEarned %> <br> Chest Earned: <% if this.chestGranted == 'true' %> Yes <% else %> No <% end %> <br> Last Played: <%= DateTime.strptime((this.lastPlayTime).to_s,'%s').strftime('%m/%d/%y') %>">
+                            <input type="hidden" name="summonerId" value="<%= @summoner.summonerId %>">
+                            <input type="hidden" name="region" value="<%= @summoner.region %>">
+                            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                            <input type="hidden" name="summonerName" value="<%= @summoner.summonerName %>">
+                            <input type="hidden" name="id" value="<%= @summoner.id %>" >
+                            <% if this.chestGranted == 'true' %>
+                            <img src="/images/chest.png" alt="" id="chests">
+                            <% else %>
+                            <img src="/images/chest.png" alt="" id="no_chest">
+                            <% end %>
+                            <input type="image" class="mastered_champ" height="110px" width= "110px" src="<%= this.champion.icon %>" name="championId" value="<%= this.champion.championId %>">
+                            <!-- We shouldn't do algorithms in front end, instead should be calling a function to get these values. -->
+                            <% current_xp = this.championPointsSinceLastLevel %>
+                            <% total_lvl_xp = ( this.championPointsUntilNextLevel + this.championPointsSinceLastLevel) %>
+                            <% percent_to_level = number_to_percentage(( current_xp.to_f / total_lvl_xp) * 100) %>
+                            <div id="progress_wrapper">
+                              <img src="/images/Champion_mastery_tier_<%= this.championLevel %>.png" id="icon_mastery_rank" height="90px" width="80px" alt=""/>
+                              <div class="progress" id="icon_mastery_progress">
+                                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<%= current_xp %>" aria-valuemin="0" aria-valuemax=" <%= total_lvl_xp %>" style="width: <%= percent_to_level %> ">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <% end %>
+                          <% value[:Unmastered].each do |this| %> ,
+                          <div class="thumb" data-placement="bottom" data-toggle="popover" data-container="body" data-placement="top" type="button" data-html="true" title="<%= this.name %>" data-content="Sorry, no games played on <%= this.name %> yet!">
+
+                            <input type="hidden" name="summonerId" value="<%= @summoner.summonerId %>">
+                            <input type="hidden" name="region" value="<%= @summoner.region %>">
+                            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                            <input type="hidden" name="id" value="<%= @summoner.id %>">
+                            <img src="<%= this.icon %>" class="unmastered_champ" height="110px" width="110px" name="championId" style="opacity: .60; vertical-align:top;">
+                          </div>
+                          <% end %>
+                        </div>
+                      </div>
+                          <% end %>
+
+
+
+    </div>
+	</div>
+</div>
+
+
+  </div> <!-- end of row -->
+</body>

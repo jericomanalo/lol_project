@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 #Using PUMA for Heroku Deployment
-gem 'puma'
+# gem 'puma'
 
 #heroku plugins static assests and logging on heroku
 gem 'rails_12factor', group: :production
@@ -47,6 +47,8 @@ gem 'hightop'
 # gem 'tzinfo', platforms: [:x64_mingw, :mingw, :mswin]
 # gem 'tzinfo-data', platforms: [:x64_mingw, :mingw, :mswin]
 
+# Pagination for posts
+gem 'will_paginate'
 
 gem 'active_median'
 

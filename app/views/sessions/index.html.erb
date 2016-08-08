@@ -1,38 +1,65 @@
 <!-- This is just a mock wire frame for the dashboard page! -->
-<div class="container-fluid text-center">    
+<body class="background_grad">
+
+<div class="container-fluid text-center">
   <div class="row content">
     <div class="col-sm-2 sidenav">
-      <div class="well">
-        <img class='img-thumbnail'src="<%= current_user.avatar.url(:thumb) %>">
+      <div class="well" id="summoner_banner">
+        <img class="img img-responsive" src="https://thesocietypages.org/socimages/files/2009/05/vimeo.jpg" alt="example img" height="250px" width="250px" />
       </div>
-      <div class="well">
-        <p>*FRIENDS LIST*</p>
-        <p>- This will be a scrollable div of your friends list.</p>
-        <p>- Friend</p>
-        <p>- Friend</p>
-        <p>- Friend</p>
-        <p>- Friend</p>
-        <p>- Friend</p>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-      </div>
+      <ul class="nav nav-pills" id="tabContent">
+              <li class="active"><a href="#following" data-toggle="tab">Following <span class="badge"><%= @current_user.following.count %></span></a></li>
+              <li><a href="#followers" data-toggle="tab">Followers <span class="badge"><%= @current_user.followers.count %></span></a></li>
+      </ul>
+
+            <div class="tab-content" id="summoner_banner">
+              <div class="tab-pane active" id="following">
+                  <% users = @current_user.following %>
+                  <% if users.count == 0 %>
+                    <p>
+                      Looks like you don't have any followers yet!
+                    </p>
+                  <% else %>
+                  <% users.each do |this| %>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <a href="/users/<%= this.id %>"><button type="button" class="btn btn-default" id="list_btn">
+                          <img class="img img-responsive pull-left" src="https://avatars1.githubusercontent.com/u/15368821?v=3&s=400" height="40px" width="40px" alt="example img" />
+                            <h4 class="pull-left" style="text-align:middle"> <%= this.name %></h4>
+                        </button></a>
+                    </div>
+                </div>
+                  <% end %>
+                  <% end %>
+              </div>
+              <div class="tab-pane" id="followers">
+                  <% users = @current_user.followers %>
+                  <% if users.count == 0 %>
+                    <p>
+                      Looks like you don't have any followers yet!
+                    </p>
+                  <% else %>
+                  <% users.each do |this| %>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-default" id="list_btn">
+                          <img class="img img-responsive pull-left" src="https://avatars1.githubusercontent.com/u/15368821?v=3&s=400" height="40px" width="40px" alt="example img" />
+                            <h4 class="pull-left" style="text-align:middle"> <%= this.name %></h4>
+                        </button>
+                    </div>
+                </div>
+                  <% end %>
+                  <% end %>
+              </div>
+
+          </div>
     </div>
-    <div class="col-sm-8 text-left well">
+    <div class="col-sm-8 text-left well" id="summoner_banner">
       <h2 class="text-center">Welcome <%= current_user.name %>.</h1>
       <p class="text-center">Share some of your thoughts to your followers.</p>
 	      <div class="col-sm-12 well">
 	      	<div class="col-sm-12">
-		      <form class="form-register" action ='' method =''>
-					  <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
-
-					  <input type='hidden' name='current_user.id' value='<%=  %>'>
-
-					  <textarea class="form-control" rows="6" name="content"></textarea>
-					  <button type='submit' class='btn btn-primary btn-md btn-block'>Post it</button>
-					</form>
+		          <%= render 'shared/postform' %>
 				</div>
 			</div>
       <hr>
@@ -43,30 +70,48 @@
 	      	<h3>MasteryDex Feed</h3>
 	      	<p>What others are posting...</p>
 
-	      	<div class='well'>
-	      		<p>Name</p>
-	      		<p>Random Post</p>
-	      	</div>
+          <div class='well'>
+            <p>Name</p>
+            <p>Random Post</p>
+          </div>
 
-	      	<div class='well'>
-	      		<p>Name</p>
-	      		<p>Random Post</p>
-	      	</div>
+          <% if @user.posts.any? %>
+            <h3>Posts (<%= @user.posts.count %>)</h3>
+            <ol class="posts">
+              <%= render @posts %>
+            </ol>
+            <%= will_paginate @posts %>
+          <% end %>
 
 	    	</div>
-	    	
+
 			</div>
     </div>
     <div class="col-sm-2 sidenav">
-      <div class="well">
-      	<h3>Favorite Summoners</h3>
-      	<p>Default Favorite (summoner_id in Users table)</p>
-      	<p>First Favorite</p>
-      	<p>Second Favorite</p>
-      	<p>Third Favorite</p>
-      	<p>Fourth Favorite</p>
-      	<p>Fifth Favorite</p>
-      	<p>Sixth Favorite</p>
+      <div class="well white favorites" id="summoner_banner">
+      	<h3 class="page-header">Favorite Summoners</h3>
+      	<ul>
+          <% if @current_user.summoners.count > 0 %>
+            <% @current_user.summoners.each do |favorite| %>
+              <li>
+
+                <div class="btn-group" style="width:100%; text-align:middle;">
+                  <a href="/summoners/<%= favorite.summonerName %>/<%= favorite.region %>">
+                    <button type="button" class="btn btn-default btn-block">
+                    <img class="img img-responsive pull-left" src="<%= favorite.icon %>" height="40px" width="40px" alt="" />
+                      <h4 class="pull-left" style="text-align:middle"><%= favorite.summonerName %></h4>
+                  </button>
+                  </a>
+                </div>
+
+              </li>
+            <% end %>
+            <% else %>
+            <li class="text-center">Looks like you dont have any favorites yet,</li>
+            <li class="text-center">search for a summoner and click the <span class="glyphicon glyphicon-heart-empty"></span></li>
+            <li class="text-center">to start getting updates on that player!</li>
+          <% end %>
+        </ul>
       	<br>
       	<br>
       	<br>
@@ -83,3 +128,4 @@
 <footer class="container-fluid text-center">
   <p>Footer Text</p>
 </footer>
+</body>

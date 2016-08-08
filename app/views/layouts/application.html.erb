@@ -5,113 +5,176 @@
 	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 	<%= csrf_meta_tags %>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" crossorigin="anonymous">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
   <script src="https://code.highcharts.com/modules/data.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://www.highcharts.com/samples/static/highslide.css" />
 	<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script src="https://use.fontawesome.com/57f769e8ec.js"></script>
-
-
 	<!-- Additional files for the Highslide popup effect -->
 	<script src="https://www.highcharts.com/samples/static/highslide-full.min.js"></script>
 	<script src="https://www.highcharts.com/samples/static/highslide.config.js" charset="utf-8"></script>
-
 </head>
 <body>
-
-	<nav class="navbar">
+	<nav class="navbar navbar-inverse">
   <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">MasteryDex</a>
+		</div>
   <div class="collapse navbar-collapse">
-    <% unless current_user %>
-      <a href="/"><button type="button" class="btn btn-default navbar-form navbar-left form-control"><span class='glyphicon glyphicon-home'> </span></button></a>
-    <% else %>
-      <a href="/dashboard"><button type="button" class="btn btn-default navbar-form navbar-left form-control"><span class='glyphicon glyphicon-home'> </span></button></a>
-    <% end %>
-  
-    <% current_uri = request.env['PATH_INFO'] %>
-			<% if current_uri != "/" %>
-      <!-- TO SHOW BACK TO summoner BUTTON AT THE SHOW GRAPH VIEW PAGE-->
-      <% if @matches %>
-        <form action= '/summoners/<%= @summoner.summonerName %>/<%= @summoner.region %>'>
-          <button type="submit" class="btn btn-default navbar-form navbar-left form-control">Back to summoner</button>
-        </form>
-      <!-- TO SHOW BACK TO summoner BUTTON AT THE SHOW GRAPH PAGE -->
-      <!-- TO SHOW BACK TO CHAMP GRAPH BUTTON AT THE MATCH VIEW PAGE-->
-      <% elsif @match %>
-        <form action= '/summoners/<%= @summoner.id %>/graph/<%= @champion.championId %>'>
-          <button type="submit" class="btn btn-default navbar-form navbar-left form-control">Back to Champion Graph</button>
-        </form>
-      <!-- TO SHOW BACK TO CHAMP GRAPH BUTTON AT THE MATCH VIEW PAGE -->
-      <% end %>
-      <form action='/summoners/search' class='navbar-form navbar-left' method='post' role="search">
-        <div class="form-group">
-        <input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
-        <!-- <input type='hidden' name='summoner[id]' value=''> -->
-        <input class='form-control form-control-block' name='summoner[summonerName]' type='text' placeholder='Summoner Name' required>
-        <select class='form-control form-control-block' name='summoner[region]' required autofocused>
-          <option value="na">NA</option>
-          <option value="br">BR</option>
-          <option value="eune">EUNE</option>
-          <option value="euw">EUW</option>
-          <option value="jp">JP</option>
-          <option value="kr">KR</option>
-          <option value="lan">LAN</option>
-          <option value="las">LAS</option>
-          <option value="oce">OCE</option>
-          <option value="ru">RU</option>
-          <option value="tr">TR</option>
-        </select>
-        <button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search' required> </span></button>
-      </div>
-      </form>
+
+		<div class="navbar-form navbar-left">
+		<% if current_user %>
+			<a href="/dashboard"><button type="button" class="btn btn-default navbar-left form-control"><span class='glyphicon glyphicon-home'></span> Dashboard</button></a>
+				<!-- Summoner Dropdown -->
+				<li class="btn btn-default dropdown inline"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="summoner_nav"><span class="fa fa-user" aria-hidden="true"></span> Summoners<span class="caret"></span></a>
+	                    <ul class="dropdown-menu" id="summoner_dropdown">
+	                        <li class=" row search-box">
+	                            <div class="col-sm-10">
+																<form action='/summoners/search' class='navbar-form navbar-left' method='post' role="search">
+																<div class="form-group">
+																		<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
+																		<!-- <input type='hidden' name='summoner[id]' value=''> -->
+																		<input class='form-control form-control-block' name='summoner[summonerName]' type='text' placeholder='Search Summoners' required>
+																		<select class='form-control form-control-block' name='summoner[region]' required autofocused>
+																				<option value="na">NA</option>
+																				<option value="br">BR</option>
+																				<option value="eune">EUNE</option>
+																				<option value="euw">EUW</option>
+																				<option value="jp">JP</option>
+																				<option value="kr">KR</option>
+																				<option value="lan">LAN</option>
+																				<option value="las">LAS</option>
+																				<option value="oce">OCE</option>
+																				<option value="ru">RU</option>
+																				<option value="tr">TR</option>
+																			</select>
+																			<button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search' required> </span></button>
+																		</div>
+																	</form>
+	                            </div>
+	                        </li>
+													<li class="text-center">Favorites</li>
+													<li class="divider"></li>
+	                        <li>
+																<% if @current_user && @current_user.summoners.count > 0 %>
+																	<% @current_user.summoners.each do |favorite| %>
+																		<li>
+
+																			<div class="btn-group" style="width:100%; text-align:middle;">
+																				<a href="/summoners/<%= favorite.summonerName %>/<%= favorite.region %>">
+																					<button type="button" class="btn btn-default btn-block">
+																					<img class="img img-responsive pull-left" src="<%= favorite.icon %>" height="40px" width="40px" alt="" />
+																						<h4 class="pull-left" style="text-align:middle"><%= favorite.summonerName %></h4>
+																				</button>
+																				</a>
+																			</div>
+
+																		</li>
+																	<% end %>
+																	<% else %>
+																	<li class="text-center">Looks like you dont have any favorites yet,</li>
+																	<li class="text-center">search for a summoner and click the <span class="glyphicon glyphicon-heart-empty"></span></li>
+																	<li class="text-center">to start getting updates on that player!</li>
+																	<% end %>
+													</li>
+									</ul>
+					</li>
+
+			<!-- User Dropdown -->
+			<li class="btn btn-default dropdown inline"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="user_nav"><span class="fa fa-users" aria-hidden="true"></span> Users<span class="caret"></span></a>
+                    <ul id="user_dropdown" class="dropdown-menu">
+                        <li class="row search-box">
+                            <div class="col-sm-10">
+															<form action='/users/search' class='navbar-form navbar-left' method='post' role="search">
+																<div class="form-group">
+																	<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
+																	<input class='form-control form-control-block search' name='user[name]' type='text' placeholder='Search Users'  id="search-criteria" required>
+																	<button type="submit" class="btn btn-default"><span class='glyphicon glyphicon-search' required> </span></button>
+																</div>
+															</form>
+                            </div>
+                        </li>
+												<li class="divider"></li>
+                        <li class="dropdown-submenu"> <a href="#" class="dropdown-toggle menu" data-toggle="dropdown">Following</a>
+                            <ul class="dropdown-menu">
+															<% users = current_user.following %>
+															<% if users.count > 0 %>
+															<% users.each do |user| %>
+															<li>
+																<div class="btn-group" style="width:100%; text-align:middle;">
+																	<a href="/users/<%= user.id %>">
+																		<button type="button" class="btn btn-default btn-block">
+																			<img class="img img-responsive pull-left" src="https://avatars1.githubusercontent.com/u/15368821?v=3&s=400" height="40px" width="40px" alt="" />
+																			<h4 class="pull-left" style="text-align:middle"><%= user.name %></h4>
+																		</button>
+																	</a>
+																</div>
+
+															</li>
+															<% end %>
+															<% else %>
+															<li>Looks like you're not following anyone yet!</li>
+															<% end %>
+                                </li>
+															</ul>
+												<li class="dropdown-submenu"> <a href="#" class="dropdown-toggle menu" data-toggle="dropdown">Followers</a>
+														<ul class="dropdown-menu">
+															<% users = current_user.followers %>
+															<% if users.count > 0 %>
+																<% users.each do |user| %>
+																	<li>
+																		<div class="btn-group" style="width:100%; text-align:middle;">
+																			<a href="/users/<%= user.name %>">
+																				<button type="button" class="btn btn-default btn-block">
+																					<img class="img img-responsive pull-left" src="https://avatars1.githubusercontent.com/u/15368821?v=3&s=400" height="40px" width="40px" alt="" />
+																					<h4 class="pull-left" style="text-align:middle"><%= user.name %></h4>
+																				</button>
+																			</a>
+																		</div>
+
+																	</li>
+																<% end %>
+															<% else %>
+																<li>Looks like noone's following you yet!</li>
+															<% end %>
+														</ul>
+													</li>
+												</ul>
+					</li>
+					<% end %>
+			</div>
+			<div class="navbar-form navbar-right">
+				<% if logged_in? %>
+				<!-- Postform on navbar -->
+				<%= render 'shared/postform' %>
+				<a href="/users/<%= current_user.name %>/edit"><button class="btn btn-default">
+					<span class="fa fa-cog" aria-hidden="true"></span> Edit Profile
+				</button></a>
+				<a href="/logout"><button class="btn btn-default"><span class="fa fa-sign-out" aria-hidden="true"></span> Logout</button></a>
+				<% else %>
+				<%= render 'shared/signupform' %>
+				<%= render 'shared/loginform' %>
+
+		</div>
 		<% end %>
-    <div class="navbar-form navbar-right">
-      <% if logged_in? %>
-        <a href="/users/<%= current_user.name %>/edit"><button class="btn btn-default">Edit Profile</button></a>
-        <a href="/logout"><button class="btn btn-default">Logout</button></a>
-      <% else %>
-        <a href="/signup"><button class="btn btn-default">Sign Up</button></a>
 
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#loginModal">Login</button>
-
-        <div style="color:black" class="modal" id="loginModal" tabindex="-1" role="dialog"
-             aria-labelledby="loginModalLabel1" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="loginModalLabel1">Welcome back!</h4>
-              </div>
-              <div class="modal-body">
-                
-                  <form class="form-register" action="/login" method="post">
-                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-                    <input class="form-control" placeholder="Email" type="text" name="email"><br>
-                    <input class="form-control" placeholder="Password" type="password" name="password"><br>
-                    <button class="form-control" type="submit" class="btn btn-success btn-md btn-block">Login</button>
-                  </form>
-                
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      <% end %> 
-    </div>
     </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+	</div><!-- /.container-fluid -->
 </nav>
+
 
 		<%= yield %>
 
 
 <p class="text-center">
+	<br>
+	<br>
 	<small>
 		 © 2016. MasteryDex is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
 	</small>

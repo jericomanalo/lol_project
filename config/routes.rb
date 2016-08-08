@@ -7,9 +7,19 @@ Rails.application.routes.draw do
   # --------------- Users Routes -----------------
   get 'signup' => 'users#index'
   post 'users' => 'users#create'
+  post 'users/search' => 'users#search'
+  get 'users/:id' => 'users#show'
   get 'users/:name/edit' => 'users#edit'
-  post 'users/:name' => 'users#update'
+  post 'users/:name/update' => 'users#update'
+  post 'users/favorite' => 'users#favorite'
+  post 'users/unfavorite' => 'users#unfavorite'
 
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
+  resources :relationships,       only: [:create, :destroy]
   # --------------- Sessions Routes -----------------
   get 'dashboard' => 'sessions#index'
   post 'login' => 'sessions#create'
@@ -48,5 +58,5 @@ Rails.application.routes.draw do
   get 'matches/update'
 
 
- 
+
 end

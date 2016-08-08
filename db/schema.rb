@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160630204735) do
+ActiveRecord::Schema.define(version: 20160805004655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20160630204735) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "tag"
+    t.text     "lore"
   end
 
   create_table "champs", force: :cascade do |t|
@@ -109,6 +110,28 @@ ActiveRecord::Schema.define(version: 20160630204735) do
   add_index "matches", ["champion_id"], name: "index_matches_on_champion_id", using: :btree
   add_index "matches", ["summoner_id"], name: "index_matches_on_summoner_id", using: :btree
 
+  create_table "posts", force: :cascade do |t|
+    t.string   "title"
+    t.text     "content"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "posts", ["user_id", "created_at"], name: "index_posts_on_user_id_and_created_at", using: :btree
+  add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
+
+  create_table "relationships", force: :cascade do |t|
+    t.integer  "follower_id"
+    t.integer  "followed_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "relationships", ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
+  add_index "relationships", ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true, using: :btree
+  add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
+
   create_table "summoners", force: :cascade do |t|
     t.string   "summonerName"
     t.integer  "summonerId"
@@ -123,13 +146,9 @@ ActiveRecord::Schema.define(version: 20160630204735) do
     t.string   "name"
     t.string   "email"
     t.string   "password_digest"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.integer  "summoner_id"
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
-    t.integer  "avatar_file_size"
-    t.datetime "avatar_updated_at"
     t.text     "bio"
   end
 
@@ -142,4 +161,5 @@ ActiveRecord::Schema.define(version: 20160630204735) do
   add_foreign_key "favorites", "summoners"
   add_foreign_key "favorites", "users"
   add_foreign_key "matches", "summoners"
+  add_foreign_key "posts", "users"
 end

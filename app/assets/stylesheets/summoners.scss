@@ -1,0 +1,208 @@
+// Place all the styles related to the profiles controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+#splash_container{
+  position: relative;
+  z-index: 99;
+  max-height: 760px;
+  padding-right:30px;
+  overflow-x: visible;
+  overflow-y: hidden;
+  -moz-box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
+  -webkit-box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
+  box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
+  }
+  #splash_container::-webkit-scrollbar {
+  display: none;
+  }
+  #splash_container img{
+    margin-top:80px;
+  }
+  #toolTip {
+    z-index: 3;
+    position: relative;
+  }
+  #name_container{
+    background-color: rgba(0, 0, 0, 0);
+    max-height: 760px;
+    -moz-box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
+    -webkit-box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
+    box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
+  }
+#name_container ul{
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 100%;
+  padding-left:5px;
+  text-decoration: none;
+  max-height: 760px;
+  text-align: center;
+  overflow-y: scroll;
+}
+#name_container ul a{
+  text-decoration: none;
+  color: #333;
+}
+#name_container li:hover a{
+  color:white;
+}
+#name_container li:active a{
+  color:white;
+}
+a:focus{
+  color:white;
+}
+.scroll {
+  list-style: none;
+}
+
+.scroll::-webkit-scrollbar {
+    width: 8px;
+    height: 20px;
+}
+
+.scroll::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+.no-scroll ul{
+  list-style:none;
+}
+​​.no-scroll::-webkit-scrollbar{
+  display:none;
+}
+
+#tooltip{
+  width: 100%;
+  text-align: center;
+  margin-top:50%;
+}
+#tail1 {
+    z-index: 4;
+    position:absolute;
+    bottom: 50%;
+    left: 100%;
+    width:0;height:0;
+    border-color:transparent transparent transparent #a0c7ff;
+    border-width:20px;
+    border-style:solid;
+}
+
+#tail2 {
+    z-index: 5;
+    position:absolute;
+    bottom: 50%;
+    left:100%;
+    width:0;height:0;
+    border-color:transparent transparent transparent #f9f9f9;
+    border-width:20px;
+    border-style:solid;
+}
+#mCSB_1_container{
+  padding-right:25px !important;
+}
+
+.hidden{
+  display:none;
+}
+.mastered{
+  -webkit-box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
+  box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
+}
+.mastered_text{
+
+}
+.unmastered{
+  opacity: 0.4;
+  position: relative;
+  -webkit-filter: grayscale(60%); /* Chrome, Safari, Opera */
+  filter: grayscale(60%);
+  z-index: 0;
+}
+.unmastered_mark{
+  z-index: 1;
+  position: absolute;
+  top:0;
+  left: 0;
+}
+#up_arw a, #down_arw a{
+  color: #555;
+}
+#down_arw:hover{
+  background-color: rgba(0, 0, 0, 0.8);
+}
+#up_arw:hover{
+  background-color: rgba(0, 0, 0, 0.8);
+}
+#up_arw:hover > a, #down_arw:hover > a{
+  color: white;
+  -webkit-text-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
+  text-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
+}
+.thumb{
+  height:80px !important;
+  width: 80px !important;
+}
+.selected{
+  color:white;
+  background-color: #faa;
+
+}
+
+.stats_header{
+  background: no-repeat center center;
+	-webkit-background-size: cover;
+ 	-moz-background-size: cover;
+ 	-o-background-size: cover;
+}
+.layer_container{
+  position: static;
+}
+.layered_icon, .layered_border{
+  position: absolute;
+  right:15px;
+}
+.layered_border{
+  right: 11px;
+  top: -12px;
+  width: 88px;
+}
+
+#name_container li:first-child, #splash_container li:first-child{
+  margin-top:33vh;
+}
+#name_container li:last-child, #splash_container li:last-child{
+  margin-bottom:40vh;
+}
+#name_container li.first{
+  width: 100%;
+}
+.last{
+
+}
+#splash_container .first img{
+ margin-top:50%;
+}
+#splash_container .last img{
+ margin-bottom:46%;
+}
+#name_container img{
+  margin-top:-10px;
+}
+.active{
+  border-bottom: 1px solid white;
+}
+#name_container .active a{
+  color: white;
+
+}
+//SEARCH FORM STUFF
+#searchlist{
+  max-height: 500px;
+  overflow-y: scroll;
+}

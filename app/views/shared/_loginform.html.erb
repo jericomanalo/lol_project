@@ -1,0 +1,28 @@
+<button type="button" class="btn btn-default" data-toggle="modal" data-target="#loginModal"><span class="fa fa-sign-in" aria-hidden="true"></span> Login</button>
+
+<div style="color:black" class="modal" id="loginModal" tabindex="-1" role="dialog"
+aria-labelledby="loginModalLabel1" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title" id="loginModalLabel1">Welcome back!</h4>
+    </div>
+    <div class="modal-body">
+
+      <form class="form-register" action="/login" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input class="form-control" placeholder="Email" type="text" name="email"><br>
+        <input class="form-control" placeholder="Password" type="password" name="password"><br>
+        <button class="form-control" type="submit" class="btn btn-success btn-md btn-block">Login</button>
+      </form>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>

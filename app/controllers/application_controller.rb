@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   class Riot
     def self.get_all_champions(params)
       url = self.get_static_url
-      params = { champData: 'tags' }
+      params = { champData: 'all' }
       params = self.get_params(params)
       self.http_get(url, params)
     end
@@ -178,6 +178,7 @@ class ApplicationController < ActionController::Base
         redirect_to controller: "summoners", action: "show", summonerName: summonerName, region: region
       else
         matchlist["matches"].each do |match|
+
           unless Match.exists?(matchId: match["matchId"])
             match = Riot.get_match(region, match["matchId"])
               participant = match['participantIdentities'].find { |p| p['player']['summonerId'] == summonerId.to_i }

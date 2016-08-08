@@ -1,18 +1,18 @@
 class SummonersController < ApplicationController
 	def index
+		current_user
+		if Summoner.count > 0
+			randomInt = rand(1...(Summoner.count))
+			@randomSummoner = Summoner.find(1)
+		end
 		if Champion.all.count < 130
 			all_champions = Riot.get_all_champions(params)
 			all_champions = all_champions['data']
 			all_champions.each do |this|
 				tag = this[1]["tags"][0].to_s
-				Champion.create(championId: this[1]["id"], name: this[1]["name"], title: this[1]["title"], icon: "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this[1]['key']+".png", splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+this[1]['key']+"_0.jpg", tag: tag)
+				Champion.create(championId: this[1]["id"], name: this[1]["name"], title: this[1]["title"], icon: "http://ddragon.leagueoflegends.com/cdn/6.15.1/img/champion/"+this[1]['key']+".png", splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/"+this[1]['key']+"_0.jpg", tag: tag, lore: this[1]["lore"])
 			end
 		end
-		# Method for random summoner needs to be changed
-		# randomInt = rand(1...(Summoner.count)+1)
-		# if Summoner.count > 0
-		# @randomsummoner = Summoner.find(randomInt)
-		# end
 	end
 
 	def search
@@ -43,37 +43,50 @@ class SummonersController < ApplicationController
 		@champion_masteries = @summoner.champion_masteries.all
 		@top_champion = @champion_masteries.includes(:champion).order(current_points: :desc).first
 		@test_query = @summoner.champion_masteries.includes(:champions)
+		@favorites = Favorite.where(:summoner_id => @summoner.id)
 		################### CAN WE STREAMLINE QUERIES???!?!?!??!?!? ##################
 
 		# Populate global variables to separate the Champions with Masteries and those without
-			@mastered_supports = ChampionMastery.includes(:champions).where('champions.tag = ?', 'Support').references(:champions)
-			@unmastered_supports = Champion.where(tag: "Support").where.not(id: @mastered_supports.pluck(:champion_id).flatten)
-			@mastered_tanks = ChampionMastery.includes(:champions).where('champions.tag = ?', 'Tank').references(:champions)
-			@unmastered_tanks = Champion.where(tag: "Tank").where.not(id: @mastered_supports.pluck(:champion_id).flatten)
-			@mastered_assassins = ChampionMastery.includes(:champions).where('champions.tag = ?', 'Assassin').references(:champions)
-			@unmastered_assassins = Champion.where(tag: "Assassin").where.not(id: @mastered_supports.pluck(:champion_id).flatten)
-			@mastered_fighters = ChampionMastery.includes(:champions).where('champions.tag = ?', 'Fighter').references(:champions)
-			@unmastered_fighters = Champion.where(tag: "Fighter").where.not(id: @mastered_supports.pluck(:champion_id).flatten)
-			@mastered_mages = ChampionMastery.includes(:champions).where('champions.tag = ?', 'Mage').references(:champions)
-			@unmastered_mages = Champion.where(tag: "Mage").where.not(id: @mastered_supports.pluck(:champion_id).flatten)
-			@mastered_marksmen = ChampionMastery.includes(:champions).where('champions.tag = ?', 'Marksman').references(:champions)
-			@unmastered_marksmen = Champion.where(tag: "Marksman").where.not(id: @mastered_supports.pluck(:champion_id).flatten)
+			mastered_supports = @champion_masteries.includes(:champions).where('champions.tag = ?', 'Support').references(:champions)
+			unmastered_supports = @champions.where(tag: "Support").where.not(id: mastered_supports.pluck(:champion_id).flatten)
+			mastered_tanks = @champion_masteries.includes(:champions).where('champions.tag = ?', 'Tank').references(:champions)
+			unmastered_tanks = @champions.where(tag: "Tank").where.not(id: mastered_tanks.pluck(:champion_id).flatten)
+			mastered_assassins = @champion_masteries.includes(:champions).where('champions.tag = ?', 'Assassin').references(:champions)
+			unmastered_assassins = @champions.where(tag: "Assassin").where.not(id: mastered_assassins.pluck(:champion_id).flatten)
+			mastered_fighters = @champion_masteries.includes(:champions).where('champions.tag = ?', 'Fighter').references(:champions)
+			unmastered_fighters = @champions.where(tag: "Fighter").where.not(id: mastered_fighters.pluck(:champion_id).flatten)
+			mastered_mages = @champion_masteries.includes(:champions).where('champions.tag = ?', 'Mage').references(:champions)
+			unmastered_mages = @champions.where(tag: "Mage").where.not(id: mastered_mages.pluck(:champion_id).flatten)
+			mastered_marksmen = @champion_masteries.includes(:champions).where('champions.tag = ?', 'Marksman').references(:champions)
+			unmastered_marksmen = @champions.where(tag: "Marksman").where.not(id: mastered_marksmen.pluck(:champion_id).flatten)
 			@champion_list = {
-				:Assassins => { :Mastered => @mastered_assassins,
-											:Unmastered => @unmastered_assassins},
-				:Supports => { :Mastered => @mastered_supports,
-											:Unmastered => @unmastered_supports},
-				:Tanks => { :Mastered => @mastered_tanks,
-											:Unmastered => @unmastered_tanks},
-				:Fighters => { :Mastered => @mastered_fighters,
-											:Unmastered => @unmastered_fighters},
-				:Mages => { :Mastered => @mastered_mages,
-											:Unmastered => @unmastered_mages},
-				:Marksmen => { :Mastered => @mastered_marksmen,
-											:Unmastered => @unmastered_marksmen},}
+				:Assassins => { :Mastered => mastered_assassins,
+												:Unmastered => unmastered_assassins,
+												:Progress => mastered_assassins.pluck(:championLevel).sum,
+										},
+				:Supports => { :Mastered => mastered_supports,
+											 :Unmastered => unmastered_supports,
+											 :Progress => mastered_supports.pluck(:championLevel).sum,
+										},
+				:Tanks => { :Mastered => mastered_tanks,
+										:Unmastered => unmastered_tanks,
+										:Progress => mastered_tanks.pluck(:championLevel).sum,
+									},
+				:Fighters => { :Mastered => mastered_fighters,
+										   :Unmastered => unmastered_fighters,
+											 :Progress => mastered_fighters.pluck(:championLevel).sum,
+										 },
+				:Mages => { :Mastered => mastered_mages,
+										:Unmastered => unmastered_mages,
+										:Progress => mastered_mages.pluck(:championLevel).sum,
+										},
+				:Marksmen => { :Mastered => mastered_marksmen,
+										   :Unmastered => unmastered_marksmen,
+											 :Progress => mastered_marksmen.pluck(:championLevel).sum,
+										 }
+										}
 
 			@champion_list = @champion_list.sort_by { |key, value| value[:Mastered].count}.reverse
-
 
 	    # Loop through all 130 champions via the @champions (== Champion.all) variable and compare all 130 against each of the heroes in @champion_masteries ( == ChampionMastery.where(summoner_id: params[:id]))
 	end

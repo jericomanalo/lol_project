@@ -1,6 +1,9 @@
 class SessionsController < ApplicationController
 
   def index
+    @user = current_user
+    @posts = @user.posts.paginate(page: params[:page])
+
   end
 
 	def create

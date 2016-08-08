@@ -6,14 +6,14 @@ class MatchesController < ApplicationController
 
   def show
     @match = Match.find_by(:matchId => params[:id])
-    @champion = Champion.find_by(:championId => @match.championId)
+    @champion = Champion.find(@match.champion_id)
     @summoner = Summoner.find(@match.summoner_id)
-    @personal_best_gold = Match.where(:summoner_id => @match.summoner_id, :championId => @match.championId).order(goldEarned: :desc).first
-    @pb_totalHeal = Match.where(:summoner_id => @match.summoner_id, :championId => @match.championId).order(totalHeal: :desc).first
-    @pb_totalCcDealt = Match.where(:summoner_id => @match.summoner_id, :championId => @match.championId).order(totalCcDealt: :desc).first
-    @pb_wardsPlaced = Match.where(:summoner_id => @match.summoner_id, :championId => @match.championId).order(wardsPlaced: :desc).first
-    @pb_cs = Match.where(:summoner_id => @match.summoner_id, :championId => @match.championId).order(cs: :desc).first
-    @pb_jungleCs = Match.where(:summoner_id => @match.summoner_id, :championId => @match.championId).order(jungleCs: :desc).first
+    @personal_best_gold = Match.where(:summoner_id => @match.summoner_id, :champion_id => @champion.id).order(goldEarned: :desc).first
+    @pb_totalHeal = Match.where(:summoner_id => @match.summoner_id, :champion_id => @champion.id).order(totalHeal: :desc).first
+    @pb_totalCcDealt = Match.where(:summoner_id => @match.summoner_id, :champion_id => @champion.id).order(totalCcDealt: :desc).first
+    @pb_wardsPlaced = Match.where(:summoner_id => @match.summoner_id, :champion_id => @champion.id).order(wardsPlaced: :desc).first
+    @pb_cs = Match.where(:summoner_id => @match.summoner_id, :champion_id => @champion.id).order(cs: :desc).first
+    @pb_jungleCs = Match.where(:summoner_id => @match.summoner_id, :champion_id => @champion.id).order(jungleCs: :desc).first
     summonerSpells =  {
         "SummonerBoost" => 1,
         "SummonerTeleport" => 12,

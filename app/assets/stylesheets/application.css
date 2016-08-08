@@ -12,6 +12,7 @@
  *
  *= require_tree .
  *= require_self
+ *= require bootstrap
  */
 *{
   font-family: Impact, Charcoal, sans-serif;
@@ -26,9 +27,19 @@
   margin-bottom:200px;
   margin-top:200px;
 }
+
 #footer{
   background-color: white;
   color:#464444;
+}
+#header_bg{
+  background: no-repeat center center fixed;
+	-webkit-background-size: cover;
+ 	-moz-background-size: cover;
+ 	-o-background-size: cover;
+  -webkit-box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
+  box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
+  margin-bottom: 50px;
 }
 .background{
 	background:  no-repeat center center fixed;
@@ -41,14 +52,86 @@
 	height: 25px;
 	width: 25px;
 }
-
+/* - Navbar CSS - */
 .navbar {
-  background-color: rgba(23, 23, 23, 0.69);
+  background-color: rgba(27, 47, 54, 0.8);
 	height: 25px;
 }
 .navbar-form{
 	margin-top: -39px;
 }
+#summoner_dropdown{
+  min-width: 315px;
+}
+#user_dropdown{
+  min-width: 240px;
+}
+.dropdown-toggle{
+  color:#333;
+  text-decoration: none;
+}
+.dropdown-toggle:focus{
+  color:#333;
+  text-decoration: none;
+}
+.dropdown-toggle:hover{
+  color:#333;
+  text-decoration: none;
+}
+
+.inline{
+  display:inline
+}
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    min-width: 240px;
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+
 #summoner_page {
 	background-image: url("/images/bg.png");
 	background-position: center;
@@ -66,8 +149,10 @@
   border-color: black;
   color: white;
   margin-top: 20px;
-  background-color: rgba(23, 23, 23, 0.69);
+  background-color: rgba(27, 47, 54, 0.90);
   padding-left:15px;
+  -webkit-box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
+  box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
 }
 #top_champ{
   vertical-align: middle;
@@ -96,9 +181,11 @@
   color: white;
 }
 .index_container{
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgb(27, 47, 54);
   border-radius: 5px;
   text-align: center;
+  -webkit-box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
+  box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
 }
 .white {
 	color: white;
@@ -138,9 +225,10 @@
 
 }
 #champion_list{
-	background-color: rgba(23, 23, 23, 0.69);
-  height: auto;
+	background-color: rgba(27, 47, 54, 0.90);
   padding-bottom: 15px;
+  -webkit-box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
+  box-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
 
 }
 #champ_mastery_wrapper {
@@ -198,10 +286,10 @@
 }
 #champ_chart{
 	margin-bottom: 30px;
-	margin-top: 50px;
 }
 #graph_container{
 	padding: 5px;
+
 	background-color: rgba(23, 23, 23, 0.4);
   color: white
 }
@@ -222,6 +310,9 @@ text{
 	margin-left: 19px;
 	margin-top: -45px;
 }
+.opaque{
+  background-color: rgba(51, 58, 64, 0.45);
+}
 /* Align champion_token and token_amount on top of eachother to produce champ_token */
 #champion_token, #token_amount, #token_border{
   position: absolute;
@@ -233,6 +324,8 @@ text{
 }
 #champion_token{
   z-index: -2;
+  -webkit-filter: grayscale(50%); /* Chrome, Safari, Opera */
+  filter: grayscale(50%);
 }
 #token_amount{
   top:40%;
@@ -258,16 +351,157 @@ text{
   height: 70px;
   width: 70px;
 }
-
 #noChest{
   -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
   filter: grayscale(100%);
 }
 
 
+.maxWidth{
+  width:1100px;
+}
+.background_grad{
+  background: rgba(8, 20, 27, 0.9); /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left, rgba(8, 20, 27, 0.9) , rgba(49, 78, 92, 0.9), rgba(49, 78, 92, 0.9), rgba(8, 20, 27, 0.9)); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, rgba(8, 20, 27, 0.9), rgba(49, 78, 92, 0.9), rgba(49, 78, 92, 0.9), rgba(8, 20, 27, 0.9)); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, rgba(8, 20, 27, 0.9), rgba(49, 78, 92, 0.9), rgba(49, 78, 92, 0.9), rgba(8, 20, 27, 0.9)); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, rgba(22, 24, 25, 1), rgba(3, 33, 44, 0.8) , rgba(3, 78, 106, 0.75), rgba(3, 78, 106, 0.75),rgba(3, 33, 44, 0.8), rgba(22, 24, 25, 1)); /* Standard syntax */
+}
+/* Align champion_token and token_amount on top of eachother to produce champ_token */
+#champion_token, #token_amount, #token_border{
+  position: absolute;
+  margin:auto;
+  top:0;
+  right:0;
+  bottom:0;
+  left:75px;
+}
+#champion_token{
+  z-index: 0;
+}
+#token_amount{
+  top:40%;
+  left:68%;
+  z-index: 1;
+}
+#token_border{
+  z-index: 2;
+}
+/* Show_Graph Align Champion_Icon and Mastery_Border on top of each other */
+#layered_icon, #layered_border{
+  position: absolute;
+  margin:auto;
+  top:110%;
+  right:0;
+  left:0;
+}
+#layered_border{
+  top:90%;
+  height: 180px;
+  width: 100px;
+}
+
+/* Show_Graph Chest color-filled when true, black/white when false */
+#chest{
+  height: 70px;
+  width: 70px;
+}
+
+#noChest{
+  -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+  filter: grayscale(100%);
+}
+/* Relative class just to handle all the absolute positions*/
+.relative{
+  position: relative;
+}
 .right {
   margin-left:400px;
 }
 #summoner_header{
   padding-top: 15px;
 }
+.favorites, .following{
+  padding:5px;
+}
+.favorites > ul, .following > ul {
+  list-style:none;
+  padding-left: 0;
+}
+div.hoverRow {
+  cursor: pointer;
+  border: 1px solid #999999;
+  padding: 3px;
+}
+
+div.hoverRow:hover {
+	background-color: #e3e3e3;
+}
+
+/* USER DASHBOARD*/
+#list_btn{
+  margin-bottom: 2px;
+  width:100%;
+}
+#followers{
+  padding: 5px;
+}
+.well{
+  background-color:rgba(108, 145, 159, 0.94);
+}
+
+
+
+/*/* CSS - Cascading Style Sheet */
+/* Palette color codes */
+/* Palette URL: http://paletton.com/#uid=33q0u0kllllaFw0g0qFqFg0w0aF */
+
+/* Feel free to copy&paste color codes to your application */
+
+
+/* As hex codes */
+
+/*.color-primary-0 { color: #27586B }	/* Main Primary color */
+/*.color-primary-1 { color: #6D92A0 }
+.color-primary-2 { color: #457485 }
+.color-primary-3 { color: #103E50 }
+.color-primary-4 { color: #022735 }
+
+.color-secondary-1-0 { color: #AA8939 }	/* Main Secondary color (1) */
+/*.color-secondary-1-1 { color: #FFE7AA }
+.color-secondary-1-2 { color: #D4B66A }
+.color-secondary-1-3 { color: #806115 }
+.color-secondary-1-4 { color: #553C00 }
+
+.color-secondary-2-0 { color: #AA4C39 }	/* Main Secondary color (2) */
+/*.color-secondary-2-1 { color: #FFB9AA }
+.color-secondary-2-2 { color: #D47D6A }
+.color-secondary-2-3 { color: #802815 }
+.color-secondary-2-4 { color: #550F00 }
+
+
+
+/* As RGBa codes */
+
+/*.rgba-primary-0 { color: rgba( 39, 88,107,1) }	/* Main Primary color */
+/*.rgba-primary-1 { color: rgba(109,146,160,1) }
+.rgba-primary-2 { color: rgba( 69,116,133,1) }
+.rgba-primary-3 { color: rgba( 16, 62, 80,1) }
+.rgba-primary-4 { color: rgba(  2, 39, 53,1) }
+
+/*.rgba-secondary-1-0 { color: rgba(170,137, 57,1) }	/* Main Secondary color (1) */
+/*.rgba-secondary-1-1 { color: rgba(255,231,170,1) }
+.rgba-secondary-1-2 { color: rgba(212,182,106,1) }
+.rgba-secondary-1-3 { color: rgba(128, 97, 21,1) }
+.rgba-secondary-1-4 { color: rgba( 85, 60,  0,1) }
+
+.rgba-secondary-2-0 { color: rgba(170, 76, 57,1) }	/* Main Secondary color (2) */
+/*.rgba-secondary-2-1 { color: rgba(255,185,170,1) }
+.rgba-secondary-2-2 { color: rgba(212,125,106,1) }
+.rgba-secondary-2-3 { color: rgba(128, 40, 21,1) }
+.rgba-secondary-2-4 { color: rgba( 85, 15,  0,1) }
+
+
+
+/* Generated by Paletton.com Â© 2002-2014 */
+/* http://paletton.com */

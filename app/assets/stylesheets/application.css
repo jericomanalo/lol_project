@@ -20,7 +20,11 @@
 }
 
 #landing_page{
+<<<<<<< HEAD
+ 	background-image: url("http://na.leagueoflegends.com/sites/default/files/styles/scale_xlarge/public/upload/environmentart-sru-04_1920.jpg?itok=Pj-vA3Wa"); 
+=======
  	background-image: url("http://na.leagueoflegends.com/sites/default/files/styles/scale_xlarge/public/upload/environmentart-sru-04_1920.jpg?itok=Pj-vA3Wa");
+>>>>>>> upstream/master
 	color:white;
 }
 #main_content{

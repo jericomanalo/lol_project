@@ -1,0 +1,65 @@
+<body id="landing_page" class="background">
+<div class='container container-fluid' style='margin-top: 80px'>
+	<div class='row'>
+		<div class='col-md-6 col-md-offset-1 col-pull-4 text-center'>
+			<h1 class='form-heading'>Welcome to MasteryDex!</h1>
+			<br>
+			<h2 class="page-header">About Us</h2>
+			<h4 class="page-heading text-center">
+				This is a website where League of Legends players can lookup their Summoner name
+				to view their MasteryDex - a collection of their League of Legends Champions that
+				they've ranked up in their 2016 Ranked Season.
+			</h4>
+			<br>
+				<h4 class="page-heading text-center">
+				Enter your Summoner name and region to begin building your Summoner's MasteryDex and
+				get started on your journey to completely master all of League of Legends' extraordinary champions!
+				Once your profile has been built you can search for other Summoners' MasteryDexes and even compare them
+				to your progress!
+			</h4>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+		</div>
+		<div class='col-md-4 col-md-offset-1 col-push-6'>
+			<h1 class='form-register-heading'>Search for a Summoner</h1>
+			<% if flash[:error] %>
+<<<<<<< HEAD
+			<div class='alert alert-danger' role='alert'>
+            	<strong class="red"><%=h flash[:error] %></strong>
+        	</div>
+            <% end %>
+=======
+			<div class="alert alert-danger" role="alert">
+				<strong class="red"><%=h flash[:error] %></strong>
+			</div>
+			<% end %>
+>>>>>>> upstream/master
+			<form action='/profiles/search' class='form-register' method='post'>
+				<input type='hidden' name="authenticity_token" value="<%= form_authenticity_token %>">
+				<!-- <input type='hidden' name='profile[id]' value=''> -->
+				<input type='text' placeholder='Summoner Name' class='form-control' name='profile[summonerName]' value=''  required>
+				<br />
+				<select class='form-control' name='profile[region]' required autofocused>
+					<option value="na">NA</option>
+					<option value="br">BR</option>
+					<option value="eune">EUNE</option>
+					<option value="euw">EUW</option>
+					<option value="jp">JP</option>
+					<option value="kr">KR</option>
+					<option value="lan">LAN</option>
+					<option value="las">LAS</option>
+					<option value="oce">OCE</option>
+					<option value="ru">RU</option>
+					<option value="tr">TR</option>
+				</select>
+				<br />
+				<button type='submit' class='btn btn-primary btn-md btn-block'>Search</button>
+			</form>
+
+		</div>
+		</div>
+	</div>
+</body>

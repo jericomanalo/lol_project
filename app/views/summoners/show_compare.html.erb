@@ -27,20 +27,6 @@
 					<p class="text-left" style="color:white;">Compare against another summoner: (*currently unavailable) </p>
 				</form>
 				<div id="champ_div">
-					<h1 class="text-left white" style="vertical-align:top"><img class="img img-circle" height="130px" width="130px" src="<%= @champion.icon %>"><%= @champion.name %> <small><%= @champion.title %></small></h1>
-					<img id="rank_score" src="/images/Champion_mastery_tier_<%= @champion_mastery[0]['championLevel'] %>.png" alt="" />
-				</div>
-			</div>
-
-				<!-- <%= select(:selected, "selection", options_for_select(Match.columns.map {|p| [ p.name ] }), :include_blank => false)%>
-			<h1 id="selecteddd"><%=  %></h1> -->
-			<div id="chart_area">
-				<span class="glyphicon glyphicon-question-sign" style="color:white" data-toggle="tooltip" data-placement="right" title="Click on a chart node to view your full match details!"></span>
-				<%= line_chart [
-						{name: @summoner.summonerName, data: @matches.map {|a| [(a.matchId), a.mdScore]}},
-						{name: @compare_summoner.summonerName, data: @compare_matches.map {|b| [(b.matchId), b.mdScore]}},
-					 ],
-						colors:["rgb(0, 155, 223)", "white"], discrete: true, label: "md Score", xtitle: "Match Ids", ytitle: "md Score", id: "champ_chart" %>				<span class="glyphicon glyphicon-question-sign" style="color:white" data-toggle="tooltip" data-placement="right" title="MD Score is a loose interpretation of your performance in each match"></span>
 			</div>
 		</div>
 	</div>

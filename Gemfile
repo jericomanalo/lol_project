@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 #Using PUMA for Heroku Deployment
+
 # gem 'puma'
 
 #heroku plugins static assests and logging on heroku
@@ -43,9 +44,13 @@ gem 'chartkick', '~> 1.5.2'
 gem 'groupdate'
 
 gem 'hightop'
+<<<<<<< HEAD
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 # gem 'tzinfo', platforms: [:x64_mingw, :mingw, :mswin]
 # gem 'tzinfo-data', platforms: [:x64_mingw, :mingw, :mswin]
+=======
+
+>>>>>>> origin/master
 
 # Pagination for posts
 gem 'will_paginate'
@@ -65,4 +70,7 @@ group :development do
   gem 'spring'
 end
 
+ruby "2.2.1"
+
 # ruby "2.0.0"
+

@@ -1,21 +1,44 @@
 // Place all the styles related to the profiles controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+body{
+
+}
+@-webkit-keyframes progress-bar-striped {
+ from  { background-position: 0 0; }
+ to    { background-position: 40px 0; }
+}
+
+
+@-moz-keyframes progress-bar-striped {
+ from  { background-position: 0 0; }
+ to    { background-position: 40px 0; }
+}
+
+#dex_container{
+  -moz-box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
+  -webkit-box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
+  box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
+}
 #splash_container{
   position: relative;
-  z-index: 99;
   max-height: 760px;
   padding-right:30px;
   overflow-x: visible;
   overflow-y: hidden;
-  -moz-box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
-  -webkit-box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
-  box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
   }
+#splash_container li{
+  -webkit-animation-duration: 255ms;
+  font-smoothing: antialiased !important;
+  filter: blur(0);
+  -webkit-filter: blur(0);
+  -webkit-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+}
   #splash_container::-webkit-scrollbar {
   display: none;
   }
-  #splash_container img{
+  #splash_container ul img{
     margin-top:80px;
   }
   #toolTip {
@@ -23,11 +46,7 @@
     position: relative;
   }
   #name_container{
-    background-color: rgba(0, 0, 0, 0);
     max-height: 760px;
-    -moz-box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
-    -webkit-box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
-    box-shadow: 0 250px 250px -88px rgba(0, 0, 0, 0.8) inset, 0 -250px 250px -88px rgba(0, 0, 0, 0.8) inset;
   }
 #name_container ul{
   margin-top: auto;
@@ -37,15 +56,24 @@
   text-decoration: none;
   max-height: 760px;
   text-align: center;
+  overflow-x: hidden;
   overflow-y: scroll;
 }
 #name_container ul a{
   text-decoration: none;
   color: #333;
 }
+#name_container li{
+  -webkit-animation-duration: 255ms;
+}
 #name_container li:hover a{
   color:white;
 }
+#name_container li:hover h3{
+  -webkit-animation: pulse 255ms;
+  animation: pulse 255ms;
+}
+
 #name_container li:active a{
   color:white;
 }
@@ -82,18 +110,9 @@ a:focus{
   text-align: center;
   margin-top:50%;
 }
-#tail1 {
-    z-index: 4;
-    position:absolute;
-    bottom: 50%;
-    left: 100%;
-    width:0;height:0;
-    border-color:transparent transparent transparent #a0c7ff;
-    border-width:20px;
-    border-style:solid;
-}
 
 #tail2 {
+    opacity: 0;
     z-index: 5;
     position:absolute;
     bottom: 50%;
@@ -102,6 +121,8 @@ a:focus{
     border-color:transparent transparent transparent #f9f9f9;
     border-width:20px;
     border-style:solid;
+    -webkit-animation-duration: 500ms;
+
 }
 #mCSB_1_container{
   padding-right:25px !important;
@@ -127,32 +148,29 @@ a:focus{
 .unmastered_mark{
   z-index: 1;
   position: absolute;
-  top:0;
-  left: 0;
+  top: 50px;
+  left: 50px;
 }
 #up_arw a, #down_arw a{
   color: #555;
+
 }
-#down_arw:hover{
-  background-color: rgba(0, 0, 0, 0.8);
-}
-#up_arw:hover{
-  background-color: rgba(0, 0, 0, 0.8);
-}
+
 #up_arw:hover > a, #down_arw:hover > a{
   color: white;
   -webkit-text-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
   text-shadow: 0 0 30px rgba(10, 187, 255, 0.9);
 }
+#up_arw:hover > a > span, #down_arw:hover > a > span{
+  -webkit-animation: pulse 1s;
+  animation: pulse 1s;
+}
 .thumb{
   height:80px !important;
   width: 80px !important;
 }
-.selected{
-  color:white;
-  background-color: #faa;
 
-}
+
 
 .stats_header{
   background: no-repeat center center;
@@ -185,24 +203,85 @@ a:focus{
 .last{
 
 }
-#splash_container .first img{
- margin-top:50%;
+#splash_container ul .first img{
+ margin-top: -20%;
 }
-#splash_container .last img{
+#splash_container ul .last img{
  margin-bottom:46%;
 }
 #name_container img{
   margin-top:-10px;
 }
-.active{
+#name_container h3{
+  margin-bottom: 40px;
+}
+.active h3{
+  -webkit-animation: pulse 255ms;
+  animation: pulse 255ms;
   border-bottom: 1px solid white;
 }
 #name_container .active a{
   color: white;
 
 }
+#searchButton, #sortButton{
+  border-radius: 75px;
+  position: absolute;
+  left: 7%;
+  bottom: 7%;
+  padding: 0px;
+  width: 60px;
+  height: 60px;
+  margin-top:5px;
+  margin-left: 10px;
+  z-index: 100;
+  opacity: 0.3;
+  transition: opacity .3s ease-out;
+  -moz-transition: opacity .3s ease-out;
+  -webkit-transition: opacity .3s ease-out;
+  -o-transition: opacity .3s ease-out;
+}
+#sortButton{
+  bottom: 13%;
+  left: 1%;
+
+}
+#searchButton:hover, #sortButton:hover{
+  opacity:1;
+  transition: opacity .3s ease-out;
+  -moz-transition: opacity .3s ease-out;
+  -webkit-transition: opacity .3s ease-out;
+  -o-transition: opacity .3s ease-out;
+  -webkit-animation: pulse 1s;
+    animation: pulse 1s;
+}
+
+#stats_target{
+  background-color: rgb(205, 204, 205);
+  -webkit-animation-duration: 225ms;
+  margin: 75px 0px;
+}
+.progress-bar {
+  transition: width 4s ease-out;
+  -moz-transition: width 4s ease-out;
+  -webkit-transition: width 4s ease-out;
+  -o-transition: width 4s ease-out;
+}
+
 //SEARCH FORM STUFF
 #searchlist{
   max-height: 500px;
   overflow-y: scroll;
+}
+.glyphicon-remove{
+  top:13px !important;
+  right: 13px !important;
+}
+#champSearchModal{
+  -webkit-animation: bounceInUp 395ms;
+  animation: bounceInUp 395ms;
+}
+#champSortModal{
+  -webkit-animation: bounceInDown 395ms;
+  animation: bounceInDown 395ms;
 }

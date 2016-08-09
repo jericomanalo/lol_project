@@ -13,9 +13,10 @@
  *= require_tree .
  *= require_self
  *= require bootstrap
+ *= require animate
  */
 *{
-  font-family: Impact, Charcoal, sans-serif;
+  font-family: Futura, "Trebuchet MS", Arial, sans-serif;
 
 }
 

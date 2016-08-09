@@ -116,7 +116,7 @@ class ApplicationController < ActionController::Base
     end
 
     def self.get_api_key
-      ENV["LOL_SECRET"]
+      ENV['LOL_SECRET']
     end
   end
 

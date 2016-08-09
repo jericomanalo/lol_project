@@ -1,5 +1,5 @@
 <div class="container container-fluid row" style="width:100%; background-color:#aba7a7; margin-top:-18px;">
-  <div class="col-lg-4" style="padding-left:0px;">
+  <div class="col-lg-6" style="padding-left:0px;">
       <div class="row">
         <div class="col-lg-9">
         <img class="pull-left" height="94px" width="94px" src="<%= @summoner['icon'] %>" />
@@ -46,7 +46,7 @@
             <div id="progress_wrapper">
               <img src="/images/Champion_mastery_tier_<%= @top_champion.championLevel %>.png" id="icon_mastery_rank" height="90px" width="80px" alt=""/>
               <div class="progress" id="icon_mastery_progress">
-                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<%= @current_xp %>" aria-valuemin="0" aria-valuemax=" <%= total_lvl_xp %>" style="width: <%=percent_to_level %> ">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<%= @current_xp %>" aria-valuemin="0" aria-valuemax=" <%= total_lvl_xp %>" data-percentage='<%=percent_to_level %>' style="width: 0%;">
                   </div>
                 </div>
               </div>
@@ -58,10 +58,10 @@
       </div> <!-- End of Summoner Header -->
         <div class="col-lg-12" id="mastery_stats">
           <% @champion_list.each do |key, value| %>
-          <div class="col-lg-4">
-            <h3 class="white" style="margin:0px;"><%= key %>: <small><%= value[:Mastered].count %> / <%= value[:Mastered].count + value[:Unmastered].count %> Mastered </small></h3>
+          <div class="col-xs-4">
+            <h3 class="white" style="margin:0px;"><%= key %>: <small><%= value[:Mastered].count %> / <%= value[:Mastered].count + value[:Unmastered].count %> </small></h3>
             <div class="progress">
-              <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="<%= value[:Mastered].count %>" aria-valuemin="0" aria-valuemax="<%= value[:Mastered].count + value[:Mastered].count %>" style="color: rgb(0, 87, 125); width: <%= number_to_percentage((value[:Mastered].count.to_f / (value[:Mastered].count + value[:Unmastered].count))*100) %>">
+              <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="<%= value[:Mastered].count %>" aria-valuemin="0" data-percentage="<%= number_to_percentage((value[:Mastered].count.to_f / (value[:Mastered].count + value[:Unmastered].count))*100) %>" aria-valuemax="<%= value[:Mastered].count + value[:Mastered].count %>" style="color: rgb(0, 87, 125); width: 0%">
                 <!-- Progress bar should be of total champion levels added together out of max possible champ level (7 per champion) -->
                 <%= number_to_percentage((value[:Mastered].count.to_f / (value[:Mastered].count + value[:Unmastered].count))*100) %>
               </div>
@@ -73,42 +73,39 @@
         <div class="col-lg-12" id="stats_target">
 
         </div>
-        <div class="col-lg-6 pull-left">
-          <button type="button" class="btn btn-default btn-lg pull-left" name="button">Menu <span class="fa fa-bars"></span></button>
-          <%= render 'shared/championsearch' %>
-        </div>
+=
     </div> <!-- end of left-div -->
 
-    <div class="col-lg-8">
+    <div class="col-lg-6" id="dex_container">
       <div class="row">
-        <div class="col-lg-12 text-center" id="up_arw">
-          <a href="#" class="text-center"><span class="fa fa-caret-up fa-4x"></span></a>
+        <div class="col-xs-12 text-center" id="up_arw">
+          <a href="#" class="text-center arrow"><span class="fa fa-caret-up fa-4x"></span></a>
         </div>
-        <div class="col-lg-7 no-scroll"  id="splash_container">
+        <%= render 'shared/sortchampions' %>
+        <%= render 'shared/championsearch' %>
+        <div class="col-xs-8 no-scroll"  id="splash_container">
           <ul>
             <% @champion_list.each do |key, value| %>
             <!-- key is supports/etc -->
             <!-- value is the mastery object -->
             <% value[:Mastered].each do |this| %>
             <li class="<%= this.champion.name.delete(' ') %>"><div id="toolTip">
-              <div <% if this == value[:Mastered].first %> class="selected" <% end %>>
                 <img class="img img-responsive mastered" src="<%= this.champion.splash %>" id="img_<%= this.champion.id %>">
                 <div id="tail2"></div>
                 <div class="hidden">
                   <div id="<%= this.champion.id %>_stats"> <!-- this div gets displayed on left when champ selected -->
                     <div class="row">
-                      <div class="col-lg-12">
+                      <div class="col-xs-12">
                         <div class="layer_container">
                           <img class="img img-responsive layered_icon" height="80px" width="80px" src="<%= this.champion.icon %>" alt="" />
                           <img class="img img-responsive layered_border" height="110px" width="100px" src="/images/Champion_mastery_border_<%= this.championLevel %>.png" alt="" />
                         </div>
-                        <h2 class="page-header text-left"><%= this.champion.name %> <small>Type: <%= this.champion.tag %></small></h2>
+                        <h4 class="page-header text-left"><%= this.champion.name %> <small>Type: <%= this.champion.tag %></small></h4>
                       </div>
                     </div>
                     Current Level: <%= this.championLevel %> <br> Total Pts: <%= this.current_points %> <br> Points Until Next Level: <%= this.championPointsUntilNextLevel %> <br> Tokens Earned: <%= this.tokensEarned %> <br> Chest Earned: <% if this.chestGranted == 'true' %> Yes <% else %> No <% end %> <br> Last Played: <%= DateTime.strptime((this.lastPlayTime).to_s,'%s').strftime('%m/%d/%y') %>
                   </div>
                 </div>
-              </div>
             </div></li>
             <br>
             <% end %>
@@ -116,11 +113,28 @@
             <li class="<%= this.name.delete(' ') %>"><div>
               <div id="toolTip">
                 <img src="<%= this.splash %>" class="img img-responsive unmastered" id="img_<%= this.id %>">
-                <h1 class="text-center unmastered_mark"><span class="fa fa-question-circle-o fa-5x"></span>
-                  <br>Sorry, no games played on <%= this.name %> yet.</h1>
+                <h4 class="text-center unmastered_mark"><span class="fa fa-question-circle-o fa-5x"></span>
+                  <br>Sorry, no games played on <%= this.name %> yet.</h4>
                 <br>
-                <div id="tail1"></div>
                 <div id="tail2"></div>
+                <div class="hidden">
+                  <div id="<%= this.id %>_stats"> <!-- this div gets displayed on left when champ selected -->
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <div class="layer_container">
+                          <img class="img img-responsive layered_icon" height="80px" width="80px" src="<%= this.icon %>" alt="" />
+                        </div>
+                        <h4 class="page-header text-left"><%= this.name %> <small>Type: <%= this.tag %></small></h4>
+                      </div>
+                    </div>
+                    Current Level:  ???
+                    <br> Total Pts:  ???
+                    <br> Points Until Next Level: ???
+                    <br> Tokens Earned:  ???
+                    <br> Chest Earned:  ???
+                    <br> Last Played:  ???
+                  </div>
+                </div>
               </div>
             </div></li>
             <% end %>
@@ -128,7 +142,7 @@
 
           </ul>
         </div>
-        <div class="col-lg-5" id="name_container">
+        <div class="col-xs-4" id="name_container">
           <ul class="scroll">
 
 
@@ -138,20 +152,20 @@
                         <!-- value is the mastery object -->
                         <% value[:Mastered].each do |this| %>
                           <li class="text-left mastered_text <%= this.champion.name.delete(' ') %>" value="<%= this.champion.id %>" id="id_<%= this.champion.id %>">
-                            <h1><a href="#"><small> No<%= this.champion.id %></small> <span><%= this.champion.name %></span></a><small>
+                            <h3><a href=""><small> No<%= this.champion.id %></small> <span><%= this.champion.name %></span></a><small>
                               <img class="img" src="/images/Champion_mastery_tier_<%= this.championLevel %>.png" alt="" height="35px" width="35px" /></small>
-                            </h1>
+                            </h3>
                           </li>
                         <% end %>
                         <% value[:Unmastered].each do |this| %>
-                            <li class="text-left <%= this.name.delete(' ') %>" value="<%= this.id %>" id="id_<%= this.id %>"><a href="#"> <h1><small>No <%= this.id %></small> <span><%= this.name %></span></a></h1></li>
+                            <li class="text-left <%= this.name.delete(' ') %>" value="<%= this.id %>" id="id_<%= this.id %>"><a href=""> <h3><small>No<%= this.id %></small> <span><%= this.name %></span></a></h3></li>
                         <% end %>
                         <% end %>
             </select>
           </ul>
       </div>
-      <div class="col-lg-12 text-center" href="#" id="down_arw">
-        <a href="#" class="text-center"><span class="fa fa-caret-down fa-4x"></span></a>
+      <div class="col-xs-12 text-center" href="#" id="down_arw">
+        <a href="#" class="text-center arrow"><span class="fa fa-caret-down fa-4x"></span></a>
       </div>
     </div>
 

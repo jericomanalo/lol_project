@@ -21,13 +21,21 @@
 //= require bootstrap-list-filter.src
 $(document).ready(function (){
             //initialize offsets to scroll to, also add first and last classes
+            $("#splash_container li:eq(0) #tail2").addClass("animated fadeIn")
+            $("#splash_container li:eq(0)").addClass("animated pulse").one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend",
+             function(){
+              $(this).removeClass('animated pulse');
+            });
             var current = $("#name_container li").index();
+            var champion_id = $('#name_container li:eq(0)').val()
             var imgHeight = $("#splash_container img").height();
             var splash_height = $("#splash_container").height();
             var offset = (splash_height - imgHeight) / 2;
             console.log("IMG HEIGHT", imgHeight, splash_height);
-            $('#splash_container').scrollTo($('#splash_container li:eq(0)'), 100, {offset: -offset});
-            $("#name_container").scrollTo($('#name_container li:eq(0)'),100, {offset: -(offset * 2 )});
+            $('#splash_container').scrollTo($('#splash_container li:eq(0)'), 225, {offset: -offset});
+            $("#name_container").scrollTo($('#name_container li:eq(0)'), 225, {offset: -(offset * 2 )});
+            show_stats(champion_id);
+            console.log(champion_id);
 
             $("#splash_container li").eq(current).addClass('first');
             $('#name_container li').eq(current).addClass('active');
@@ -54,26 +62,36 @@ $(document).ready(function (){
               console.log("LI_LINK", li_link);
               li_link.trigger('click');
               $('#champSearchModal').modal('toggle');
-            });
+          });
+
+
+              $('.progress-bar').each(function() {
+                  var me = $(this);
+                  var perc = me.attr("data-percentage");
+                  $(this).css('width', perc);
+                });
             //when li item click also scroll with offsets
             $("#name_container li").click(function (){
+              $("#splash_container li #tail2").removeClass("animated fadeIn");
               var champ_name = $(this).find('span').html().replace("'", "\\'").replace('"', '\\"').replace(/\s/g, '');
               console.log("CHAMP CLICKED:", champ_name);
               var champion_id = $(this).val();
               console.log("CHAMPION____ID:", champion_id);
-              show_stats(champion_id);
               var imgHeight = document.getElementById("img_"+champion_id).clientHeight;
               var selected = $(this).index();
-              console.log("SELECTED", selected);
                 var name_offset = 360;
-                selected = $("#name_container li").eq(selected).attr("id");
-              console.log("SELECTED_ID:", selected);
               var offset = (imgHeight - document.getElementById("splash_container").clientHeight) / 2;
               $('.active').removeClass('active');
               $(this).addClass('active');
               $('#splash_container').scrollTo($("#splash_container li."+champ_name), 100, {offset: offset});
+              $("#splash_container li."+champ_name+" #tail2").addClass("animated fadeIn");
+              $("#splash_container li."+champ_name).addClass("animated pulse").one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend",
+               function(){
+                $(this).removeClass('animated pulse');
+              });;
               // $('#name_container ul').scrollTo(document.getElementById(selected), 100);
               $('#name_container .scroll').scrollTo($('#name_container li.'+champ_name), 100, {offset: -name_offset});
+              show_stats(champion_id);
               return false;
             });
 
@@ -82,55 +100,12 @@ $(document).ready(function (){
               console.log("SHOWING STATS");
               stats = $('#'+champion_id+'_stats').html();
               if(stats == undefined){
-                $('#stats_target').empty();
+                $('#stats_target').html("<p>No data for this champ</p>");
               }
-              $('#stats_target').html(stats);
+              $('#stats_target').html(stats).addClass("animated fadeInRight").one("webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend",
+               function(){
+                $(this).removeClass('fadeInRight');
+              });
             };
-
-
-            // var lastScrollTop = 0;
-            // //scroll throttling
-            // var scrollTimeout; // global for any pending scrollTimeout
-            // $("#name_container ul").scroll(function() {
-            //   console.log("SCROLLING");
-            //     if (scrollTimeout) {
-            //         // clear the timeout, if one is pending
-            //         clearTimeout(scrollTimeout);
-            //         scrollTimeout = null;
-            //     }
-            //     scrollTimeout = setTimeout(scrollHandler, 250);
-            // });
-            // scrollHandler = function() {
-            //   $('#name_container ul').scroll(function(event) {
-            //     var st = $(this).scrollTop();
-            //     if (st > lastScrollTop) {
-            //       // downscroll code
-            //       var first = $('#name_container li').first();
-            //       var first_pic = $('#splash_container li').first();
-            //       var last_pic = $('#splash_container li').last();
-            //       var last = $('#name_container li').last();
-            //       console.log(first, first_pic, last_pic, last);
-            //       first.insertAfter(last);
-            //       first_pic.insertAfter(last_pic);
-            //
-            //       console.log("SCROLLING DOWN");
-            //     } else {
-            //       // upscroll code, moves last li to first to keep center autofocused
-            //       var first = $('#name_container li').first();
-            //       var first_pic = $('#splash_container li').first();
-            //       var last_pic = $('#splash_container li').last();
-            //       var last = $('#name_container li').last();
-            //       last.insertBefore(first);
-            //       last_pic.insertBefore(first_pic);
-            //
-            //       console.log("SCROLLING UP");
-            //     }
-            //     lastScrollTop = st;
-            //   });
-            //     // Check your page position and then
-            //     // Load in more results
-            //     // outerPane.html();
-            // };
-
 
         });

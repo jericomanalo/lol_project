@@ -24,7 +24,6 @@ class ApplicationController < ActionController::Base
     redirect_to '/' unless current_user
   end
 
-<<<<<<< HEAD
   class Riot
     def self.get_all_champions(params)
       url = self.get_static_url
@@ -44,7 +43,7 @@ class ApplicationController < ActionController::Base
       params = self.get_params(params)
       self.http_get(url, params)
     end
-=======
+
 private
   def self.http_get(uri, params = nil)
     uri = URI.parse(uri)
@@ -52,11 +51,7 @@ private
     res = Net::HTTP.get(uri)
     JSON.parse(res)
   end
-<<<<<<< HEAD
- 
-=======
 
->>>>>>> upstream/master
  def self.region_converter(region)
     if region == "br"
       "br"
@@ -82,24 +77,15 @@ private
       "tr1"
     end
  end
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> upstream/master
   def self.get_champion_mastery_url(region, summonerId)
     true_region = self.region_converter(region)
     "https://#{region}.api.pvp.net/championmastery/location/#{true_region}/player/#{summonerId}/champions"
   end
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> upstream/master
   def self.get_static_url
     "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion"
   end
->>>>>>> origin/master
 
     def self.get_matchlist(region, summonerId, params = {})
       url = self.get_api_url(region, "matchlist/by-summoner/#{summonerId}")
@@ -113,39 +99,39 @@ private
       self.http_get(url, params)
     end
 
-  private
-    def self.http_get(uri, params = nil)
-      uri = URI.parse(uri)
-      uri.query = URI.encode_www_form(params) unless params.nil?
-      res = Net::HTTP.get(uri)
-      JSON.parse(res)
-    end
-
-   def self.region_converter(region)
-      if region == "br"
-        "br"
-      elsif region == "eune"
-        "eun1"
-      elsif region == "euw"
-        "euw1"
-      elsif region == "jp"
-        "jp1"
-      elsif region == "kr"
-        "kr"
-      elsif region == "lan"
-        "la1"
-      elsif region == "las"
-        "la2"
-      elsif region == "na"
-        "na1"
-      elsif region == "oce"
-        "oc1"
-      elsif region == "ru"
-        "ru"
-      else
-        "tr1"
+    private
+      def self.http_get(uri, params = nil)
+        uri = URI.parse(uri)
+        uri.query = URI.encode_www_form(params) unless params.nil?
+        res = Net::HTTP.get(uri)
+        JSON.parse(res)
       end
-   end
+
+     def self.region_converter(region)
+        if region == "br"
+          "br"
+        elsif region == "eune"
+          "eun1"
+        elsif region == "euw"
+          "euw1"
+        elsif region == "jp"
+          "jp1"
+        elsif region == "kr"
+          "kr"
+        elsif region == "lan"
+          "la1"
+        elsif region == "las"
+          "la2"
+        elsif region == "na"
+          "na1"
+        elsif region == "oce"
+          "oc1"
+        elsif region == "ru"
+          "ru"
+        else
+          "tr1"
+        end
+     end
 
     def self.get_champion_mastery_url(region, summonerId)
       true_region = self.region_converter(region)
@@ -173,7 +159,7 @@ private
     end
 
     def self.get_api_key
-      "b8a84394-c482-433d-a426-5db7d03615fc"
+      ENV['LOL_SECRET']
     end
   end
 

@@ -44,13 +44,6 @@ gem 'chartkick', '~> 1.5.2'
 gem 'groupdate'
 
 gem 'hightop'
-<<<<<<< HEAD
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-# gem 'tzinfo', platforms: [:x64_mingw, :mingw, :mswin]
-# gem 'tzinfo-data', platforms: [:x64_mingw, :mingw, :mswin]
-=======
-
->>>>>>> origin/master
 
 # Pagination for posts
 gem 'will_paginate'
